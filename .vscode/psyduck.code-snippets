@@ -1,0 +1,8 @@
+{
+  "db-common": {
+    "scope": "javascript,typescript",
+    "prefix": "db-common",
+    "body": ["await service.db.common.$0"],
+    "description": ""
+  }
+}

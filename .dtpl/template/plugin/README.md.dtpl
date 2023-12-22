@@ -1,0 +1,5 @@
+### 发布
+
+```bash
+mc fs $HOME/project/mc-egg-admin/lib/plugin/${dirName} -e js -o $HOME/project/egg-${dirName}
+```

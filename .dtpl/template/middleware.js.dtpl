@@ -1,0 +1,5 @@
+module.exports = (options, app) => {
+    return async function ${fileName}(ctx, next) {
+        await next();
+    };
+};

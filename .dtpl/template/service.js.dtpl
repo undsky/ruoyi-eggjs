@@ -1,0 +1,9 @@
+const Service = require('egg').Service;
+
+class ${ModuleName}Service extends Service {
+  async ${moduleName}() {
+    
+  }
+}
+
+module.exports = ${ModuleName}Service;

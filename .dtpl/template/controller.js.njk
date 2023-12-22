@@ -1,0 +1,25 @@
+const Controller = require('egg').Controller;
+const {
+    Route,
+    HttpGet,
+    HttpPost,
+    Middleware
+} = require('egg-decorator-router')
+
+module.exports = app => {
+    @Route('{{ dirPath | replace(rootPath+'/app/controller', "") }}/{{ fileName }}')
+    class {{ ModuleName }}Controller extends Controller {
+        {% if -1 == filePath.indexOf('/api/') %}
+        @HttpGet('/')
+        async index() {
+            const {
+                ctx,
+                service
+            } = this;
+            await ctx.render('{{ dirPath | replace(rootPath+'/app/controller', "") }}/{{ fileName }}')
+        }
+        {% endif %}    
+    }
+
+    return {{ ModuleName }}Controller;
+}

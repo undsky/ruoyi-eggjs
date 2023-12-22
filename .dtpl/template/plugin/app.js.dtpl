@@ -1,0 +1,7 @@
+module.exports = app => {
+    app.addSingleton('${dirName}', init);
+}
+
+function init(config, app) {
+
+}
