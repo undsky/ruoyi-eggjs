@@ -1,3 +1,11 @@
+/*
+ * @Author: 姜彦汐
+ * @Date: 2023-12-22 20:01:21
+ * @LastEditors: 姜彦汐
+ * @LastEditTime: 2023-12-23 21:59:40
+ * @Description:
+ * @Site: https://www.undsky.com
+ */
 const Service = require("egg").Service;
 const streamWormhole = require("stream-wormhole");
 const path = require("path");

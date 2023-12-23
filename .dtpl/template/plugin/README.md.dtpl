@@ -1,5 +1,5 @@
 ### 发布
 
 ```bash
-mc fs $HOME/project/mc-egg-admin/lib/plugin/${dirName} -e js -o $HOME/project/egg-${dirName}
+mc fs $HOME/project/egg-psyduck-admin/lib/plugin/${dirName} -e js -o $HOME/project/egg-psyduck-${dirName}
 ```

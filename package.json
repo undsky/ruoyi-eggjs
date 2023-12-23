@@ -2,6 +2,8 @@
   "name": "psyduck-admin",
   "version": "1.0.0",
   "description": "",
+  "author": "姜彦汐  <https://www.undsky.com>",
+  "license": "MIT",
   "private": true,
   "egg": {
     "declarations": true
@@ -14,6 +16,11 @@
     "egg-cors": "^3.0.0",
     "egg-decorator-router": "^1.0.7",
     "egg-jwt": "^3.1.7",
+    "egg-psyduck-cache": "^1.0.0",
+    "egg-psyduck-mybatis": "^1.0.0",
+    "egg-psyduck-mysql": "^1.0.0",
+    "egg-psyduck-ratelimiter": "^1.0.0",
+    "egg-psyduck-sqlite": "^1.0.0",
     "egg-scripts": "2",
     "fs-extra": "^11.2.0",
     "lodash": "^4.17.21",
@@ -23,6 +30,7 @@
   "devDependencies": {
     "egg-bin": "6",
     "egg-mock": "5",
+    "egg-psyduck-cli": "^1.0.0",
     "eslint": "8",
     "eslint-config-egg": "13"
   },
@@ -33,7 +41,7 @@
     "start": "egg-scripts start --daemon --title=egg-server-psyduck-admin",
     "stop": "egg-scripts stop --title=egg-server-psyduck-admin",
     "dev": "egg-bin dev",
-    "debug": "mc mapper ./ -w & egg-bin debug",
+    "debug": "psy mapper & egg-bin debug",
     "test": "npm run lint -- --fix && npm run test:local",
     "test:local": "egg-bin test",
     "cov": "egg-bin cov",
@@ -43,7 +51,5 @@
   "repository": {
     "type": "git",
     "url": ""
-  },
-  "author": "姜彦汐  <https://www.undsky.com>",
-  "license": "MIT"
+  }
 }

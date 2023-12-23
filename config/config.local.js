@@ -1,3 +1,11 @@
+/*
+ * @Author: 姜彦汐
+ * @Date: 2023-12-22 20:01:21
+ * @LastEditors: 姜彦汐
+ * @LastEditTime: 2023-12-23 22:00:09
+ * @Description:
+ * @Site: https://www.undsky.com
+ */
 /* eslint valid-jsdoc: "off" */
 
 /**
@@ -12,11 +20,11 @@ module.exports = (appInfo) => {
 
   config.mysql = {
     clients: {
-      common: {
+      ruoyi: {
         host: "172.81.247.8",
-        user: "undsky",
-        password: "BXdAL568zSCD6ip5",
-        database: "undsky",
+        user: "ruoyi",
+        password: "eZkBTE7HwtKmNnmJ",
+        database: "ruoyi",
       },
     },
   };

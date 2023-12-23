@@ -1,8 +1,8 @@
 {
-  "db-common": {
+  "db-ruoyi": {
     "scope": "javascript,typescript",
-    "prefix": "db-common",
-    "body": ["await service.db.common.$0"],
+    "prefix": "db-ruoyi",
+    "body": ["await service.db.ruoyi.$0"],
     "description": ""
   }
 }

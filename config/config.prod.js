@@ -1,3 +1,11 @@
+/*
+ * @Author: 姜彦汐
+ * @Date: 2023-12-22 20:01:21
+ * @LastEditors: 姜彦汐
+ * @LastEditTime: 2023-12-23 22:00:16
+ * @Description:
+ * @Site: https://www.undsky.com
+ */
 /* eslint valid-jsdoc: "off" */
 
 /**
@@ -19,9 +27,9 @@ module.exports = (appInfo) => {
     clients: {
       common: {
         host: "127.0.0.1",
-        user: "undsky",
-        password: "BXdAL568zSCD6ip5",
-        database: "undsky",
+        user: "ruoyi",
+        password: "eZkBTE7HwtKmNnmJ",
+        database: "ruoyi",
       },
     },
   };
