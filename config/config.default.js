@@ -2,7 +2,7 @@
  * @Author: 姜彦汐
  * @Date: 2023-12-22 20:01:21
  * @LastEditors: 姜彦汐
- * @LastEditTime: 2023-12-23 22:01:43
+ * @LastEditTime: 2023-12-24 11:23:42
  * @Description:
  * @Site: https://www.undsky.com
  */
@@ -27,8 +27,8 @@ module.exports = (appInfo) => {
   config.middleware = ["accessControl", "formatBody"];
 
   config.security = {
+    enable: false,
     domainWhiteList: ["localhost", "*.undsky.com"],
-    csrf: false,
     xframe: {
       ignore: [],
     },
