@@ -27,7 +27,7 @@ module.exports = function (source) {
         },
       },
       {
-        name: "template/mapper.xml.dtpl",
+        name: "template/mapper.xml.njk",
         matches: "mapper/**/*.xml",
       },
       {
