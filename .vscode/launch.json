@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "psyduck Debug",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "debug"],
+      "runtimeArgs": ["run", "dev"],
       "console": "integratedTerminal",
       "restart": true,
       "autoAttachChildProcesses": true

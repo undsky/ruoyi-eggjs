@@ -16,11 +16,11 @@
     "egg-cors": "^3.0.0",
     "egg-decorator-router": "^1.0.7",
     "egg-jwt": "^3.1.7",
-    "egg-psyduck-cache": "^1.0.0",
-    "egg-psyduck-mybatis": "^1.0.0",
-    "egg-psyduck-mysql": "^1.0.0",
-    "egg-psyduck-ratelimiter": "^1.0.0",
-    "egg-psyduck-sqlite": "^1.0.0",
+    "egg-psyduck-cache": "^1",
+    "egg-psyduck-mybatis": "^1",
+    "egg-psyduck-mysql": "^1",
+    "egg-psyduck-ratelimiter": "^1",
+    "egg-psyduck-sqlite": "^1",
     "egg-scripts": "^2",
     "fs-extra": "^11.2.0",
     "lodash": "^4.17.21",
@@ -29,9 +29,10 @@
   },
   "devDependencies": {
     "egg-bin": "^5",
-    "egg-psyduck-cli": "^1.0.0",
+    "egg-psyduck-cli": "^1",
     "eslint": "^8",
-    "eslint-config-egg": "^13"
+    "eslint-config-egg": "^13",
+    "npm-run-all": "^4.1.5"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -39,6 +40,8 @@
   "scripts": {
     "start": "egg-scripts start --port=7001 --daemon --title=egg-server-psyduck-admin",
     "stop": "egg-scripts stop --title=egg-server-psyduck-admin",
-    "debug": "psy mapper & egg-bin debug"
+    "mapper": "psy mapper",
+    "debug": "egg-bin debug",
+    "dev": "npm-run-all -p mapper debug"
   }
 }
