@@ -7,7 +7,7 @@ const {
 } = require('egg-decorator-router')
 
 module.exports = app => {
-    @Route('{{ dirPath | replace(rootPath+'/app/controller', "") }}/{{ fileName }}')
+    @Route('{{ dirPath.replaceAll('\\','/') | replace(rootPath.replaceAll('\\','/')+'/app/controller', "") }}/{{ fileName }}')
     class {{ ModuleName }}Controller extends Controller {
         {% if -1 == filePath.indexOf('/api/') %}
         @HttpGet('/')
@@ -16,7 +16,7 @@ module.exports = app => {
                 ctx,
                 service
             } = this;
-            await ctx.render('{{ dirPath | replace(rootPath+'/app/controller', "") }}/{{ fileName }}')
+            await ctx.render('{{ dirPath.replaceAll('\\','/') | replace(rootPath.replaceAll('\\','/')+'/app/controller', "") }}/{{ fileName }}')
         }
         {% endif %}    
     }
