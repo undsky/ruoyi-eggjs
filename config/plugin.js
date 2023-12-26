@@ -37,7 +37,7 @@ module.exports = {
     package: "egg-psyduck-ratelimiter",
   },
   sqlite: {
-    enable: true,
+    enable: false,
     package: "egg-psyduck-sqlite",
   },
   static: {
