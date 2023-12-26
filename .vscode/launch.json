@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "psyduck Debug",
+      "name": "psyduck dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "console": "integratedTerminal",
