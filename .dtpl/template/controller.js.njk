@@ -3,13 +3,14 @@ const {
     Route,
     HttpGet,
     HttpPost,
+    HttpAll,
     Middleware
 } = require('egg-decorator-router')
 
 module.exports = app => {
     @Route('{{ dirPath.replaceAll('\\','/') | replace(rootPath.replaceAll('\\','/')+'/app/controller', "") }}/{{ fileName }}')
     class {{ ModuleName }}Controller extends Controller {
-        {% if -1 == filePath.indexOf('/api/') %}
+        {% if -1 == filePath.replaceAll('\\','/').indexOf('/api/') %}
         @HttpGet('/')
         async index() {
             const {
