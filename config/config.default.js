@@ -40,9 +40,13 @@ module.exports = (appInfo) => {
     // origin: () => '*'
   };
 
+  config.accessControl = {
+    match: /^\/api[\/]?((?!version).)*$/i,
+  };
+
   config.jwt = {
     enable: true,
-    match: /^\/api[\/]?((?!version|login).)*$/i,
+    match: config.accessControl.match,
     secret: "z2Em*CpGBZDw+",
     expiresIn: "7d",
     getToken(ctx) {

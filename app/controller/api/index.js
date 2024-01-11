@@ -29,25 +29,6 @@ module.exports = (app) => {
         version: "1.0.0",
       };
     }
-
-    @HttpPost("/login")
-    async login() {
-      const { ctx, service } = this;
-    }
-
-    @HttpPost("/logout")
-    async logout() {
-      const { ctx, service } = this;
-
-      const { exp, jti } = ctx.state.user;
-
-      const ttl = exp - dayjs().unix();
-      if (ttl > 1) {
-        await app.cache.default.set(jti, "revoked", {
-          ttl,
-        });
-      }
-    }
   }
 
   return IndexController;
