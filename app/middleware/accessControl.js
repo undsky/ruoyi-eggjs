@@ -10,12 +10,10 @@ const _ = require("lodash");
 
 module.exports = (options, app) => {
   return async function accessControl(ctx, next) {
-    const { uuid } = ctx.state.user;
-
     let userInfo;
-    if (uuid) {
-      userInfo = await app.cache.default.wrap(uuid, async () => {
-        return await ctx.service.db.common.adminuser.selectByUuid(uuid);
+    if (ctx.state.user && ctx.state.user.uuid) {
+      userInfo = await app.cache.default.wrap(ctx.state.user.uuid, async () => {
+        return null; // 查询用户信息
       });
     }
 
@@ -25,14 +23,12 @@ module.exports = (options, app) => {
       });
     }
 
-    if ("forbidden" == userInfo) {
+    if ("forbidden" == userInfo.status) {
       // 封号
       throw new app.jwt.UnauthorizedError("forbidden", {
         message: "forbidden",
       });
     }
-
-    ctx.state.user = _.assign({}, ctx.state.user, userInfo);
 
     await next();
   };

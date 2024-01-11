@@ -41,7 +41,7 @@ module.exports = (appInfo) => {
   };
 
   config.accessControl = {
-    match: /^\/api[\/]?((?!version).)*$/i,
+    match: /^\/api[\/]?((?!version|auth).)*$/i,
   };
 
   config.jwt = {
@@ -122,7 +122,10 @@ module.exports = (appInfo) => {
   config.onerror = {
     all(err, ctx) {
       if ("UnauthorizedError" == err.name) {
-        ctx.body = "UnauthorizedError";
+        ctx.body = JSON.stringify({
+          code: 500,
+          msg: "UnauthorizedError",
+        });
       }
     },
   };

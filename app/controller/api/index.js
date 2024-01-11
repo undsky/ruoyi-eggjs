@@ -8,6 +8,7 @@
  */
 const Controller = require("egg").Controller;
 const dayjs = require("dayjs");
+const { nanoid } = require("nanoid");
 
 const {
   Route,
@@ -18,6 +19,8 @@ const {
 } = require("egg-decorator-router");
 
 module.exports = (app) => {
+  const { secret, expiresIn } = app.config.jwt;
+
   @Route("/api")
   class IndexController extends Controller {
     @HttpAll("/version")
@@ -28,6 +31,25 @@ module.exports = (app) => {
         ip: ctx.request.ip,
         version: "1.0.0",
       };
+    }
+
+    @HttpAll("/auth")
+    async auth() {
+      const { ctx } = this;
+
+      // 授权逻辑实现
+      // ctx.body = {
+      //   token: app.jwt.sign(
+      //     {
+      //       uuid: nanoid(),
+      //     },
+      //     secret,
+      //     {
+      //       expiresIn,
+      //       jwtid: `${dayjs().unix()}${nanoid()}`,
+      //     }
+      //   ),
+      // };
     }
   }
 
