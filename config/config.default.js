@@ -21,18 +21,10 @@ module.exports = (appInfo) => {
   const config = (exports = {});
 
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + "o%Fp(=-GLFN;4";
+  config.keys = appInfo.name + "o%Fp(=-GLFN;7";
 
   // add your middleware config here
   config.middleware = ["accessControl", "formatBody"];
-
-  config.security = {
-    enable: false,
-    domainWhiteList: ["localhost", "*.undsky.com"],
-    xframe: {
-      ignore: [],
-    },
-  };
 
   config.cors = {
     allowMethods: "GET,POST",

@@ -23,6 +23,13 @@ module.exports = (appInfo) => {
   config.ipHeaders = "X-Real-Ip, X-Forwarded-For";
   config.maxIpsCount = 1;
 
+  config.security = {
+    domainWhiteList: ["*.undsky.com"],
+    xframe: {
+      ignore: [],
+    },
+  };
+
   config.mysql = {
     clients: {
       common: {
