@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "psyduck dev",
+      "name": "ruoyi-eggjs dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "console": "integratedTerminal",

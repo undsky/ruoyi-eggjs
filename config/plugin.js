@@ -10,7 +10,7 @@
 module.exports = {
   cache: {
     enable: true,
-    package: "egg-psyduck-cache",
+    package: "ruoyi-eggjs-cache",
   },
   cors: {
     enable: true,
@@ -26,19 +26,15 @@ module.exports = {
   },
   mybatis: {
     enable: true,
-    package: "egg-psyduck-mybatis",
+    package: "ruoyi-eggjs-mybatis",
   },
   mysql: {
     enable: true,
-    package: "egg-psyduck-mysql",
+    package: "ruoyi-eggjs-mysql",
   },
   ratelimiter: {
     enable: true,
-    package: "egg-psyduck-ratelimiter",
-  },
-  sqlite: {
-    enable: true,
-    package: "egg-psyduck-sqlite",
+    package: "ruoyi-eggjs-ratelimiter",
   },
   static: {
     enable: true,

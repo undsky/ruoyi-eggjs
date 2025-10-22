@@ -52,7 +52,7 @@ module.exports = function (source) {
       },
     ],
     globalData: {
-      projectName: "egg-psyduck-admin",
+      projectName: "ruoyi-eggjs",
     },
   };
 };
