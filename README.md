@@ -4,18 +4,50 @@
 
 ### 特性
 
-+ 使用 MyBatis XML 编写 SQL
-+ 代码自动生成
-+ 文件模版
-+ 路由注解
++ 使用 MyBatis XML 编写 SQL（[文档](https://github.com/undsky/ruoyi-eggjs-mybatis?tab=readme-ov-file#xml-%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6)）
++ 支持多数据源、多数据库（[文档](https://github.com/undsky/ruoyi-eggjs-mybatis?tab=readme-ov-file#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84)）
++ 代码自动生成（[文档](https://github.com/undsky/ruoyi-eggjs-cli)）
++ 文件模版（[文档](https://marketplace.visualstudio.com/items?itemName=qiu8310.dot-template-vscode)）
++ 路由注解（[文档](https://github.com/fyl080801/egg-decorator-router#readme)）
 + 兼容若依（TODO）
 
 ### 快速开始
+
+#### 下载项目
 ```
 git clone https://github.com/undsky/ruoyi-eggjs.git
 npm i
+```
+
+#### 配置数据库、Redis
+``` javascript
+// ./config/config.local.js
+config.mysql = {
+    clients: {
+      ruoyi: {
+        host: "127.0.0.1",
+        user: "root",
+        password: "jyx123",
+        database: "ruoyi",
+      },
+    },
+  };
+
+  const redis = {
+    port: 6379,
+    host: "127.0.0.1",
+    password: "",
+    db: 0,
+  };
+```
+
+#### 运行
+```
 npm run dev
 ```
+
+#### 访问
+[http://localhost:7001]()
 
 ### TODO
 

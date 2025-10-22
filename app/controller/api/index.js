@@ -25,7 +25,7 @@ module.exports = (app) => {
   class IndexController extends Controller {
     @HttpAll("/version")
     async version() {
-      const { ctx } = this;
+      const { ctx, service } = this;
 
       ctx.body = {
         ip: ctx.request.ip,
@@ -35,7 +35,7 @@ module.exports = (app) => {
 
     @HttpAll("/auth")
     async auth() {
-      const { ctx } = this;
+      const { ctx, service } = this;
 
       // 授权逻辑实现
       // ctx.body = {

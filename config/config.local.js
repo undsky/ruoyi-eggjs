@@ -21,9 +21,9 @@ module.exports = (appInfo) => {
   config.mysql = {
     clients: {
       ruoyi: {
-        host: "172.81.247.8",
-        user: "ruoyi",
-        password: "eZkBTE7HwtKmNnmJ",
+        host: "127.0.0.1",
+        user: "root",
+        password: "jyx123",
         database: "ruoyi",
       },
     },
@@ -31,8 +31,8 @@ module.exports = (appInfo) => {
 
   const redis = {
     port: 6379,
-    host: "172.81.247.8",
-    password: "jyx_redis@12357",
+    host: "127.0.0.1",
+    password: "",
     db: 0,
   };
 
