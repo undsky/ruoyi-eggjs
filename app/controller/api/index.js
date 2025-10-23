@@ -32,25 +32,6 @@ module.exports = (app) => {
         version: "1.0.0",
       };
     }
-
-    @HttpAll("/auth")
-    async auth() {
-      const { ctx, service } = this;
-
-      // 授权逻辑实现
-      // ctx.body = {
-      //   token: app.jwt.sign(
-      //     {
-      //       uuid: nanoid(),
-      //     },
-      //     secret,
-      //     {
-      //       expiresIn,
-      //       jwtid: `${dayjs().unix()}${nanoid()}`,
-      //     }
-      //   ),
-      // };
-    }
   }
 
   return IndexController;

@@ -5,7 +5,7 @@
  */
 
 const Service = require('egg').Service;
-const svgCaptcha = require('svg-captcha');
+const captcha = require('trek-captcha');
 const { nanoid } = require('nanoid');
 
 class LoginService extends Service {
@@ -20,7 +20,7 @@ class LoginService extends Service {
     const { ctx, app } = this;
 
     // 1. 查询用户
-    const users = await ctx.service.db.mysql.ruoyi.sysUserMapper.selectUserByUserName([userName]);
+    const users = await ctx.service.db.mysql.ruoyi.sysUserMapper.selectUserByUserName(null,{userName});
     
     if (!users || users.length === 0) {
       throw new Error('用户不存在或密码错误');
@@ -117,15 +117,11 @@ class LoginService extends Service {
   async createCaptcha() {
     const { app } = this;
 
-    // 生成验证码
-    const captcha = svgCaptcha.create({
+    // 生成验证码 (PNG 图片)
+    const { token, buffer } = await captcha({
       size: 4,        // 验证码长度
-      noise: 2,       // 干扰线条数
-      color: true,    // 验证码字符颜色
-      background: '#f0f0f0',  // 背景色
-      width: 120,
-      height: 40,
-      fontSize: 50
+      width: 120,     // 图片宽度
+      height: 40      // 图片高度
     });
 
     // 生成唯一标识
@@ -133,11 +129,14 @@ class LoginService extends Service {
 
     // 存储到缓存（5分钟过期）
     const cacheKey = `captcha:${uuid}`;
-    await app.cache.default.set(cacheKey, captcha.text, { ttl: 300 });
+    await app.cache.default.set(cacheKey, token, { ttl: 300 });
+
+    // 将 Buffer 转换为 Base64
+    const base64Img = buffer.toString('base64');
 
     return {
       uuid,
-      img: captcha.data  // SVG 图片
+      img: base64Img  // PNG 图片 (Base64)
     };
   }
 

@@ -247,8 +247,8 @@ module.exports = app => {
      * 获取验证码
      * GET /api/captcha
      */
-    @HttpGet('/captcha')
-    async captcha() {
+    @HttpGet('/captchaImage')
+    async captchaImage() {
       const { ctx, service } = this;
       
       try {

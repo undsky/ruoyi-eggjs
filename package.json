@@ -25,23 +25,23 @@
     "egg-cors": "^3.0.0",
     "egg-decorator-router": "^1.0.7",
     "egg-jwt": "^3.1.7",
-    "ruoyi-eggjs-cache": "^1",
-    "ruoyi-eggjs-mybatis": "^1",
-    "ruoyi-eggjs-mysql": "^1",
-    "ruoyi-eggjs-ratelimiter": "^1",
     "egg-scripts": "^2",
     "fs-extra": "^11.2.0",
     "lodash": "^4.17.21",
     "nanoid": "^3.3.7",
+    "ruoyi-eggjs-cache": "^1",
+    "ruoyi-eggjs-mybatis": "^1",
+    "ruoyi-eggjs-mysql": "^1",
+    "ruoyi-eggjs-ratelimiter": "^1",
     "stream-wormhole": "^2.0.1",
-    "svg-captcha": "^1.4.0"
+    "trek-captcha": "^0.4.0"
   },
   "devDependencies": {
     "egg-bin": "^5",
-    "ruoyi-eggjs-cli": "^1",
     "eslint": "^8",
     "eslint-config-egg": "^13",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "ruoyi-eggjs-cli": "^1"
   },
   "engines": {
     "node": ">=20.0.0"
