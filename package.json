@@ -19,6 +19,7 @@
   "dependencies": {
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.10",
     "egg": "^3",
     "egg-cors": "^3.0.0",
@@ -32,7 +33,8 @@
     "fs-extra": "^11.2.0",
     "lodash": "^4.17.21",
     "nanoid": "^3.3.7",
-    "stream-wormhole": "^2.0.1"
+    "stream-wormhole": "^2.0.1",
+    "svg-captcha": "^1.4.0"
   },
   "devDependencies": {
     "egg-bin": "^5",

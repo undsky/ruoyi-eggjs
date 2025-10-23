@@ -33,7 +33,7 @@ module.exports = (appInfo) => {
   };
 
   config.accessControl = {
-    match: /^\/api[\/]?((?!version|auth).)*$/i,
+    match: /^\/api[\/]?((?!version|login|register|captcha).)*$/i,
   };
 
   config.jwt = {
@@ -120,6 +120,20 @@ module.exports = (appInfo) => {
         });
       }
     },
+  };
+
+  // 验证码配置
+  config.captcha = {
+    enabled: true,  // 是否启用验证码
+    type: 'math',   // 验证码类型：char-字符 math-数学
+    category: 'text'  // 图片类型：svg-SVG格式 text-纯文本
+  };
+
+  // 安全配置
+  config.security = {
+    csrf: {
+      enable: false,  // 关闭 CSRF（使用 JWT）
+    }
   };
 
   return config;
