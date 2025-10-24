@@ -14,7 +14,30 @@
 
 ### 已完成接口
 
-+ `/captchaImage` 获取验证码
+#### 认证授权模块
++ `/captchaImage` - 获取验证码
++ `/login` - 用户登录
++ `/logout` - 用户登出
++ `/getInfo` - 获取用户信息
++ `/getRouters` - 获取路由菜单
++ `/register` - 用户注册
+
+#### 用户管理模块 ✨ NEW
++ `/api/system/user/list` - 用户列表（分页）
++ `/api/system/user/:userId` - 用户详情
++ `/api/system/user` (POST) - 新增用户
++ `/api/system/user` (PUT) - 修改用户
++ `/api/system/user/:userIds` (DELETE) - 删除用户
++ `/api/system/user/resetPwd` - 重置密码
++ `/api/system/user/changeStatus` - 修改状态
++ `/api/system/user/authRole/:userId` - 查询授权角色
++ `/api/system/user/authRole` (PUT) - 用户授权
++ `/api/system/user/deptTree` - 部门树选择
++ `/api/system/user/export` - 导出用户
++ `/api/system/user/import` - 导入用户
++ `/api/system/user/importTemplate` - 导入模板
+
+📖 详细 API 文档: [用户管理 API 文档](docs/USER_MANAGEMENT_API.md)
 
 
 
