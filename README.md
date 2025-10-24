@@ -88,7 +88,7 @@
 
 📖 详细 API 文档: [岗位管理 API 文档](docs/POST_MANAGEMENT_API.md)
 
-#### 字典类型管理模块 ✨ NEW
+#### 字典类型管理模块
 + `/api/system/dict/type/list` - 字典类型列表（分页）
 + `/api/system/dict/type/:dictId` - 字典类型详情
 + `/api/system/dict/type` (POST) - 新增字典类型
@@ -99,6 +99,17 @@
 + `/api/system/dict/type/export` - 导出字典类型
 
 📖 详细 API 文档: [字典类型管理 API 文档](docs/DICT_TYPE_MANAGEMENT_API.md)
+
+#### 字典数据管理模块 ✨ NEW
++ `/api/system/dict/data/list` - 字典数据列表（分页）
++ `/api/system/dict/data/:dictCode` - 字典数据详情
++ `/api/system/dict/data/type/:dictType` - 根据类型查询
++ `/api/system/dict/data` (POST) - 新增字典数据
++ `/api/system/dict/data` (PUT) - 修改字典数据
++ `/api/system/dict/data/:dictCodes` (DELETE) - 删除字典数据
++ `/api/system/dict/data/export` - 导出字典数据
+
+📖 详细 API 文档: [字典数据管理 API 文档](docs/DICT_DATA_MANAGEMENT_API.md)
 
 
 
