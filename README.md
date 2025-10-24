@@ -164,7 +164,7 @@
 
 📖 详细 API 文档: [服务监控 API 文档](docs/SERVER_MONITORING_API.md)
 
-#### 缓存监控 ✨ NEW
+#### 缓存监控
 + `/api/monitor/cache` - 缓存信息
 + `/api/monitor/cache/getNames` - 缓存名称列表
 + `/api/monitor/cache/getKeys/:cacheName` - 缓存键名列表
@@ -174,6 +174,20 @@
 + `/api/monitor/cache/clearCacheAll` (DELETE) - 清空全部缓存
 
 📖 详细 API 文档: [缓存监控 API 文档](docs/CACHE_MONITORING_API.md)
+
+#### 定时任务监控 ✨ NEW
++ `/api/monitor/job/list` - 定时任务列表（分页）
++ `/api/monitor/job/:jobId` - 定时任务详情
++ `/api/monitor/job` (POST) - 新增定时任务
++ `/api/monitor/job` (PUT) - 修改定时任务
++ `/api/monitor/job/:jobIds` (DELETE) - 删除定时任务
++ `/api/monitor/job/changeStatus` - 修改状态
++ `/api/monitor/job/run` - 立即执行
++ `/api/monitor/job/export` - 导出定时任务
+
+📖 详细 API 文档: [定时任务监控 API 文档](docs/JOB_MONITORING_API.md)
+
+**注意**: 定时任务为简化实现，完整功能需集成 node-cron 或 agenda
 
 
 
