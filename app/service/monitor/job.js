@@ -23,17 +23,18 @@ class JobService extends Service {
     
     let jobId = 1;
     for (const [scheduleName, schedule] of Object.entries(schedules)) {
+      const scheduleConfig = schedule.schedule || {};
       const jobInfo = {
         jobId: jobId++,
         jobName: scheduleName,
         jobGroup: 'DEFAULT',
         invokeTarget: scheduleName,
-        cronExpression: schedule.schedule?.cron || '0 0 0 * * ?',
+        cronExpression: scheduleConfig.cron || '0 0 0 * * ?',
         misfirePolicy: '1',
         concurrent: '1',
-        status: schedule.schedule?.disable ? '1' : '0',
+        status: scheduleConfig.disable ? '1' : '0',
         createTime: new Date(),
-        remark: schedule.schedule?.type || 'worker'
+        remark: scheduleConfig.type || 'worker'
       };
       
       // 过滤条件
