@@ -123,7 +123,7 @@
 
 📖 详细 API 文档: [参数配置管理 API 文档](docs/CONFIG_MANAGEMENT_API.md)
 
-#### 通知公告管理模块 ✨ NEW
+#### 通知公告管理模块
 + `/api/system/notice/list` - 通知公告列表（分页）
 + `/api/system/notice/:noticeId` - 通知公告详情
 + `/api/system/notice` (POST) - 新增通知公告
@@ -131,6 +131,16 @@
 + `/api/system/notice/:noticeIds` (DELETE) - 删除通知公告
 
 📖 详细 API 文档: [通知公告管理 API 文档](docs/NOTICE_MANAGEMENT_API.md)
+
+---
+
+### 系统监控模块
+
+#### 在线用户监控 ✨ NEW
++ `/api/monitor/online/list` - 在线用户列表
++ `/api/monitor/online/:tokenId` (DELETE) - 强退用户
+
+📖 详细 API 文档: [在线用户监控 API 文档](docs/ONLINE_USER_MONITORING_API.md)
 
 
 
