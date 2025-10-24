@@ -223,6 +223,17 @@
 
 📖 详细 API 文档: [个人中心 API 文档](docs/PROFILE_API.md)
 
+---
+
+### 公共接口模块
+
+#### 公共接口 ✨ NEW
++ `/api/common/upload` - 文件上传
++ `/api/common/download` - 文件下载
++ `/api/common/download/resource` - 本地资源下载
+
+📖 详细 API 文档: [公共接口 API 文档](docs/COMMON_API.md)
+
 
 
 ---
