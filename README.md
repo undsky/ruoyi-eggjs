@@ -151,13 +151,18 @@
 
 📖 详细 API 文档: [登录日志监控 API 文档](docs/LOGININFOR_MONITORING_API.md)
 
-#### 操作日志监控 ✨ NEW
+#### 操作日志监控
 + `/api/monitor/operlog/list` - 操作日志列表（分页）
 + `/api/monitor/operlog/:operIds` (DELETE) - 删除操作日志
 + `/api/monitor/operlog/clean` (DELETE) - 清空操作日志
 + `/api/monitor/operlog/export` - 导出操作日志
 
 📖 详细 API 文档: [操作日志监控 API 文档](docs/OPERLOG_MONITORING_API.md)
+
+#### 服务监控 ✨ NEW
++ `/api/monitor/server` - 获取服务器信息
+
+📖 详细 API 文档: [服务监控 API 文档](docs/SERVER_MONITORING_API.md)
 
 
 
