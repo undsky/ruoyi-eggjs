@@ -100,7 +100,7 @@
 
 📖 详细 API 文档: [字典类型管理 API 文档](docs/DICT_TYPE_MANAGEMENT_API.md)
 
-#### 字典数据管理模块 ✨ NEW
+#### 字典数据管理模块
 + `/api/system/dict/data/list` - 字典数据列表（分页）
 + `/api/system/dict/data/:dictCode` - 字典数据详情
 + `/api/system/dict/data/type/:dictType` - 根据类型查询
@@ -110,6 +110,18 @@
 + `/api/system/dict/data/export` - 导出字典数据
 
 📖 详细 API 文档: [字典数据管理 API 文档](docs/DICT_DATA_MANAGEMENT_API.md)
+
+#### 参数配置管理模块 ✨ NEW
++ `/api/system/config/list` - 参数配置列表（分页）
++ `/api/system/config/:configId` - 参数配置详情
++ `/api/system/config/configKey/:configKey` - 根据键名查询
++ `/api/system/config` (POST) - 新增参数配置
++ `/api/system/config` (PUT) - 修改参数配置
++ `/api/system/config/:configIds` (DELETE) - 删除参数配置
++ `/api/system/config/refreshCache` (DELETE) - 刷新参数缓存
++ `/api/system/config/export` - 导出参数配置
+
+📖 详细 API 文档: [参数配置管理 API 文档](docs/CONFIG_MANAGEMENT_API.md)
 
 
 
