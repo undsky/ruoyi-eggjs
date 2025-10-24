@@ -211,6 +211,18 @@
 
 **注意**: 代码生成为简化实现，建议使用 **ruoyi-eggjs-cli** 命令行工具
 
+---
+
+### 个人中心模块
+
+#### 用户个人信息 ✨ NEW
++ `/api/system/user/profile` (GET) - 个人信息
++ `/api/system/user/profile` (PUT) - 修改个人信息
++ `/api/system/user/profile/updatePwd` - 修改密码
++ `/api/system/user/profile/avatar` - 上传头像
+
+📖 详细 API 文档: [个人中心 API 文档](docs/PROFILE_API.md)
+
 
 
 ---

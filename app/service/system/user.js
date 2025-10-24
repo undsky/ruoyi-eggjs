@@ -361,6 +361,103 @@ class UserService extends Service {
     
     return `导入成功 ${successNum} 条`;
   }
+
+  /**
+   * 修改用户个人信息
+   * @param {object} user - 用户对象
+   * @return {number} 影响行数
+   */
+  async updateUserProfile(user) {
+    const { ctx } = this;
+    
+    // 设置更新信息
+    user.updateBy = ctx.state.user.userName;
+    
+    // 更新用户
+    const result = await ctx.service.db.mysql.ruoyi.sysUserMapper.updateUser([user]);
+    
+    return result && result.length > 0 ? 1 : 0;
+  }
+
+  /**
+   * 修改用户密码
+   * @param {number} userId - 用户ID
+   * @param {string} password - 新密码（已加密）
+   * @return {number} 影响行数
+   */
+  async resetUserPwd(userId, password) {
+    const { ctx } = this;
+    
+    const user = {
+      userId,
+      password
+    };
+    
+    const result = await ctx.service.db.mysql.ruoyi.sysUserMapper.resetUserPwd([user]);
+    
+    return result && result.length > 0 ? 1 : 0;
+  }
+
+  /**
+   * 修改用户头像
+   * @param {number} userId - 用户ID
+   * @param {string} avatar - 头像地址
+   * @return {boolean} 是否成功
+   */
+  async updateUserAvatar(userId, avatar) {
+    const { ctx } = this;
+    
+    const user = {
+      userId,
+      avatar
+    };
+    
+    const result = await ctx.service.db.mysql.ruoyi.sysUserMapper.updateUserAvatar([user]);
+    
+    return result && result.length > 0;
+  }
+
+  /**
+   * 查询用户角色组
+   * @param {string} userName - 用户名
+   * @return {string} 角色组
+   */
+  async selectUserRoleGroup(userName) {
+    const { ctx } = this;
+    
+    const sql = `
+      SELECT r.role_name
+      FROM sys_role r
+      LEFT JOIN sys_user_role ur ON ur.role_id = r.role_id
+      LEFT JOIN sys_user u ON u.user_id = ur.user_id
+      WHERE u.user_name = ? AND r.del_flag = '0'
+    `;
+    
+    const roles = await ctx.app.mysql.get('ruoyi').query(sql, [userName]);
+    
+    return roles.map(r => r.role_name).join(',');
+  }
+
+  /**
+   * 查询用户岗位组
+   * @param {string} userName - 用户名
+   * @return {string} 岗位组
+   */
+  async selectUserPostGroup(userName) {
+    const { ctx } = this;
+    
+    const sql = `
+      SELECT p.post_name
+      FROM sys_post p
+      LEFT JOIN sys_user_post up ON up.post_id = p.post_id
+      LEFT JOIN sys_user u ON u.user_id = up.user_id
+      WHERE u.user_name = ? AND p.del_flag = '0'
+    `;
+    
+    const posts = await ctx.app.mysql.get('ruoyi').query(sql, [userName]);
+    
+    return posts.map(p => p.post_name).join(',');
+  }
 }
 
 module.exports = UserService;
