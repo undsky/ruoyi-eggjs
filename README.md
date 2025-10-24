@@ -66,7 +66,7 @@
 
 📖 详细 API 文档: [菜单管理 API 文档](docs/MENU_MANAGEMENT_API.md)
 
-#### 部门管理模块 ✨ NEW
+#### 部门管理模块
 + `/api/system/dept/list` - 部门列表（树形）
 + `/api/system/dept/:deptId` - 部门详情
 + `/api/system/dept` (POST) - 新增部门
@@ -77,6 +77,16 @@
 + `/api/system/dept/roleDeptTreeselect/:roleId` - 角色部门树
 
 📖 详细 API 文档: [部门管理 API 文档](docs/DEPT_MANAGEMENT_API.md)
+
+#### 岗位管理模块 ✨ NEW
++ `/api/system/post/list` - 岗位列表（分页）
++ `/api/system/post/:postId` - 岗位详情
++ `/api/system/post` (POST) - 新增岗位
++ `/api/system/post` (PUT) - 修改岗位
++ `/api/system/post/:postIds` (DELETE) - 删除岗位
++ `/api/system/post/export` - 导出岗位
+
+📖 详细 API 文档: [岗位管理 API 文档](docs/POST_MANAGEMENT_API.md)
 
 
 

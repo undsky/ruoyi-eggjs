@@ -15,15 +15,9 @@ class PostService extends Service {
   async selectPostAll() {
     const { ctx } = this;
     
-    const sql = `
-      SELECT post_id, post_code, post_name, post_sort, status, 
-             create_time, remark
-      FROM sys_post
-      WHERE del_flag = '0'
-      ORDER BY post_sort
-    `;
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostAll([]);
     
-    return await ctx.app.mysql.get('ruoyi').query(sql);
+    return posts || [];
   }
 
   /**
@@ -34,14 +28,7 @@ class PostService extends Service {
   async selectPostListByUserId(userId) {
     const { ctx } = this;
     
-    const sql = `
-      SELECT p.post_id
-      FROM sys_post p
-      LEFT JOIN sys_user_post up ON up.post_id = p.post_id
-      WHERE up.user_id = ? AND p.del_flag = '0'
-    `;
-    
-    const posts = await ctx.app.mysql.get('ruoyi').query(sql, [userId]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostListByUserId([userId]);
     
     return posts.map(p => p.post_id);
   }
@@ -54,23 +41,114 @@ class PostService extends Service {
   async selectPostList(post = {}) {
     const { ctx } = this;
     
-    const sql = `
-      SELECT post_id, post_code, post_name, post_sort, status, 
-             create_time, remark
-      FROM sys_post
-      WHERE del_flag = '0'
-      ${post.postCode ? "AND post_code LIKE CONCAT('%', ?, '%')" : ''}
-      ${post.postName ? "AND post_name LIKE CONCAT('%', ?, '%')" : ''}
-      ${post.status ? 'AND status = ?' : ''}
-      ORDER BY post_sort
-    `;
+    // 查询条件
+    const conditions = {
+      postCode: post.postCode,
+      postName: post.postName,
+      status: post.status
+    };
+
+    // 查询列表
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostList([conditions]);
     
-    const params = [];
-    if (post.postCode) params.push(post.postCode);
-    if (post.postName) params.push(post.postName);
-    if (post.status) params.push(post.status);
+    return posts || [];
+  }
+
+  /**
+   * 根据岗位ID查询岗位
+   * @param {number} postId - 岗位ID
+   * @return {object} 岗位信息
+   */
+  async selectPostById(postId) {
+    const { ctx } = this;
     
-    return await ctx.app.mysql.get('ruoyi').query(sql, params);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostById([postId]);
+    
+    return posts && posts.length > 0 ? posts[0] : null;
+  }
+
+  /**
+   * 校验岗位名称是否唯一
+   * @param {object} post - 岗位对象
+   * @return {boolean} true-唯一 false-不唯一
+   */
+  async checkPostNameUnique(post) {
+    const { ctx } = this;
+    
+    const postId = post.postId || -1;
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostNameUnique([post.postName]);
+    
+    if (posts && posts.length > 0 && posts[0].post_id !== postId) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * 校验岗位编码是否唯一
+   * @param {object} post - 岗位对象
+   * @return {boolean} true-唯一 false-不唯一
+   */
+  async checkPostCodeUnique(post) {
+    const { ctx } = this;
+    
+    const postId = post.postId || -1;
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostCodeUnique([post.postCode]);
+    
+    if (posts && posts.length > 0 && posts[0].post_id !== postId) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * 新增岗位
+   * @param {object} post - 岗位对象
+   * @return {number} 影响行数
+   */
+  async insertPost(post) {
+    const { ctx } = this;
+    
+    // 设置创建信息
+    post.createBy = ctx.state.user.userName;
+    
+    // 插入岗位
+    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.insertPost([post]);
+    
+    return result && result.length > 0 ? 1 : 0;
+  }
+
+  /**
+   * 修改岗位
+   * @param {object} post - 岗位对象
+   * @return {number} 影响行数
+   */
+  async updatePost(post) {
+    const { ctx } = this;
+    
+    // 设置更新信息
+    post.updateBy = ctx.state.user.userName;
+    
+    // 更新岗位
+    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.updatePost([post]);
+    
+    return result && result.length > 0 ? 1 : 0;
+  }
+
+  /**
+   * 删除岗位
+   * @param {array} postIds - 岗位ID数组
+   * @return {number} 影响行数
+   */
+  async deletePostByIds(postIds) {
+    const { ctx } = this;
+    
+    // 删除岗位
+    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.deletePostByIds([postIds]);
+    
+    return result && result.length > 0 ? postIds.length : 0;
   }
 }
 
