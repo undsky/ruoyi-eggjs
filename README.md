@@ -159,10 +159,21 @@
 
 📖 详细 API 文档: [操作日志监控 API 文档](docs/OPERLOG_MONITORING_API.md)
 
-#### 服务监控 ✨ NEW
+#### 服务监控
 + `/api/monitor/server` - 获取服务器信息
 
 📖 详细 API 文档: [服务监控 API 文档](docs/SERVER_MONITORING_API.md)
+
+#### 缓存监控 ✨ NEW
++ `/api/monitor/cache` - 缓存信息
++ `/api/monitor/cache/getNames` - 缓存名称列表
++ `/api/monitor/cache/getKeys/:cacheName` - 缓存键名列表
++ `/api/monitor/cache/getValue/:cacheName/:cacheKey` - 缓存内容
++ `/api/monitor/cache/clearCacheName/:cacheName` (DELETE) - 清空缓存名称
++ `/api/monitor/cache/clearCacheKey/:cacheKey` (DELETE) - 清空缓存键值
++ `/api/monitor/cache/clearCacheAll` (DELETE) - 清空全部缓存
+
+📖 详细 API 文档: [缓存监控 API 文档](docs/CACHE_MONITORING_API.md)
 
 
 
