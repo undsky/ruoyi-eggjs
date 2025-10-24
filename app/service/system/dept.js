@@ -89,6 +89,25 @@ class DeptService extends Service {
     
     // TODO: 实现数据权限校验逻辑
   }
+
+  /**
+   * 根据角色ID查询部门ID列表
+   * @param {number} roleId - 角色ID
+   * @return {array} 部门ID列表
+   */
+  async selectDeptListByRoleId(roleId) {
+    const { ctx } = this;
+    
+    const sql = `
+      SELECT dept_id
+      FROM sys_role_dept
+      WHERE role_id = ?
+    `;
+    
+    const depts = await ctx.app.mysql.get('ruoyi').query(sql, [roleId]);
+    
+    return depts.map(d => d.dept_id);
+  }
 }
 
 module.exports = DeptService;
