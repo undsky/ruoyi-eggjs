@@ -9,6 +9,67 @@ const Service = require('egg').Service;
 class LogininforService extends Service {
 
   /**
+   * 查询登录日志列表
+   * @param {object} logininfor - 查询参数
+   * @return {array} 登录日志列表
+   */
+  async selectLogininforList(logininfor = {}) {
+    const { ctx } = this;
+    
+    // 查询条件
+    const conditions = {
+      ipaddr: logininfor.ipaddr,
+      status: logininfor.status,
+      userName: logininfor.userName,
+      params: {
+        beginTime: logininfor.beginTime,
+        endTime: logininfor.endTime
+      }
+    };
+
+    // 查询列表
+    const logininforList = await ctx.service.db.mysql.ruoyi.sysLogininforMapper.selectLogininforList([conditions]);
+    
+    return logininforList || [];
+  }
+
+  /**
+   * 删除登录日志
+   * @param {array} infoIds - 日志ID数组
+   * @return {number} 影响行数
+   */
+  async deleteLogininforByIds(infoIds) {
+    const { ctx } = this;
+    
+    // 删除登录日志
+    const result = await ctx.service.db.mysql.ruoyi.sysLogininforMapper.deleteLogininforByIds([infoIds]);
+    
+    return result && result.length > 0 ? infoIds.length : 0;
+  }
+
+  /**
+   * 清空登录日志
+   */
+  async cleanLogininfor() {
+    const { ctx } = this;
+    
+    // 清空登录日志
+    await ctx.service.db.mysql.ruoyi.sysLogininforMapper.cleanLogininfor([]);
+  }
+
+  /**
+   * 解锁用户（清除登录失败记录缓存）
+   * @param {string} userName - 用户名
+   */
+  async unlockUser(userName) {
+    const { app } = this;
+    
+    // 清除登录失败记录缓存
+    const cacheKey = `login_fail:${userName}`;
+    await app.cache.default.del(cacheKey);
+  }
+
+  /**
    * 记录登录信息
    * @param {string} userName - 用户名
    * @param {string} status - 登录状态（0成功 1失败）

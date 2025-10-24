@@ -136,11 +136,20 @@
 
 ### 系统监控模块
 
-#### 在线用户监控 ✨ NEW
+#### 在线用户监控
 + `/api/monitor/online/list` - 在线用户列表
 + `/api/monitor/online/:tokenId` (DELETE) - 强退用户
 
 📖 详细 API 文档: [在线用户监控 API 文档](docs/ONLINE_USER_MONITORING_API.md)
+
+#### 登录日志监控 ✨ NEW
++ `/api/monitor/logininfor/list` - 登录日志列表（分页）
++ `/api/monitor/logininfor/:infoIds` (DELETE) - 删除登录日志
++ `/api/monitor/logininfor/clean` (DELETE) - 清空登录日志
++ `/api/monitor/logininfor/unlock/:userName` - 解锁用户
++ `/api/monitor/logininfor/export` - 导出登录日志
+
+📖 详细 API 文档: [登录日志监控 API 文档](docs/LOGININFOR_MONITORING_API.md)
 
 
 
