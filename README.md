@@ -189,6 +189,28 @@
 
 **注意**: 定时任务为简化实现，完整功能需集成 node-cron 或 agenda
 
+---
+
+### 系统工具模块
+
+#### 代码生成工具 ✨ NEW
++ `/api/tool/gen/list` - 代码生成表列表
++ `/api/tool/gen/db/list` - 数据库表列表
++ `/api/tool/gen/:tableId` - 表详情
++ `/api/tool/gen/column/:tableId` - 表字段列表
++ `/api/tool/gen/importTable` - 导入表
++ `/api/tool/gen` (PUT) - 修改生成配置
++ `/api/tool/gen/:tableIds` (DELETE) - 删除表配置
++ `/api/tool/gen/preview/:tableId` - 预览代码
++ `/api/tool/gen/download/:tableName` - 下载代码
++ `/api/tool/gen/genCode/:tableName` - 生成代码（自定义路径）
++ `/api/tool/gen/synchDb/:tableName` - 同步数据库
++ `/api/tool/gen/batchGenCode` - 批量生成代码
+
+📖 详细 API 文档: [代码生成工具 API 文档](docs/GEN_TOOL_API.md)
+
+**注意**: 代码生成为简化实现，建议使用 **ruoyi-eggjs-cli** 命令行工具
+
 
 
 ---
