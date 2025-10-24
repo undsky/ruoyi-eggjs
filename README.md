@@ -12,8 +12,6 @@
 
 ## 🎯 接口代码 AI 生成，欢迎 PR 修复 BUG
 
-### 已完成接口
-
 #### 认证授权模块
 + `/captchaImage` - 获取验证码
 + `/login` - 用户登录
@@ -39,7 +37,7 @@
 
 📖 详细 API 文档: [用户管理 API 文档](docs/USER_MANAGEMENT_API.md)
 
-#### 角色管理模块 ✨ NEW
+#### 角色管理模块
 + `/api/system/role/list` - 角色列表（分页）
 + `/api/system/role/:roleId` - 角色详情
 + `/api/system/role` (POST) - 新增角色
@@ -56,6 +54,29 @@
 + `/api/system/role/export` - 导出角色
 
 📖 详细 API 文档: [角色管理 API 文档](docs/ROLE_MANAGEMENT_API.md)
+
+#### 菜单管理模块
++ `/api/system/menu/list` - 菜单列表（树形）
++ `/api/system/menu/:menuId` - 菜单详情
++ `/api/system/menu` (POST) - 新增菜单
++ `/api/system/menu` (PUT) - 修改菜单
++ `/api/system/menu/:menuId` (DELETE) - 删除菜单
++ `/api/system/menu/treeselect` - 菜单树选择
++ `/api/system/menu/roleMenuTreeselect/:roleId` - 角色菜单树
+
+📖 详细 API 文档: [菜单管理 API 文档](docs/MENU_MANAGEMENT_API.md)
+
+#### 部门管理模块 ✨ NEW
++ `/api/system/dept/list` - 部门列表（树形）
++ `/api/system/dept/:deptId` - 部门详情
++ `/api/system/dept` (POST) - 新增部门
++ `/api/system/dept` (PUT) - 修改部门
++ `/api/system/dept/:deptId` (DELETE) - 删除部门
++ `/api/system/dept/list/exclude/:deptId` - 排除节点查询
++ `/api/system/dept/treeselect` - 部门树选择
++ `/api/system/dept/roleDeptTreeselect/:roleId` - 角色部门树
+
+📖 详细 API 文档: [部门管理 API 文档](docs/DEPT_MANAGEMENT_API.md)
 
 
 
