@@ -111,7 +111,7 @@
 
 📖 详细 API 文档: [字典数据管理 API 文档](docs/DICT_DATA_MANAGEMENT_API.md)
 
-#### 参数配置管理模块 ✨ NEW
+#### 参数配置管理模块
 + `/api/system/config/list` - 参数配置列表（分页）
 + `/api/system/config/:configId` - 参数配置详情
 + `/api/system/config/configKey/:configKey` - 根据键名查询
@@ -122,6 +122,15 @@
 + `/api/system/config/export` - 导出参数配置
 
 📖 详细 API 文档: [参数配置管理 API 文档](docs/CONFIG_MANAGEMENT_API.md)
+
+#### 通知公告管理模块 ✨ NEW
++ `/api/system/notice/list` - 通知公告列表（分页）
++ `/api/system/notice/:noticeId` - 通知公告详情
++ `/api/system/notice` (POST) - 新增通知公告
++ `/api/system/notice` (PUT) - 修改通知公告
++ `/api/system/notice/:noticeIds` (DELETE) - 删除通知公告
+
+📖 详细 API 文档: [通知公告管理 API 文档](docs/NOTICE_MANAGEMENT_API.md)
 
 
 
