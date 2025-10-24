@@ -78,7 +78,7 @@
 
 📖 详细 API 文档: [部门管理 API 文档](docs/DEPT_MANAGEMENT_API.md)
 
-#### 岗位管理模块 ✨ NEW
+#### 岗位管理模块
 + `/api/system/post/list` - 岗位列表（分页）
 + `/api/system/post/:postId` - 岗位详情
 + `/api/system/post` (POST) - 新增岗位
@@ -87,6 +87,18 @@
 + `/api/system/post/export` - 导出岗位
 
 📖 详细 API 文档: [岗位管理 API 文档](docs/POST_MANAGEMENT_API.md)
+
+#### 字典类型管理模块 ✨ NEW
++ `/api/system/dict/type/list` - 字典类型列表（分页）
++ `/api/system/dict/type/:dictId` - 字典类型详情
++ `/api/system/dict/type` (POST) - 新增字典类型
++ `/api/system/dict/type` (PUT) - 修改字典类型
++ `/api/system/dict/type/:dictIds` (DELETE) - 删除字典类型
++ `/api/system/dict/type/refreshCache` (DELETE) - 刷新字典缓存
++ `/api/system/dict/type/optionselect` - 字典选择框列表
++ `/api/system/dict/type/export` - 导出字典类型
+
+📖 详细 API 文档: [字典类型管理 API 文档](docs/DICT_TYPE_MANAGEMENT_API.md)
 
 
 
