@@ -10,50 +10,13 @@
 
 ---
 
-## 🎯 Spring Boot 重构分析
+## 🎯 接口代码 AI 生成，欢迎 PR 修复 BUG
 
-本项目提供了完整的 **Spring Boot 到 Egg.js 重构方案**，包含详细的架构对比、实施计划和技术文档。
+### 已完成接口
 
-### 📚 重构文档
++ `/captchaImage` 获取验证码
 
-| 文档 | 说明 | 页数 |
-|------|------|------|
-| **[📋 项目分析总结](PROJECT_ANALYSIS_SUMMARY.md)** | 快速了解重构可行性、工作量评估 | 核心文档 |
-| [📖 详细重构计划](REFACTORING_PLAN.md) | 完整的重构实施方案（8 个阶段） | 70+ 页 |
-| [🔄 API 接口映射表](docs/API_MAPPING.md) | Spring Boot ↔ Egg.js 接口对照（122 个接口） | 参考文档 |
-| [🗄️ 数据库设计文档](docs/DATABASE_DESIGN.md) | 15 张表完整设计、索引优化 | 技术文档 |
-| [⚖️ 架构对比分析](docs/ARCHITECTURE_COMPARISON.md) | 技术栈、性能、代码风格全面对比 | 深度分析 |
 
-### ⚡ 核心优势
-
-将 Spring Boot 项目重构为 Egg.js 可获得：
-
-- 🚀 **启动速度提升 10 倍**（1-3秒 vs 10-30秒）
-- ⚡ **并发性能提升 50%+**（8000-15000 QPS vs 5000-8000 QPS）
-- 💾 **内存占用降低 70%**（50-100MB vs 300-500MB）
-- 🔧 **开发效率提升 30%**（热更新、代码量少）
-- 💰 **服务器成本降低 50%**
-
-### ✅ 兼容性保证
-
-- ✅ **数据库表结构** - 100% 兼容，无需修改
-- ✅ **MyBatis XML** - 100% 兼容，SQL 语句完全复用
-- ✅ **API 接口** - RESTful 风格一致，前端无缝切换
-- ✅ **业务逻辑** - 权限体系、数据权限机制完全复用
-
-### 📊 工作量评估
-
-- **总接口数**：122 个
-- **总模块数**：20 个
-- **预计工期**：35 个工作日（7 周）
-- **当前进度**：基础设施已完成（15%）
-
-### 🚀 快速开始重构
-
-1. 📖 **阅读**：[项目分析总结](PROJECT_ANALYSIS_SUMMARY.md) - 了解可行性和收益
-2. 📋 **规划**：[详细重构计划](REFACTORING_PLAN.md) - 制定实施路线
-3. 🔧 **实施**：按阶段逐步迁移业务模块
-4. ✅ **验证**：接口测试、性能测试、上线部署
 
 ---
 
@@ -255,6 +218,17 @@ npm stop
 
 测试接口：
 - 版本信息：`GET http://localhost:7001/api/version`
+
+### 前端项目
+
+下载 [https://github.com/yangzongzhuan/RuoYi-Vue3](https://github.com/yangzongzhuan/RuoYi-Vue3)
+
+#### 修改接口地址
+
+``` javascript
+// vite.config.js
+const baseUrl = 'http://localhost:7001/api' // 后端接口
+```
 
 ## ⚙️ 配置说明
 
