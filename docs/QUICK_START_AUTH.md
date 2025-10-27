@@ -448,9 +448,9 @@ SELECT COUNT(*) FROM sys_user_role WHERE user_id = 1;
 恭喜！认证授权模块已完成测试。
 
 **下一步**：
-- 📖 阅读 [认证模块实现文档](AUTH_MODULE_README.md)
+- 📖 阅读 [认证模块实现文档](./AUTH_MODULE_README.md)
 - 🔧 开始实现用户管理模块
-- 📋 查看 [详细重构计划](../REFACTORING_PLAN.md)
+- 📋 查看 [详细重构计划](./REFACTORING_PLAN.md)
 
 ---
 
@@ -458,7 +458,7 @@ SELECT COUNT(*) FROM sys_user_role WHERE user_id = 1;
 
 遇到问题？
 
-1. 📄 查看 [认证模块文档](AUTH_MODULE_README.md)
+1. 📄 查看 [认证模块文档](./AUTH_MODULE_README.md)
 2. 🔍 查看日志文件：`logs/ruoyi-eggjs/`
 3. 💬 提交 Issue
 

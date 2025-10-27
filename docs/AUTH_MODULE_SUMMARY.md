@@ -225,7 +225,7 @@ config.security = {
 
 ### 方法 1：快速测试脚本
 
-参考 [快速开始指南](docs/QUICK_START_AUTH.md) 中的测试脚本。
+参考 [快速开始指南](./QUICK_START_AUTH.md) 中的测试脚本。
 
 ### 方法 2：Postman 测试
 
@@ -367,11 +367,11 @@ npm test
 
 | 文档 | 说明 | 链接 |
 |------|------|------|
-| 认证模块实现文档 | 详细的技术实现说明 | [AUTH_MODULE_README.md](docs/AUTH_MODULE_README.md) |
-| 快速开始指南 | 测试步骤和常见问题 | [QUICK_START_AUTH.md](docs/QUICK_START_AUTH.md) |
-| API 接口映射表 | Spring Boot ↔ Egg.js | [API_MAPPING.md](docs/API_MAPPING.md) |
-| 数据库设计文档 | 数据库表结构说明 | [DATABASE_DESIGN.md](docs/DATABASE_DESIGN.md) |
-| 详细重构计划 | 完整的重构方案 | [REFACTORING_PLAN.md](REFACTORING_PLAN.md) |
+| 认证模块实现文档 | 详细的技术实现说明 | [AUTH_MODULE_README.md](./AUTH_MODULE_README.md) |
+| 快速开始指南 | 测试步骤和常见问题 | [QUICK_START_AUTH.md](./QUICK_START_AUTH.md) |
+| API 接口映射表 | Spring Boot ↔ Egg.js | [API_MAPPING.md](./API_MAPPING.md) |
+| 数据库设计文档 | 数据库表结构说明 | [DATABASE_DESIGN.md](./DATABASE_DESIGN.md) |
+| 详细重构计划 | 完整的重构方案 | [REFACTORING_PLAN.md](./REFACTORING_PLAN.md) |
 
 ---
 

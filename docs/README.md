@@ -10,7 +10,7 @@
 
 ### 1️⃣ 第一步：了解可行性
 
-**推荐阅读**：[项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md)
+**推荐阅读**：[项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md)
 
 - ⏱️ 阅读时长：15 分钟
 - 📋 内容概要：
@@ -23,7 +23,7 @@
 
 ### 2️⃣ 第二步：制定实施计划
 
-**推荐阅读**：[详细重构计划](../REFACTORING_PLAN.md)
+**推荐阅读**：[详细重构计划](./REFACTORING_PLAN.md)
 
 - ⏱️ 阅读时长：1 小时
 - 📋 内容概要：
@@ -48,16 +48,16 @@
 
 | 文档 | 说明 | 适用场景 |
 |------|------|---------|
-| **[📋 项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md)** | 重构可行性、收益和风险分析 | 项目启动前 |
-| **[📖 详细重构计划](../REFACTORING_PLAN.md)** | 完整的重构实施方案 | 项目规划和执行 |
+| **[📋 项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md)** | 重构可行性、收益和风险分析 | 项目启动前 |
+| **[📖 详细重构计划](./REFACTORING_PLAN.md)** | 完整的重构实施方案 | 项目规划和执行 |
 
 ### 参考文档
 
 | 文档 | 说明 | 适用场景 |
 |------|------|---------|
-| **[🔄 API 接口映射表](API_MAPPING.md)** | 122 个接口完整映射 | 实现 Controller 层 |
-| **[🗄️ 数据库设计文档](DATABASE_DESIGN.md)** | 15 张表设计、索引优化 | 数据库操作和优化 |
-| **[⚖️ 架构对比分析](ARCHITECTURE_COMPARISON.md)** | 技术栈、代码风格全面对比 | 技术选型和架构设计 |
+| **[🔄 API 接口映射表](./API_MAPPING.md)** | 122 个接口完整映射 | 实现 Controller 层 |
+| **[🗄️ 数据库设计文档](./DATABASE_DESIGN.md)** | 15 张表设计、索引优化 | 数据库操作和优化 |
+| **[⚖️ 架构对比分析](./ARCHITECTURE_COMPARISON.md)** | 技术栈、代码风格全面对比 | 技术选型和架构设计 |
 
 ---
 
@@ -331,53 +331,53 @@
 ## 🎯 按角色推荐阅读
 
 ### 项目经理 / 技术负责人
-1. ⭐ [项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md) - 必读
-2. 📖 [详细重构计划](../REFACTORING_PLAN.md) - 第一、二、四章
-3. ⚖️ [架构对比分析](ARCHITECTURE_COMPARISON.md) - 第五、六、七章
+1. ⭐ [项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md) - 必读
+2. 📖 [详细重构计划](./REFACTORING_PLAN.md) - 第一、二、四章
+3. ⚖️ [架构对比分析](./ARCHITECTURE_COMPARISON.md) - 第五、六、七章
 
 **关注点**：可行性、工期、成本、风险
 
 ---
 
 ### 架构师 / 技术专家
-1. ⭐ [项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md) - 必读
-2. 📖 [详细重构计划](../REFACTORING_PLAN.md) - 全文
-3. ⚖️ [架构对比分析](ARCHITECTURE_COMPARISON.md) - 全文
-4. 🗄️ [数据库设计文档](DATABASE_DESIGN.md) - 第五、七、八章
+1. ⭐ [项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md) - 必读
+2. 📖 [详细重构计划](./REFACTORING_PLAN.md) - 全文
+3. ⚖️ [架构对比分析](./ARCHITECTURE_COMPARISON.md) - 全文
+4. 🗄️ [数据库设计文档](./DATABASE_DESIGN.md) - 第五、七、八章
 
 **关注点**：技术方案、性能优化、架构设计
 
 ---
 
 ### 后端开发工程师
-1. ⭐ [项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md) - 快速浏览
-2. 📖 [详细重构计划](../REFACTORING_PLAN.md) - 第四、五章
-3. 🔄 [API 接口映射表](API_MAPPING.md) - 工作中查阅
-4. 🗄️ [数据库设计文档](DATABASE_DESIGN.md) - 第二、五章
+1. ⭐ [项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md) - 快速浏览
+2. 📖 [详细重构计划](./REFACTORING_PLAN.md) - 第四、五章
+3. 🔄 [API 接口映射表](./API_MAPPING.md) - 工作中查阅
+4. 🗄️ [数据库设计文档](./DATABASE_DESIGN.md) - 第二、五章
 
 **关注点**：接口实现、业务逻辑、数据操作
 
 ---
 
 ### 前端开发工程师
-1. 🔄 [API 接口映射表](API_MAPPING.md) - 必读
-2. ⭐ [项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md) - 第三节（关键技术点）
+1. 🔄 [API 接口映射表](./API_MAPPING.md) - 必读
+2. ⭐ [项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md) - 第三节（关键技术点）
 
 **关注点**：接口路径、请求格式、响应格式
 
 ---
 
 ### 测试工程师
-1. 🔄 [API 接口映射表](API_MAPPING.md) - 必读
-2. 📖 [详细重构计划](../REFACTORING_PLAN.md) - 第七章（测试计划）
+1. 🔄 [API 接口映射表](./API_MAPPING.md) - 必读
+2. 📖 [详细重构计划](./REFACTORING_PLAN.md) - 第七章（测试计划）
 
 **关注点**：接口测试、性能测试、安全测试
 
 ---
 
 ### DBA / 运维工程师
-1. 🗄️ [数据库设计文档](DATABASE_DESIGN.md) - 必读
-2. 📖 [详细重构计划](../REFACTORING_PLAN.md) - 第八章（部署方案）
+1. 🗄️ [数据库设计文档](./DATABASE_DESIGN.md) - 必读
+2. 📖 [详细重构计划](./REFACTORING_PLAN.md) - 第八章（部署方案）
 
 **关注点**：数据库优化、备份恢复、部署配置
 
@@ -386,18 +386,18 @@
 ## 📝 阅读建议
 
 ### 第一次阅读
-1. 先阅读 [项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md)（15 分钟）
-2. 浏览 [详细重构计划](../REFACTORING_PLAN.md) 目录（5 分钟）
+1. 先阅读 [项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md)（15 分钟）
+2. 浏览 [详细重构计划](./REFACTORING_PLAN.md) 目录（5 分钟）
 3. 根据角色选择相关章节精读
 
 ### 工作中查阅
-- 实现接口时查阅：[API 接口映射表](API_MAPPING.md)
-- 数据库操作时查阅：[数据库设计文档](DATABASE_DESIGN.md)
-- 遇到技术问题时查阅：[架构对比分析](ARCHITECTURE_COMPARISON.md)
+- 实现接口时查阅：[API 接口映射表](./API_MAPPING.md)
+- 数据库操作时查阅：[数据库设计文档](./DATABASE_DESIGN.md)
+- 遇到技术问题时查阅：[架构对比分析](./ARCHITECTURE_COMPARISON.md)
 
 ### 定期回顾
-- 每周回顾：[详细重构计划](../REFACTORING_PLAN.md) 对应阶段内容
-- 每月回顾：[项目分析总结](../PROJECT_ANALYSIS_SUMMARY.md) 检查进度
+- 每周回顾：[详细重构计划](./REFACTORING_PLAN.md) 对应阶段内容
+- 每月回顾：[项目分析总结](./PROJECT_ANALYSIS_SUMMARY.md) 检查进度
 
 ---
 

@@ -479,9 +479,9 @@ WHERE user_id = 1;
 
 ## 📚 相关文档
 
-- [API 接口映射表](API_MAPPING.md)
-- [数据库设计文档](DATABASE_DESIGN.md)
-- [详细重构计划](../REFACTORING_PLAN.md)
+- [API 接口映射表](./API_MAPPING.md)
+- [数据库设计文档](./DATABASE_DESIGN.md)
+- [详细重构计划](./REFACTORING_PLAN.md)
 
 ---
 

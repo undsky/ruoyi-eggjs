@@ -259,33 +259,33 @@ app/service/
 ## 📖 完整文档导航
 
 ### 系统管理模块 API 文档
-1. [用户管理 API](docs/USER_MANAGEMENT_API.md)
-2. [角色管理 API](docs/ROLE_MANAGEMENT_API.md)
-3. [菜单管理 API](docs/MENU_MANAGEMENT_API.md)
-4. [部门管理 API](docs/DEPT_MANAGEMENT_API.md)
-5. [岗位管理 API](docs/POST_MANAGEMENT_API.md)
-6. [字典类型管理 API](docs/DICT_TYPE_MANAGEMENT_API.md)
-7. [字典数据管理 API](docs/DICT_DATA_MANAGEMENT_API.md)
-8. [参数配置管理 API](docs/CONFIG_MANAGEMENT_API.md)
-9. [通知公告管理 API](docs/NOTICE_MANAGEMENT_API.md)
+1. [用户管理 API](./USER_MANAGEMENT_API.md)
+2. [角色管理 API](./ROLE_MANAGEMENT_API.md)
+3. [菜单管理 API](./MENU_MANAGEMENT_API.md)
+4. [部门管理 API](./DEPT_MANAGEMENT_API.md)
+5. [岗位管理 API](./POST_MANAGEMENT_API.md)
+6. [字典类型管理 API](./DICT_TYPE_MANAGEMENT_API.md)
+7. [字典数据管理 API](./DICT_DATA_MANAGEMENT_API.md)
+8. [参数配置管理 API](./CONFIG_MANAGEMENT_API.md)
+9. [通知公告管理 API](./NOTICE_MANAGEMENT_API.md)
 
 ### 系统监控模块 API 文档
-1. [在线用户监控 API](docs/ONLINE_USER_MONITORING_API.md)
-2. [登录日志监控 API](docs/LOGININFOR_MONITORING_API.md)
-3. [操作日志监控 API](docs/OPERLOG_MONITORING_API.md)
-4. [服务监控 API](docs/SERVER_MONITORING_API.md)
-5. [缓存监控 API](docs/CACHE_MONITORING_API.md)
-6. [定时任务监控 API](docs/JOB_MONITORING_API.md)
+1. [在线用户监控 API](./ONLINE_USER_MONITORING_API.md)
+2. [登录日志监控 API](./LOGININFOR_MONITORING_API.md)
+3. [操作日志监控 API](./OPERLOG_MONITORING_API.md)
+4. [服务监控 API](./SERVER_MONITORING_API.md)
+5. [缓存监控 API](./CACHE_MONITORING_API.md)
+6. [定时任务监控 API](./JOB_MONITORING_API.md)
 
 ### 其他模块 API 文档
-1. [代码生成工具 API](docs/GEN_TOOL_API.md)
-2. [个人中心 API](docs/PROFILE_API.md)
-3. [公共接口 API](docs/COMMON_API.md)
+1. [代码生成工具 API](./GEN_TOOL_API.md)
+2. [个人中心 API](./PROFILE_API.md)
+3. [公共接口 API](./COMMON_API.md)
 
 ### 总结文档
-- [系统管理模块全部完成](SYSTEM_MODULE_ALL_COMPLETED.md)
-- [系统监控模块全部完成](MONITOR_MODULE_ALL_COMPLETED.md)
-- [全部模块完成总结](ALL_MODULES_COMPLETED.md) ← 本文档
+- [系统管理模块全部完成](./SYSTEM_MODULE_ALL_COMPLETED.md)
+- [系统监控模块全部完成](./MONITOR_MODULE_ALL_COMPLETED.md)
+- [全部模块完成总结](./ALL_MODULES_COMPLETED.md) ← 本文档
 
 ---
 

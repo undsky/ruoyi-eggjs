@@ -189,27 +189,27 @@ docs/
 ## 📖 文档导航
 
 ### API 接口文档
-1. [用户管理 API](docs/USER_MANAGEMENT_API.md)
-2. [角色管理 API](docs/ROLE_MANAGEMENT_API.md)
-3. [菜单管理 API](docs/MENU_MANAGEMENT_API.md)
-4. [部门管理 API](docs/DEPT_MANAGEMENT_API.md)
-5. [岗位管理 API](docs/POST_MANAGEMENT_API.md)
-6. [字典类型管理 API](docs/DICT_TYPE_MANAGEMENT_API.md)
-7. [字典数据管理 API](docs/DICT_DATA_MANAGEMENT_API.md)
-8. [参数配置管理 API](docs/CONFIG_MANAGEMENT_API.md)
-9. [通知公告管理 API](docs/NOTICE_MANAGEMENT_API.md)
+1. [用户管理 API](./USER_MANAGEMENT_API.md)
+2. [角色管理 API](./ROLE_MANAGEMENT_API.md)
+3. [菜单管理 API](./MENU_MANAGEMENT_API.md)
+4. [部门管理 API](./DEPT_MANAGEMENT_API.md)
+5. [岗位管理 API](./POST_MANAGEMENT_API.md)
+6. [字典类型管理 API](./DICT_TYPE_MANAGEMENT_API.md)
+7. [字典数据管理 API](./DICT_DATA_MANAGEMENT_API.md)
+8. [参数配置管理 API](./CONFIG_MANAGEMENT_API.md)
+9. [通知公告管理 API](./NOTICE_MANAGEMENT_API.md)
 
 ### 完成总结文档
-1. [用户管理完成](USER_MODULE_COMPLETED.md)
-2. [角色管理完成](ROLE_MODULE_COMPLETED.md)
-3. [菜单管理完成](MENU_MODULE_COMPLETED.md)
-4. [部门管理完成](DEPT_MODULE_COMPLETED.md)
-5. [岗位管理完成](POST_MODULE_COMPLETED.md)
-6. [字典类型完成](DICT_TYPE_MODULE_COMPLETED.md)
-7. [字典数据完成](DICT_DATA_MODULE_COMPLETED.md)
-8. [参数配置完成](CONFIG_MODULE_COMPLETED.md)
-9. [通知公告完成](NOTICE_MODULE_COMPLETED.md)
-10. [系统管理模块全部完成](SYSTEM_MODULE_ALL_COMPLETED.md) ← 本文档
+1. [用户管理完成](./USER_MODULE_COMPLETED.md)
+2. [角色管理完成](./ROLE_MODULE_COMPLETED.md)
+3. [菜单管理完成](./MENU_MODULE_COMPLETED.md)
+4. [部门管理完成](./DEPT_MODULE_COMPLETED.md)
+5. [岗位管理完成](./POST_MODULE_COMPLETED.md)
+6. [字典类型完成](./DICT_TYPE_MODULE_COMPLETED.md)
+7. [字典数据完成](./DICT_DATA_MODULE_COMPLETED.md)
+8. [参数配置完成](./CONFIG_MODULE_COMPLETED.md)
+9. [通知公告完成](./NOTICE_MODULE_COMPLETED.md)
+10. [系统管理模块全部完成](./SYSTEM_MODULE_ALL_COMPLETED.md) ← 本文档
 
 ---
 
