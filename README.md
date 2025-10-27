@@ -10,7 +10,7 @@
 
 ---
 
-## 🎯 接口代码 AI 生成，欢迎 PR 修复 BUG
+## 🎯 接口代码 AI 辅助生成，欢迎 PR 修复 BUG
 
 #### 认证授权模块
 + `/captchaImage` - 获取验证码
@@ -248,6 +248,7 @@
 - 📝 **文件模版** - 使用 VSCode 插件快速生成代码模板（[文档](https://marketplace.visualstudio.com/items?itemName=qiu8310.dot-template-vscode)）
 - 🎯 **路由注解** - 使用装饰器定义路由，简洁优雅（[文档](https://github.com/fyl080801/egg-decorator-router)）
 - 🔐 **JWT 认证** - 基于 JWT 的用户认证和权限控制
+- 🔒 **权限控制** ✨ NEW - 类似 Spring Boot `@PreAuthorize` 的权限装饰器，支持通配符、AND/OR 逻辑（[文档](./docs/PERMISSION_QUICK_START.md)）
 - 🚀 **缓存支持** - 多层级缓存策略（内存、文件、Redis）
 - 🛡️ **限流保护** - API 请求频率限制，防止恶意攻击
 - 📦 **文件上传** - 支持多种文件类型上传
@@ -284,8 +285,11 @@ ruoyi-eggjs/
 │   ├── controller/          # 控制器
 │   │   └── api/            # API 控制器
 │   │       └── index.js    # 示例控制器
+│   ├── decorator/          # 装饰器
+│   │   └── permission.js   # 权限控制装饰器
 │   ├── middleware/          # 中间件
 │   │   ├── accessControl.js # 访问控制（JWT 验证）
+│   │   ├── permission.js   # 权限验证中间件
 │   │   └── formatBody.js   # 响应格式化
 │   ├── service/            # 服务层
 │   │   ├── db/            # 数据库服务（自动生成）
@@ -767,6 +771,21 @@ server {
 - [x] **验证码**：SVG 验证码生成和校验
 
 **快速开始**：[认证模块快速测试指南](docs/QUICK_START_AUTH.md)
+
+#### 权限控制模块 (NEW! 🎉 2025-10-27)
+- [x] **@RequiresPermissions**：权限验证装饰器，类似 Spring Boot `@PreAuthorize`
+- [x] **@RequiresRoles**：角色验证装饰器
+- [x] **@RequiresAuth**：组合验证装饰器（角色+权限）
+- [x] **权限缓存**：Redis 缓存用户权限和角色（10分钟）
+- [x] **通配符支持**：支持 `*:*:*`、`system:*:*` 等通配符权限
+- [x] **AND/OR 逻辑**：支持多权限逻辑组合
+- [x] **完整文档**：2400+ 行详细文档和示例
+
+**快速开始**：[权限控制快速上手（5分钟）](docs/PERMISSION_QUICK_START.md)  
+**详细文档**：
+- [权限控制完整指南](docs/PERMISSION_GUIDE.md) - 700+ 行详细说明
+- [权限控制实现总结](docs/PERMISSION_IMPLEMENTATION.md) - 技术实现细节
+- [示例代码](app/controller/system/config_with_permission.example.js) - 完整使用示例
 
 ### ⏳ 待实现（TODO）
 
