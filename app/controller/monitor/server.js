@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取服务器信息
      * GET /api/monitor/server
+     * 权限：monitor:server:list
      */
+    @RequiresPermissions('monitor:server:list')
     @HttpGet('/')
     async getInfo() {
       const { ctx, service } = this;

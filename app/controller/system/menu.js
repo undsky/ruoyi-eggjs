@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取菜单列表（树形）
      * GET /api/system/menu/list
+     * 权限：system:menu:list
      */
+    @RequiresPermissions('system:menu:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -44,7 +47,9 @@ module.exports = app => {
     /**
      * 获取菜单详情
      * GET /api/system/menu/:menuId
+     * 权限：system:menu:query
      */
+    @RequiresPermissions('system:menu:query')
     @HttpGet('/:menuId')
     async getInfo() {
       const { ctx, service } = this;
@@ -80,7 +85,9 @@ module.exports = app => {
     /**
      * 新增菜单
      * POST /api/system/menu
+     * 权限：system:menu:add
      */
+    @RequiresPermissions('system:menu:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -126,7 +133,9 @@ module.exports = app => {
     /**
      * 修改菜单
      * PUT /api/system/menu
+     * 权限：system:menu:edit
      */
+    @RequiresPermissions('system:menu:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -181,7 +190,9 @@ module.exports = app => {
     /**
      * 删除菜单
      * DELETE /api/system/menu/:menuId
+     * 权限：system:menu:remove
      */
+    @RequiresPermissions('system:menu:remove')
     @HttpDelete('/:menuId')
     async remove() {
       const { ctx, service } = this;
@@ -228,7 +239,9 @@ module.exports = app => {
     /**
      * 获取菜单下拉树列表
      * GET /api/system/menu/treeselect
+     * 权限：system:menu:query
      */
+    @RequiresPermissions('system:menu:query')
     @HttpGet('/treeselect')
     async treeselect() {
       const { ctx, service } = this;
@@ -260,7 +273,9 @@ module.exports = app => {
     /**
      * 加载对应角色菜单列表树
      * GET /api/system/menu/roleMenuTreeselect/:roleId
+     * 权限：system:menu:query
      */
+    @RequiresPermissions('system:menu:query')
     @HttpGet('/roleMenuTreeselect/:roleId')
     async roleMenuTreeselect() {
       const { ctx, service } = this;

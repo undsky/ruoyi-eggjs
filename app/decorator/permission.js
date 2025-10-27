@@ -173,7 +173,8 @@ function RequiresAuth(options = {}) {
 async function getUserPermissions(ctx) {
   try {
     // 从 token 中获取用户ID
-    const userId = ctx.state.user?.userId;
+    const user = ctx.state.user || {};
+    const userId = user.userId;
     
     if (!userId) {
       return [];
@@ -206,7 +207,8 @@ async function getUserPermissions(ctx) {
 async function getUserRoles(ctx) {
   try {
     // 从 token 中获取用户ID
-    const userId = ctx.state.user?.userId;
+    const user = ctx.state.user || {};
+    const userId = user.userId;
     
     if (!userId) {
       return [];

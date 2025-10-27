@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取操作日志列表（分页）
      * GET /api/monitor/operlog/list
+     * 权限：monitor:operlog:list
      */
+    @RequiresPermissions('monitor:operlog:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 删除操作日志
      * DELETE /api/monitor/operlog/:operIds
+     * 权限：monitor:operlog:remove
      */
+    @RequiresPermissions('monitor:operlog:remove')
     @HttpDelete('/:operIds')
     async remove() {
       const { ctx, service } = this;
@@ -83,7 +88,9 @@ module.exports = app => {
     /**
      * 清空操作日志
      * DELETE /api/monitor/operlog/clean
+     * 权限：monitor:operlog:remove
      */
+    @RequiresPermissions('monitor:operlog:remove')
     @HttpDelete('/clean')
     async clean() {
       const { ctx, service } = this;
@@ -108,7 +115,9 @@ module.exports = app => {
     /**
      * 导出操作日志
      * POST /api/monitor/operlog/export
+     * 权限：monitor:operlog:export
      */
+    @RequiresPermissions('monitor:operlog:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

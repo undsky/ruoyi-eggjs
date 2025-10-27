@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取用户列表（分页）
      * GET /api/system/user/list
+     * 权限：system:user:list
      */
+    @RequiresPermissions('system:user:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取用户详情
      * GET /api/system/user/:userId
+     * 权限：system:user:query
      */
+    @RequiresPermissions('system:user:query')
     @HttpGet('/:userId')
     async getInfo() {
       const { ctx, service } = this;
@@ -126,7 +131,9 @@ module.exports = app => {
     /**
      * 新增用户
      * POST /api/system/user
+     * 权限：system:user:add
      */
+    @RequiresPermissions('system:user:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -193,7 +200,9 @@ module.exports = app => {
     /**
      * 修改用户
      * PUT /api/system/user
+     * 权限：system:user:edit
      */
+    @RequiresPermissions('system:user:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -263,7 +272,9 @@ module.exports = app => {
     /**
      * 删除用户
      * DELETE /api/system/user/:userIds
+     * 权限：system:user:remove
      */
+    @RequiresPermissions('system:user:remove')
     @HttpDelete('/:userIds')
     async remove() {
       const { ctx, service } = this;
@@ -302,7 +313,9 @@ module.exports = app => {
     /**
      * 重置密码
      * PUT /api/system/user/resetPwd
+     * 权限：system:user:resetPwd
      */
+    @RequiresPermissions('system:user:resetPwd')
     @HttpPut('/resetPwd')
     async resetPwd() {
       const { ctx, service } = this;
@@ -478,7 +491,9 @@ module.exports = app => {
     /**
      * 导出用户
      * POST /api/system/user/export
+     * 权限：system:user:export
      */
+    @RequiresPermissions('system:user:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;
@@ -508,7 +523,9 @@ module.exports = app => {
     /**
      * 导入用户
      * POST /api/system/user/import
+     * 权限：system:user:import
      */
+    @RequiresPermissions('system:user:import')
     @HttpPost('/import')
     async importData() {
       const { ctx, service } = this;

@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取字典数据列表（分页）
      * GET /api/system/dict/data/list
+     * 权限：system:dict:list
      */
+    @RequiresPermissions('system:dict:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取字典数据详情
      * GET /api/system/dict/data/:dictCode
+     * 权限：system:dict:query
      */
+    @RequiresPermissions('system:dict:query')
     @HttpGet('/:dictCode')
     async getInfo() {
       const { ctx, service } = this;
@@ -89,7 +94,9 @@ module.exports = app => {
     /**
      * 根据字典类型查询字典数据
      * GET /api/system/dict/data/type/:dictType
+     * 权限：system:dict:query
      */
+    @RequiresPermissions('system:dict:query')
     @HttpGet('/type/:dictType')
     async dictType() {
       const { ctx, service } = this;
@@ -117,7 +124,9 @@ module.exports = app => {
     /**
      * 新增字典数据
      * POST /api/system/dict/data
+     * 权限：system:dict:add
      */
+    @RequiresPermissions('system:dict:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -144,7 +153,9 @@ module.exports = app => {
     /**
      * 修改字典数据
      * PUT /api/system/dict/data
+     * 权限：system:dict:edit
      */
+    @RequiresPermissions('system:dict:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -171,7 +182,9 @@ module.exports = app => {
     /**
      * 删除字典数据
      * DELETE /api/system/dict/data/:dictCodes
+     * 权限：system:dict:remove
      */
+    @RequiresPermissions('system:dict:remove')
     @HttpDelete('/:dictCodes')
     async remove() {
       const { ctx, service } = this;
@@ -201,7 +214,9 @@ module.exports = app => {
     /**
      * 导出字典数据
      * POST /api/system/dict/data/export
+     * 权限：system:dict:export
      */
+    @RequiresPermissions('system:dict:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

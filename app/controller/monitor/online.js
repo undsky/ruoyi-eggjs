@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取在线用户列表
      * GET /api/monitor/online/list
+     * 权限：monitor:online:list
      */
+    @RequiresPermissions('monitor:online:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 强退用户
      * DELETE /api/monitor/online/:tokenId
+     * 权限：monitor:online:forceLogout
      */
+    @RequiresPermissions('monitor:online:forceLogout')
     @HttpDelete('/:tokenId')
     async forceLogout() {
       const { ctx, service } = this;

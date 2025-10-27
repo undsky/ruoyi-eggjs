@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取缓存信息
      * GET /api/monitor/cache
+     * 权限：monitor:cache:list
      */
+    @RequiresPermissions('monitor:cache:list')
     @HttpGet('/')
     async getInfo() {
       const { ctx, service } = this;
@@ -41,7 +44,9 @@ module.exports = app => {
     /**
      * 获取缓存名称列表
      * GET /api/monitor/cache/getNames
+     * 权限：monitor:cache:list
      */
+    @RequiresPermissions('monitor:cache:list')
     @HttpGet('/getNames')
     async getNames() {
       const { ctx, service } = this;
@@ -67,7 +72,9 @@ module.exports = app => {
     /**
      * 获取缓存键名列表
      * GET /api/monitor/cache/getKeys/:cacheName
+     * 权限：monitor:cache:list
      */
+    @RequiresPermissions('monitor:cache:list')
     @HttpGet('/getKeys/:cacheName')
     async getCacheKeys() {
       const { ctx, service } = this;
@@ -95,7 +102,9 @@ module.exports = app => {
     /**
      * 获取缓存内容
      * GET /api/monitor/cache/getValue/:cacheName/:cacheKey
+     * 权限：monitor:cache:list
      */
+    @RequiresPermissions('monitor:cache:list')
     @HttpGet('/getValue/:cacheName/:cacheKey')
     async getCacheValue() {
       const { ctx, service } = this;
@@ -123,7 +132,9 @@ module.exports = app => {
     /**
      * 清空缓存名称
      * DELETE /api/monitor/cache/clearCacheName/:cacheName
+     * 权限：monitor:cache:remove
      */
+    @RequiresPermissions('monitor:cache:remove')
     @HttpDelete('/clearCacheName/:cacheName')
     async clearCacheName() {
       const { ctx, service } = this;
@@ -150,7 +161,9 @@ module.exports = app => {
     /**
      * 清空缓存键值
      * DELETE /api/monitor/cache/clearCacheKey/:cacheKey
+     * 权限：monitor:cache:remove
      */
+    @RequiresPermissions('monitor:cache:remove')
     @HttpDelete('/clearCacheKey/:cacheKey')
     async clearCacheKey() {
       const { ctx, service } = this;
@@ -177,7 +190,9 @@ module.exports = app => {
     /**
      * 清空全部缓存
      * DELETE /api/monitor/cache/clearCacheAll
+     * 权限：monitor:cache:remove
      */
+    @RequiresPermissions('monitor:cache:remove')
     @HttpDelete('/clearCacheAll')
     async clearCacheAll() {
       const { ctx, service } = this;

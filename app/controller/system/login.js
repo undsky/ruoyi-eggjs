@@ -16,6 +16,7 @@ module.exports = app => {
     /**
      * 用户登录
      * POST /api/login
+     * 说明：公开接口，无需权限验证
      */
     @HttpPost('/login')
     async login() {
@@ -78,6 +79,7 @@ module.exports = app => {
     /**
      * 用户登出
      * POST /api/logout
+     * 说明：需要登录，无需特殊权限
      */
     @HttpPost('/logout')
     async logout() {
@@ -112,6 +114,7 @@ module.exports = app => {
     /**
      * 获取用户信息
      * GET /api/getInfo
+     * 说明：需要登录，无需特殊权限
      */
     @HttpGet('/getInfo')
     async getInfo() {
@@ -167,6 +170,7 @@ module.exports = app => {
     /**
      * 获取路由菜单
      * GET /api/getRouters
+     * 说明：需要登录，无需特殊权限
      */
     @HttpGet('/getRouters')
     async getRouters() {
@@ -195,6 +199,7 @@ module.exports = app => {
     /**
      * 用户注册
      * POST /api/register
+     * 说明：公开接口，无需权限验证
      */
     @HttpPost('/register')
     async register() {
@@ -245,7 +250,8 @@ module.exports = app => {
 
     /**
      * 获取验证码
-     * GET /api/captcha
+     * GET /api/captchaImage
+     * 说明：公开接口，无需权限验证
      */
     @HttpGet('/captchaImage')
     async captchaImage() {

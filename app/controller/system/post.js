@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取岗位列表（分页）
      * GET /api/system/post/list
+     * 权限：system:post:list
      */
+    @RequiresPermissions('system:post:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取岗位详情
      * GET /api/system/post/:postId
+     * 权限：system:post:query
      */
+    @RequiresPermissions('system:post:query')
     @HttpGet('/:postId')
     async getInfo() {
       const { ctx, service } = this;
@@ -89,7 +94,9 @@ module.exports = app => {
     /**
      * 新增岗位
      * POST /api/system/post
+     * 权限：system:post:add
      */
+    @RequiresPermissions('system:post:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -136,7 +143,9 @@ module.exports = app => {
     /**
      * 修改岗位
      * PUT /api/system/post
+     * 权限：system:post:edit
      */
+    @RequiresPermissions('system:post:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -183,7 +192,9 @@ module.exports = app => {
     /**
      * 删除岗位
      * DELETE /api/system/post/:postIds
+     * 权限：system:post:remove
      */
+    @RequiresPermissions('system:post:remove')
     @HttpDelete('/:postIds')
     async remove() {
       const { ctx, service } = this;
@@ -213,7 +224,9 @@ module.exports = app => {
     /**
      * 导出岗位
      * POST /api/system/post/export
+     * 权限：system:post:export
      */
+    @RequiresPermissions('system:post:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

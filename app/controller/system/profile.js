@@ -17,6 +17,7 @@ module.exports = app => {
     /**
      * 获取个人信息
      * GET /api/system/user/profile
+     * 说明：个人中心接口，无需特殊权限，仅需登录
      */
     @HttpGet('/')
     async profile() {
@@ -62,6 +63,7 @@ module.exports = app => {
     /**
      * 修改个人信息
      * PUT /api/system/user/profile
+     * 说明：个人中心接口，无需特殊权限，仅需登录
      */
     @HttpPut('/')
     async updateProfile() {
@@ -117,6 +119,7 @@ module.exports = app => {
     /**
      * 修改密码
      * PUT /api/system/user/profile/updatePwd
+     * 说明：个人中心接口，无需特殊权限，仅需登录
      */
     @HttpPut('/updatePwd')
     async updatePwd() {
@@ -179,6 +182,7 @@ module.exports = app => {
     /**
      * 上传头像
      * POST /api/system/user/profile/avatar
+     * 说明：个人中心接口，无需特殊权限，仅需登录
      */
     @HttpPost('/avatar')
     async avatar() {

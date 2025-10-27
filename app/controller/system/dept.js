@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取部门列表（树形）
      * GET /api/system/dept/list
+     * 权限：system:dept:list
      */
+    @RequiresPermissions('system:dept:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -43,7 +46,9 @@ module.exports = app => {
     /**
      * 查询部门列表（排除节点）
      * GET /api/system/dept/list/exclude/:deptId
+     * 权限：system:dept:list
      */
+    @RequiresPermissions('system:dept:list')
     @HttpGet('/list/exclude/:deptId')
     async excludeChild() {
       const { ctx, service } = this;
@@ -90,7 +95,9 @@ module.exports = app => {
     /**
      * 获取部门详情
      * GET /api/system/dept/:deptId
+     * 权限：system:dept:query
      */
+    @RequiresPermissions('system:dept:query')
     @HttpGet('/:deptId')
     async getInfo() {
       const { ctx, service } = this;
@@ -129,7 +136,9 @@ module.exports = app => {
     /**
      * 新增部门
      * POST /api/system/dept
+     * 权限：system:dept:add
      */
+    @RequiresPermissions('system:dept:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -166,7 +175,9 @@ module.exports = app => {
     /**
      * 修改部门
      * PUT /api/system/dept
+     * 权限：system:dept:edit
      */
+    @RequiresPermissions('system:dept:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -227,7 +238,9 @@ module.exports = app => {
     /**
      * 删除部门
      * DELETE /api/system/dept/:deptId
+     * 权限：system:dept:remove
      */
+    @RequiresPermissions('system:dept:remove')
     @HttpDelete('/:deptId')
     async remove() {
       const { ctx, service } = this;
@@ -278,7 +291,9 @@ module.exports = app => {
     /**
      * 获取部门树选择
      * GET /api/system/dept/treeselect
+     * 权限：system:dept:query
      */
+    @RequiresPermissions('system:dept:query')
     @HttpGet('/treeselect')
     async treeselect() {
       const { ctx, service } = this;
@@ -309,7 +324,9 @@ module.exports = app => {
     /**
      * 获取对应角色部门树列表
      * GET /api/system/dept/roleDeptTreeselect/:roleId
+     * 权限：system:dept:query
      */
+    @RequiresPermissions('system:dept:query')
     @HttpGet('/roleDeptTreeselect/:roleId')
     async roleDeptTreeselect() {
       const { ctx, service } = this;

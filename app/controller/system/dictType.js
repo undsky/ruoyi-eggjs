@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取字典类型列表（分页）
      * GET /api/system/dict/type/list
+     * 权限：system:dict:list
      */
+    @RequiresPermissions('system:dict:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取字典类型详情
      * GET /api/system/dict/type/:dictId
+     * 权限：system:dict:query
      */
+    @RequiresPermissions('system:dict:query')
     @HttpGet('/:dictId')
     async getInfo() {
       const { ctx, service } = this;
@@ -89,7 +94,9 @@ module.exports = app => {
     /**
      * 新增字典类型
      * POST /api/system/dict/type
+     * 权限：system:dict:add
      */
+    @RequiresPermissions('system:dict:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -126,7 +133,9 @@ module.exports = app => {
     /**
      * 修改字典类型
      * PUT /api/system/dict/type
+     * 权限：system:dict:edit
      */
+    @RequiresPermissions('system:dict:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -163,7 +172,9 @@ module.exports = app => {
     /**
      * 删除字典类型
      * DELETE /api/system/dict/type/:dictIds
+     * 权限：system:dict:remove
      */
+    @RequiresPermissions('system:dict:remove')
     @HttpDelete('/:dictIds')
     async remove() {
       const { ctx, service } = this;
@@ -193,7 +204,9 @@ module.exports = app => {
     /**
      * 刷新字典缓存
      * DELETE /api/system/dict/type/refreshCache
+     * 权限：system:dict:remove
      */
+    @RequiresPermissions('system:dict:remove')
     @HttpDelete('/refreshCache')
     async refreshCache() {
       const { ctx, service } = this;
@@ -218,7 +231,9 @@ module.exports = app => {
     /**
      * 获取字典选择框列表
      * GET /api/system/dict/type/optionselect
+     * 权限：system:dict:query
      */
+    @RequiresPermissions('system:dict:query')
     @HttpGet('/optionselect')
     async optionselect() {
       const { ctx, service } = this;
@@ -244,7 +259,9 @@ module.exports = app => {
     /**
      * 导出字典类型
      * POST /api/system/dict/type/export
+     * 权限：system:dict:export
      */
+    @RequiresPermissions('system:dict:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

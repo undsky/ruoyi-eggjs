@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取代码生成表列表（分页）
      * GET /api/tool/gen/list
+     * 权限：tool:gen:list
      */
+    @RequiresPermissions('tool:gen:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 查询数据库表列表（分页）
      * GET /api/tool/gen/db/list
+     * 权限：tool:gen:list
      */
+    @RequiresPermissions('tool:gen:list')
     @HttpGet('/db/list')
     async dbList() {
       const { ctx, service } = this;
@@ -91,7 +96,9 @@ module.exports = app => {
     /**
      * 获取代码生成表详情
      * GET /api/tool/gen/:tableId
+     * 权限：tool:gen:query
      */
+    @RequiresPermissions('tool:gen:query')
     @HttpGet('/:tableId')
     async getInfo() {
       const { ctx, service } = this;
@@ -126,7 +133,9 @@ module.exports = app => {
     /**
      * 查询表字段列表
      * GET /api/tool/gen/column/:tableId
+     * 权限：tool:gen:query
      */
+    @RequiresPermissions('tool:gen:query')
     @HttpGet('/column/:tableId')
     async columnList() {
       const { ctx, service } = this;
@@ -155,7 +164,9 @@ module.exports = app => {
     /**
      * 导入表结构
      * POST /api/tool/gen/importTable
+     * 权限：tool:gen:import
      */
+    @RequiresPermissions('tool:gen:import')
     @HttpPost('/importTable')
     async importTable() {
       const { ctx, service } = this;
@@ -188,7 +199,9 @@ module.exports = app => {
     /**
      * 修改代码生成配置
      * PUT /api/tool/gen
+     * 权限：tool:gen:edit
      */
+    @RequiresPermissions('tool:gen:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -215,7 +228,9 @@ module.exports = app => {
     /**
      * 删除代码生成表配置
      * DELETE /api/tool/gen/:tableIds
+     * 权限：tool:gen:remove
      */
+    @RequiresPermissions('tool:gen:remove')
     @HttpDelete('/:tableIds')
     async remove() {
       const { ctx, service } = this;
@@ -245,7 +260,9 @@ module.exports = app => {
     /**
      * 预览代码
      * GET /api/tool/gen/preview/:tableId
+     * 权限：tool:gen:preview
      */
+    @RequiresPermissions('tool:gen:preview')
     @HttpGet('/preview/:tableId')
     async preview() {
       const { ctx, service } = this;
@@ -273,7 +290,9 @@ module.exports = app => {
     /**
      * 下载代码
      * GET /api/tool/gen/download/:tableName
+     * 权限：tool:gen:code
      */
+    @RequiresPermissions('tool:gen:code')
     @HttpGet('/download/:tableName')
     async download() {
       const { ctx, service } = this;
@@ -301,7 +320,9 @@ module.exports = app => {
     /**
      * 生成代码（自定义路径）
      * GET /api/tool/gen/genCode/:tableName
+     * 权限：tool:gen:code
      */
+    @RequiresPermissions('tool:gen:code')
     @HttpGet('/genCode/:tableName')
     async genCode() {
       const { ctx, service } = this;
@@ -328,7 +349,9 @@ module.exports = app => {
     /**
      * 同步数据库
      * GET /api/tool/gen/synchDb/:tableName
+     * 权限：tool:gen:edit
      */
+    @RequiresPermissions('tool:gen:edit')
     @HttpGet('/synchDb/:tableName')
     async synchDb() {
       const { ctx, service } = this;
@@ -355,7 +378,9 @@ module.exports = app => {
     /**
      * 批量生成代码
      * GET /api/tool/gen/batchGenCode
+     * 权限：tool:gen:code
      */
+    @RequiresPermissions('tool:gen:code')
     @HttpGet('/batchGenCode')
     async batchGenCode() {
       const { ctx, service } = this;

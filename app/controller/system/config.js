@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取参数配置列表（分页）
      * GET /api/system/config/list
+     * 权限：system:config:list
      */
+    @RequiresPermissions('system:config:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取参数配置详情
      * GET /api/system/config/:configId
+     * 权限：system:config:query
      */
+    @RequiresPermissions('system:config:query')
     @HttpGet('/:configId')
     async getInfo() {
       const { ctx, service } = this;
@@ -117,7 +122,9 @@ module.exports = app => {
     /**
      * 新增参数配置
      * POST /api/system/config
+     * 权限：system:config:add
      */
+    @RequiresPermissions('system:config:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -154,7 +161,9 @@ module.exports = app => {
     /**
      * 修改参数配置
      * PUT /api/system/config
+     * 权限：system:config:edit
      */
+    @RequiresPermissions('system:config:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -191,7 +200,9 @@ module.exports = app => {
     /**
      * 删除参数配置
      * DELETE /api/system/config/:configIds
+     * 权限：system:config:remove
      */
+    @RequiresPermissions('system:config:remove')
     @HttpDelete('/:configIds')
     async remove() {
       const { ctx, service } = this;
@@ -221,7 +232,9 @@ module.exports = app => {
     /**
      * 刷新参数缓存
      * DELETE /api/system/config/refreshCache
+     * 权限：system:config:remove
      */
+    @RequiresPermissions('system:config:remove')
     @HttpDelete('/refreshCache')
     async refreshCache() {
       const { ctx, service } = this;
@@ -246,7 +259,9 @@ module.exports = app => {
     /**
      * 导出参数配置
      * POST /api/system/config/export
+     * 权限：system:config:export
      */
+    @RequiresPermissions('system:config:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

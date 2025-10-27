@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取登录日志列表（分页）
      * GET /api/monitor/logininfor/list
+     * 权限：monitor:logininfor:list
      */
+    @RequiresPermissions('monitor:logininfor:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 删除登录日志
      * DELETE /api/monitor/logininfor/:infoIds
+     * 权限：monitor:logininfor:remove
      */
+    @RequiresPermissions('monitor:logininfor:remove')
     @HttpDelete('/:infoIds')
     async remove() {
       const { ctx, service } = this;
@@ -83,7 +88,9 @@ module.exports = app => {
     /**
      * 清空登录日志
      * DELETE /api/monitor/logininfor/clean
+     * 权限：monitor:logininfor:remove
      */
+    @RequiresPermissions('monitor:logininfor:remove')
     @HttpDelete('/clean')
     async clean() {
       const { ctx, service } = this;
@@ -108,7 +115,9 @@ module.exports = app => {
     /**
      * 解锁用户
      * GET /api/monitor/logininfor/unlock/:userName
+     * 权限：monitor:logininfor:unlock
      */
+    @RequiresPermissions('monitor:logininfor:unlock')
     @HttpGet('/unlock/:userName')
     async unlock() {
       const { ctx, service } = this;
@@ -135,7 +144,9 @@ module.exports = app => {
     /**
      * 导出登录日志
      * POST /api/monitor/logininfor/export
+     * 权限：monitor:logininfor:export
      */
+    @RequiresPermissions('monitor:logininfor:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

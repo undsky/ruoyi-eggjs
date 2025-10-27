@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取角色列表（分页）
      * GET /api/system/role/list
+     * 权限：system:role:list
      */
+    @RequiresPermissions('system:role:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取角色详情
      * GET /api/system/role/:roleId
+     * 权限：system:role:query
      */
+    @RequiresPermissions('system:role:query')
     @HttpGet('/:roleId')
     async getInfo() {
       const { ctx, service } = this;
@@ -92,7 +97,9 @@ module.exports = app => {
     /**
      * 新增角色
      * POST /api/system/role
+     * 权限：system:role:add
      */
+    @RequiresPermissions('system:role:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -139,7 +146,9 @@ module.exports = app => {
     /**
      * 修改角色
      * PUT /api/system/role
+     * 权限：system:role:edit
      */
+    @RequiresPermissions('system:role:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -192,7 +201,9 @@ module.exports = app => {
     /**
      * 删除角色
      * DELETE /api/system/role/:roleIds
+     * 权限：system:role:remove
      */
+    @RequiresPermissions('system:role:remove')
     @HttpDelete('/:roleIds')
     async remove() {
       const { ctx, service } = this;
@@ -293,7 +304,9 @@ module.exports = app => {
     /**
      * 查询已分配用户角色列表
      * GET /api/system/role/allocatedList
+     * 权限：system:role:list
      */
+    @RequiresPermissions('system:role:list')
     @HttpGet('/allocatedList')
     async allocatedList() {
       const { ctx, service } = this;
@@ -348,7 +361,9 @@ module.exports = app => {
     /**
      * 查询未分配用户角色列表
      * GET /api/system/role/unallocatedList
+     * 权限：system:role:list
      */
+    @RequiresPermissions('system:role:list')
     @HttpGet('/unallocatedList')
     async unallocatedList() {
       const { ctx, service } = this;
@@ -402,7 +417,9 @@ module.exports = app => {
     /**
      * 取消授权用户
      * PUT /api/system/role/authUser/cancel
+     * 权限：system:role:edit
      */
+    @RequiresPermissions('system:role:edit')
     @HttpPut('/authUser/cancel')
     async cancelAuthUser() {
       const { ctx, service } = this;
@@ -429,7 +446,9 @@ module.exports = app => {
     /**
      * 批量取消授权用户
      * PUT /api/system/role/authUser/cancelAll
+     * 权限：system:role:edit
      */
+    @RequiresPermissions('system:role:edit')
     @HttpPut('/authUser/cancelAll')
     async cancelAuthUserAll() {
       const { ctx, service } = this;
@@ -461,7 +480,9 @@ module.exports = app => {
     /**
      * 批量选择用户授权
      * PUT /api/system/role/authUser/selectAll
+     * 权限：system:role:edit
      */
+    @RequiresPermissions('system:role:edit')
     @HttpPut('/authUser/selectAll')
     async selectAuthUserAll() {
       const { ctx, service } = this;
@@ -528,7 +549,9 @@ module.exports = app => {
     /**
      * 导出角色
      * POST /api/system/role/export
+     * 权限：system:role:export
      */
+    @RequiresPermissions('system:role:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;

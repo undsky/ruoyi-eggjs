@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取通知公告列表（分页）
      * GET /api/system/notice/list
+     * 权限：system:notice:list
      */
+    @RequiresPermissions('system:notice:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取通知公告详情
      * GET /api/system/notice/:noticeId
+     * 权限：system:notice:query
      */
+    @RequiresPermissions('system:notice:query')
     @HttpGet('/:noticeId')
     async getInfo() {
       const { ctx, service } = this;
@@ -89,7 +94,9 @@ module.exports = app => {
     /**
      * 新增通知公告
      * POST /api/system/notice
+     * 权限：system:notice:add
      */
+    @RequiresPermissions('system:notice:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -116,7 +123,9 @@ module.exports = app => {
     /**
      * 修改通知公告
      * PUT /api/system/notice
+     * 权限：system:notice:edit
      */
+    @RequiresPermissions('system:notice:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -143,7 +152,9 @@ module.exports = app => {
     /**
      * 删除通知公告
      * DELETE /api/system/notice/:noticeIds
+     * 权限：system:notice:remove
      */
+    @RequiresPermissions('system:notice:remove')
     @HttpDelete('/:noticeIds')
     async remove() {
       const { ctx, service } = this;

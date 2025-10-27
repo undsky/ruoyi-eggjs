@@ -6,6 +6,7 @@
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
 
 module.exports = app => {
 
@@ -15,7 +16,9 @@ module.exports = app => {
     /**
      * 获取定时任务列表（分页）
      * GET /api/monitor/job/list
+     * 权限：monitor:job:list
      */
+    @RequiresPermissions('monitor:job:list')
     @HttpGet('/list')
     async list() {
       const { ctx, service } = this;
@@ -53,7 +56,9 @@ module.exports = app => {
     /**
      * 获取定时任务详情
      * GET /api/monitor/job/:jobId
+     * 权限：monitor:job:query
      */
+    @RequiresPermissions('monitor:job:query')
     @HttpGet('/:jobId')
     async getInfo() {
       const { ctx, service } = this;
@@ -89,7 +94,9 @@ module.exports = app => {
     /**
      * 新增定时任务
      * POST /api/monitor/job
+     * 权限：monitor:job:add
      */
+    @RequiresPermissions('monitor:job:add')
     @HttpPost('/')
     async add() {
       const { ctx, service } = this;
@@ -128,7 +135,9 @@ module.exports = app => {
     /**
      * 修改定时任务
      * PUT /api/monitor/job
+     * 权限：monitor:job:edit
      */
+    @RequiresPermissions('monitor:job:edit')
     @HttpPut('/')
     async edit() {
       const { ctx, service } = this;
@@ -164,7 +173,9 @@ module.exports = app => {
     /**
      * 删除定时任务
      * DELETE /api/monitor/job/:jobIds
+     * 权限：monitor:job:remove
      */
+    @RequiresPermissions('monitor:job:remove')
     @HttpDelete('/:jobIds')
     async remove() {
       const { ctx, service } = this;
@@ -194,7 +205,9 @@ module.exports = app => {
     /**
      * 修改任务状态
      * PUT /api/monitor/job/changeStatus
+     * 权限：monitor:job:changeStatus
      */
+    @RequiresPermissions('monitor:job:changeStatus')
     @HttpPut('/changeStatus')
     async changeStatus() {
       const { ctx, service } = this;
@@ -221,7 +234,9 @@ module.exports = app => {
     /**
      * 立即执行任务
      * PUT /api/monitor/job/run
+     * 权限：monitor:job:changeStatus
      */
+    @RequiresPermissions('monitor:job:changeStatus')
     @HttpPut('/run')
     async run() {
       const { ctx, service } = this;
@@ -248,7 +263,9 @@ module.exports = app => {
     /**
      * 导出定时任务
      * POST /api/monitor/job/export
+     * 权限：monitor:job:export
      */
+    @RequiresPermissions('monitor:job:export')
     @HttpPost('/export')
     async export() {
       const { ctx, service } = this;
