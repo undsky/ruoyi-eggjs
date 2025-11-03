@@ -13,7 +13,7 @@
 ## 🎯 接口代码 AI 辅助生成，欢迎 PR 修复 BUG
 
 #### 认证授权模块
-+ `/captchaImage` - 获取验证码
++ `/captchaImage` - 获取验证码 ✅（已完成）
 + `/login` - 用户登录
 + `/logout` - 用户登出
 + `/getInfo` - 获取用户信息
