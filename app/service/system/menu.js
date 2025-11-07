@@ -448,7 +448,7 @@ class MenuService extends Service {
           title: menu.menuName,
           icon: menu.icon,
           noCache: menu.isCache === '1',
-          link: menu.path
+          link: null //menu.path
         }
       };
       
@@ -471,7 +471,7 @@ class MenuService extends Service {
             title: menu.menuName,
             icon: menu.icon,
             noCache: menu.isCache === '1',
-            link: menu.path
+            link: null //menu.path
           },
           query: menu.query
         };

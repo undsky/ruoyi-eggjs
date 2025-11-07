@@ -28,7 +28,7 @@ class DeptService extends Service {
     };
 
     // 查询列表
-    const depts = await ctx.service.db.mysql.ruoyi.sysDeptMapper.selectDeptList([conditions]);
+    const depts = await ctx.service.db.mysql.ruoyi.sysDeptMapper.selectDeptList([],conditions);
     
     return depts || [];
   }
@@ -75,14 +75,42 @@ class DeptService extends Service {
    * @param {object} dept - 当前部门
    */
   recursionFn(depts, dept) {
-    const children = depts.filter(d => d.parentId === dept.deptId);
+    // 得到子节点列表
+    const childList = this.getChildList(depts, dept);
+    dept.children = childList;
     
-    if (children.length > 0) {
-      dept.children = children;
-      children.forEach(child => {
+    for (const child of childList) {
+      // 判断是否有子节点
+      if (this.hasChild(depts, child)) {
         this.recursionFn(depts, child);
-      });
+      }
     }
+  }
+
+  /**
+   * 得到子节点列表
+   * @param {array} list - 部门列表
+   * @param {object} dept - 当前部门
+   * @return {array} 子节点列表
+   */
+  getChildList(list, dept) {
+    const childList = [];
+    for (const item of list) {
+      if (item.parentId && item.parentId === dept.deptId) {
+        childList.push(item);
+      }
+    }
+    return childList;
+  }
+
+  /**
+   * 判断是否有子节点
+   * @param {array} list - 部门列表
+   * @param {object} dept - 当前部门
+   * @return {boolean} 是否有子节点
+   */
+  hasChild(list, dept) {
+    return this.getChildList(list, dept).length > 0;
   }
 
   /**
