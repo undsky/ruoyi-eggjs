@@ -38,7 +38,7 @@ class SysOperLogMapperService extends Service {
     }
 
     async selectOperLogList(values, params) {
-        return await this.db().select(this.selectOperLogListMapper(values, params));
+        return await this.db().selects(this.selectOperLogListMapper(values, params));
     }
 
     deleteOperLogByIdsMapper(values, params) {

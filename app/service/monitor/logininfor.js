@@ -5,6 +5,7 @@
  */
 
 const Service = require('egg').Service;
+const dayjs = require('dayjs');
 
 class LogininforService extends Service {
 
@@ -88,7 +89,7 @@ class LogininforService extends Service {
         os: this.getOS(ctx),
         status,
         msg,
-        loginTime: new Date()
+        loginTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
       };
       
       // 异步写入数据库

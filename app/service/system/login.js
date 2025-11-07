@@ -4,12 +4,12 @@
  * @Date: 2025-10-23
  */
 
-const Service = require('egg').Service;
-const captcha = require('trek-captcha');
-const { nanoid } = require('nanoid');
+const Service = require("egg").Service;
+const captcha = require("trek-captcha");
+const { nanoid } = require("nanoid");
+const dayjs = require("dayjs");
 
 class LoginService extends Service {
-
   /**
    * 用户登录
    * @param {string} userName - 用户名
@@ -20,37 +20,41 @@ class LoginService extends Service {
     const { ctx, app } = this;
 
     // 1. 查询用户
-    const users = await ctx.service.db.mysql.ruoyi.sysUserMapper.selectUserByUserName(null,{userName});
-    
+    const users =
+      await ctx.service.db.mysql.ruoyi.sysUserMapper.selectUserByUserName(
+        null,
+        { userName }
+      );
+
     if (!users || users.length === 0) {
-      throw new Error('用户不存在或密码错误');
+      throw new Error("用户不存在或密码错误");
     }
 
-    const user = users[0];
+    const user = users;
 
     // 2. 检查用户状态
-    if (user.delFlag === '2') {
-      throw new Error('用户已被删除');
+    if (user.delFlag === "2") {
+      throw new Error("用户已被删除");
     }
 
-    if (user.status === '1') {
-      throw new Error('用户已被停用，请联系管理员');
+    if (user.status === "1") {
+      throw new Error("用户已被停用，请联系管理员");
     }
 
     // 3. 验证密码
     const security = ctx.helper.security;
     const isMatch = await security.comparePassword(password, user.password);
-    
+
     if (!isMatch) {
-      throw new Error('用户不存在或密码错误');
+      throw new Error("用户不存在或密码错误");
     }
 
     // 4. 更新登录信息
-    await ctx.service.db.mysql.ruoyi.sysUserMapper.updateLoginInfo([
-      user.userId,
-      ctx.request.ip,
-      new Date()
-    ]);
+    await ctx.service.db.mysql.ruoyi.sysUserMapper.updateLoginInfo([], {
+      userId: user.userId,
+      loginIp: ctx.request.ip,
+      loginDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    });
 
     return user;
   }
@@ -64,20 +68,24 @@ class LoginService extends Service {
     const { ctx } = this;
 
     // 获取默认密码
-    const initPassword = await ctx.service.system.config.selectConfigByKey('sys.user.initPassword');
+    const initPassword = await ctx.service.system.config.selectConfigByKey(
+      "sys.user.initPassword"
+    );
 
     // 加密密码
     const security = ctx.helper.security;
-    const hashedPassword = await security.encryptPassword(password || initPassword || '123456');
+    const hashedPassword = await security.encryptPassword(
+      password || initPassword || "123456"
+    );
 
     // 插入用户
     await ctx.service.db.mysql.ruoyi.sysUserMapper.insertUser([], {
       userName,
       nickName: userName,
       password: hashedPassword,
-      status: '0',
-      delFlag: '0',
-      createTime: new Date()
+      status: "0",
+      delFlag: "0",
+      createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     });
   }
 
@@ -90,7 +98,7 @@ class LoginService extends Service {
     const { app } = this;
 
     if (!code || !uuid) {
-      throw new Error('验证码不能为空');
+      throw new Error("验证码不能为空");
     }
 
     // 从缓存中获取验证码
@@ -98,12 +106,12 @@ class LoginService extends Service {
     const cachedCode = await app.cache.default.get(cacheKey);
 
     if (!cachedCode) {
-      throw new Error('验证码已过期，请重新获取');
+      throw new Error("验证码已过期，请重新获取");
     }
 
     // 验证码不区分大小写
     if (code.toLowerCase() !== cachedCode.toLowerCase()) {
-      throw new Error('验证码错误');
+      throw new Error("验证码错误");
     }
 
     // 验证通过后删除缓存
@@ -119,9 +127,9 @@ class LoginService extends Service {
 
     // 生成验证码 (PNG 图片)
     const { token, buffer } = await captcha({
-      size: 4,        // 验证码长度
-      width: 120,     // 图片宽度
-      height: 40      // 图片高度
+      size: 4, // 验证码长度
+      width: 120, // 图片宽度
+      height: 40, // 图片高度
     });
 
     // 生成唯一标识
@@ -132,11 +140,11 @@ class LoginService extends Service {
     await app.cache.default.set(cacheKey, token, { ttl: 300 });
 
     // 将 Buffer 转换为 Base64
-    const base64Img = buffer.toString('base64');
+    const base64Img = buffer.toString("base64");
 
     return {
       uuid,
-      img: base64Img  // PNG 图片 (Base64)
+      img: base64Img, // PNG 图片 (Base64)
     };
   }
 
@@ -152,15 +160,17 @@ class LoginService extends Service {
       tokenId: token,
       userId: user.userId,
       userName: user.userName,
-      deptName: user.deptName || '',
+      deptName: user.deptName || "",
       ipaddr: ctx.request.ip,
-      loginTime: new Date(),
-      expireTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)  // 7天后过期
+      loginTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      expireTime: dayjs().add(7, 'day').format('YYYY-MM-DD HH:mm:ss'), // 7天后过期
     };
 
     // 存储到 Redis（与 Token 过期时间一致）
     const cacheKey = `online_user:${user.userId}`;
-    await app.cache.default.set(cacheKey, onlineUser, { ttl: 7 * 24 * 60 * 60 });
+    await app.cache.default.set(cacheKey, onlineUser, {
+      ttl: 7 * 24 * 60 * 60,
+    });
   }
 
   /**
@@ -171,9 +181,8 @@ class LoginService extends Service {
     const { app } = this;
 
     // 将 Token 加入黑名单
-    await app.cache.default.set(jti, 'revoked', { ttl: 7 * 24 * 60 * 60 });
+    await app.cache.default.set(jti, "revoked", { ttl: 7 * 24 * 60 * 60 });
   }
 }
 
 module.exports = LoginService;
-

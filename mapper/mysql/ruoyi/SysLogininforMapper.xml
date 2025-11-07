@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{userName}, #{status}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{msg}, sysdate())
 	</insert>
 	
-	<select id="selectLogininforList" parameterType="SysLogininfor" resultMap="SysLogininforResult">
+	<selects id="selectLogininforList" parameterType="SysLogininfor" resultMap="SysLogininforResult">
 		select info_id, user_name, ipaddr, login_location, browser, os, status, msg, login_time from sys_logininfor
 		<where>
 			<if test="ipaddr != null and ipaddr != ''">
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 		order by info_id desc
-	</select>
+	</selects>
 	
 	<delete id="deleteLogininforByIds" parameterType="Long">
  		delete from sys_logininfor where info_id in

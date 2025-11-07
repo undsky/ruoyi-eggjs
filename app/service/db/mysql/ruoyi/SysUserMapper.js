@@ -46,7 +46,7 @@ class SysUserMapperService extends Service {
     }
 
     async selectUserList(values, params) {
-        return await this.db().select(this.selectUserListMapper(values, params));
+        return await this.db().selects(this.selectUserListMapper(values, params));
     }
 
     selectAllocatedListMapper(values, params) {
@@ -54,7 +54,7 @@ class SysUserMapperService extends Service {
     }
 
     async selectAllocatedList(values, params) {
-        return await this.db().select(this.selectAllocatedListMapper(values, params));
+        return await this.db().selects(this.selectAllocatedListMapper(values, params));
     }
 
     selectUnallocatedListMapper(values, params) {
@@ -62,7 +62,7 @@ class SysUserMapperService extends Service {
     }
 
     async selectUnallocatedList(values, params) {
-        return await this.db().select(this.selectUnallocatedListMapper(values, params));
+        return await this.db().selects(this.selectUnallocatedListMapper(values, params));
     }
 
     selectUserByUserNameMapper(values, params) {

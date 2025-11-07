@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_dict_type
     </sql>
 
-	<select id="selectDictTypeList" parameterType="SysDictType" resultMap="SysDictTypeResult">
+	<selects id="selectDictTypeList" parameterType="SysDictType" resultMap="SysDictTypeResult">
 	    <include refid="selectDictTypeVo"/>
 		<where>
 		    <if test="dictName != null and dictName != ''">
@@ -39,11 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
 			</if>
 	    </where>
-	</select>
+	</selects>
 	
-	<select id="selectDictTypeAll" resultMap="SysDictTypeResult">
+	<selects id="selectDictTypeAll" resultMap="SysDictTypeResult">
 		<include refid="selectDictTypeVo"/>
-	</select>
+	</selects>
 	
 	<select id="selectDictTypeById" parameterType="Long" resultMap="SysDictTypeResult">
 		<include refid="selectDictTypeVo"/>

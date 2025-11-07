@@ -14,7 +14,7 @@ class SysJobLogMapperService extends Service {
     }
 
     async selectJobLogList(values, params) {
-        return await this.db().select(this.selectJobLogListMapper(values, params));
+        return await this.db().selects(this.selectJobLogListMapper(values, params));
     }
 
     countJobLogListMapper(values, params) {

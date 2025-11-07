@@ -38,7 +38,7 @@ class SysNoticeMapperService extends Service {
     }
 
     async selectNoticeList(values, params) {
-        return await this.db().select(this.selectNoticeListMapper(values, params));
+        return await this.db().selects(this.selectNoticeListMapper(values, params));
     }
 
     insertNoticeMapper(values, params) {

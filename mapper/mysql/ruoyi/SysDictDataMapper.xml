@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_dict_data
     </sql>
 
-	<select id="selectDictDataList" parameterType="SysDictData" resultMap="SysDictDataResult">
+	<selects id="selectDictDataList" parameterType="SysDictData" resultMap="SysDictDataResult">
 	    <include refid="selectDictDataVo"/>
 		<where>
 		    <if test="dictType != null and dictType != ''">
@@ -39,12 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 		order by dict_sort asc
-	</select>
+	</selects>
 	
-	<select id="selectDictDataByType" parameterType="String" resultMap="SysDictDataResult">
+	<selects id="selectDictDataByType" parameterType="String" resultMap="SysDictDataResult">
 		<include refid="selectDictDataVo"/>
 		where status = '0' and dict_type = #{dictType} order by dict_sort asc
-	</select>
+	</selects>
 	
 	<select id="selectDictLabel" resultType="String">
 		select dict_label from sys_dict_data

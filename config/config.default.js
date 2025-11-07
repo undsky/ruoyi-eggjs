@@ -24,7 +24,7 @@ module.exports = (appInfo) => {
   config.keys = appInfo.name + "o%Fp(=-GLFN;7";
 
   // add your middleware config here
-  config.middleware = ["accessControl", "formatBody"];
+  config.middleware = [ "formatBody"];
 
   config.cors = {
     allowMethods: "GET,POST",
@@ -33,7 +33,7 @@ module.exports = (appInfo) => {
   };
 
   config.accessControl = {
-    match: /^\/api[\/]?((?!version|login|register|captcha).)*$/i,
+    match: /^\/api[\/]?((?!version|login|register|captchaImage).)*$/i,
   };
 
   config.jwt = {

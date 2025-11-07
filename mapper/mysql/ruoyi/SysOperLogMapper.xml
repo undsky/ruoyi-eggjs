@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{costTime}, sysdate())
 	</insert>
 	
-	<select id="selectOperLogList" parameterType="SysOperLog" resultMap="SysOperLogResult">
+	<selects id="selectOperLogList" parameterType="SysOperLog" resultMap="SysOperLogResult">
 		<include refid="selectOperLogVo"/>
 		<where>
 			<if test="operIp != null and operIp != ''">
@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 		order by oper_id desc
-	</select>
+	</selects>
 	
 	<delete id="deleteOperLogByIds" parameterType="Long">
  		delete from sys_oper_log where oper_id in

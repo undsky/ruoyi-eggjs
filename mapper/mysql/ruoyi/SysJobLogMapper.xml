@@ -3,7 +3,7 @@
 <mapper namespace="mapper/mysql/ruoyi/SysJobLogMapper.xml">
 
     <!-- 查询调度日志列表 -->
-    <select id="selectJobLogList">
+    <selects id="selectJobLogList">
         SELECT 
             job_log_id,
             job_name,
@@ -33,7 +33,7 @@
         </where>
         ORDER BY create_time DESC
         LIMIT ?, ?
-    </select>
+    </selects>
 
     <!-- 查询调度日志总数 -->
     <select id="countJobLogList">

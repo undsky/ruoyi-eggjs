@@ -5,6 +5,7 @@
  */
 
 const Service = require('egg').Service;
+const dayjs = require('dayjs');
 
 class JobLogService extends Service {
 
@@ -129,7 +130,7 @@ class JobLogService extends Service {
         status,
         jobMessage,
         exceptionInfo: exceptionInfo.substring(0, 2000), // 限制长度
-        createTime: new Date()
+        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
       };
       
       await this.insertJobLog(jobLog);

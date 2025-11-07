@@ -5,6 +5,7 @@
  */
 
 const Service = require('egg').Service;
+const dayjs = require('dayjs');
 
 class OperlogService extends Service {
 
@@ -97,7 +98,7 @@ class OperlogService extends Service {
         status: operLog.status || '0',
         errorMsg: operLog.errorMsg || '',
         costTime: operLog.costTime || 0,
-        operTime: new Date()
+        operTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
       };
       
       // 异步写入数据库

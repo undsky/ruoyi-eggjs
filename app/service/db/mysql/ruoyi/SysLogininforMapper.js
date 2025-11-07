@@ -30,7 +30,7 @@ class SysLogininforMapperService extends Service {
     }
 
     async selectLogininforList(values, params) {
-        return await this.db().select(this.selectLogininforListMapper(values, params));
+        return await this.db().selects(this.selectLogininforListMapper(values, params));
     }
 
     deleteLogininforByIdsMapper(values, params) {

@@ -31,6 +31,8 @@ module.exports = (appInfo) => {
   };
 
   config.mysql = {
+    // 启用驼峰命名转换：数据库字段 user_name -> userName
+    camelCase: true,
     clients: {
       common: {
         host: "127.0.0.1",

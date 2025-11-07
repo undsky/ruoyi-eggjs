@@ -30,7 +30,7 @@ class SysRoleMapperService extends Service {
     }
 
     async selectRoleList(values, params) {
-        return await this.db().select(this.selectRoleListMapper(values, params));
+        return await this.db().selects(this.selectRoleListMapper(values, params));
     }
 
     selectRolePermissionByUserIdMapper(values, params) {
@@ -38,7 +38,7 @@ class SysRoleMapperService extends Service {
     }
 
     async selectRolePermissionByUserId(values, params) {
-        return await this.db().select(this.selectRolePermissionByUserIdMapper(values, params));
+        return await this.db().selects(this.selectRolePermissionByUserIdMapper(values, params));
     }
 
     selectRoleAllMapper(values, params) {
@@ -46,7 +46,7 @@ class SysRoleMapperService extends Service {
     }
 
     async selectRoleAll(values, params) {
-        return await this.db().select(this.selectRoleAllMapper(values, params));
+        return await this.db().selects(this.selectRoleAllMapper(values, params));
     }
 
     selectRoleListByUserIdMapper(values, params) {
@@ -54,7 +54,7 @@ class SysRoleMapperService extends Service {
     }
 
     async selectRoleListByUserId(values, params) {
-        return await this.db().select(this.selectRoleListByUserIdMapper(values, params));
+        return await this.db().selects(this.selectRoleListByUserIdMapper(values, params));
     }
 
     selectRoleByIdMapper(values, params) {
@@ -70,7 +70,7 @@ class SysRoleMapperService extends Service {
     }
 
     async selectRolesByUserName(values, params) {
-        return await this.db().select(this.selectRolesByUserNameMapper(values, params));
+        return await this.db().selects(this.selectRolesByUserNameMapper(values, params));
     }
 
     checkRoleNameUniqueMapper(values, params) {

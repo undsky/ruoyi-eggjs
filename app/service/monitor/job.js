@@ -5,6 +5,7 @@
  */
 
 const Service = require('egg').Service;
+const dayjs = require('dayjs');
 
 class JobService extends Service {
 
@@ -33,7 +34,7 @@ class JobService extends Service {
         misfirePolicy: '1',
         concurrent: '1',
         status: scheduleConfig.disable ? '1' : '0',
-        createTime: new Date(),
+        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         remark: scheduleConfig.type || 'worker'
       };
       

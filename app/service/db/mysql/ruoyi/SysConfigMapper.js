@@ -46,7 +46,7 @@ class SysConfigMapperService extends Service {
     }
 
     async selectConfigList(values, params) {
-        return await this.db().select(this.selectConfigListMapper(values, params));
+        return await this.db().selects(this.selectConfigListMapper(values, params));
     }
 
     selectConfigByIdMapper(values, params) {

@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="sqlwhereSearch"/>
     </select>
     
-    <select id="selectConfigList" parameterType="SysConfig" resultMap="SysConfigResult">
+    <selects id="selectConfigList" parameterType="SysConfig" resultMap="SysConfigResult">
         <include refid="selectConfigVo"/>
         <where>
 			<if test="configName != null and configName != ''">
@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
 			</if>
 		</where>
-    </select>
+    </selects>
     
     <select id="selectConfigById" parameterType="Long" resultMap="SysConfigResult">
         <include refid="selectConfigVo"/>

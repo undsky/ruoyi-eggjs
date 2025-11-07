@@ -30,7 +30,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuList(values, params) {
-        return await this.db().select(this.selectMenuListMapper(values, params));
+        return await this.db().selects(this.selectMenuListMapper(values, params));
     }
 
     selectMenuTreeAllMapper(values, params) {
@@ -38,7 +38,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuTreeAll(values, params) {
-        return await this.db().select(this.selectMenuTreeAllMapper(values, params));
+        return await this.db().selects(this.selectMenuTreeAllMapper(values, params));
     }
 
     selectMenuListByUserIdMapper(values, params) {
@@ -54,7 +54,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuTreeByUserId(values, params) {
-        return await this.db().select(this.selectMenuTreeByUserIdMapper(values, params));
+        return await this.db().selects(this.selectMenuTreeByUserIdMapper(values, params));
     }
 
     selectMenuListByRoleIdMapper(values, params) {
@@ -62,7 +62,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuListByRoleId(values, params) {
-        return await this.db().select(this.selectMenuListByRoleIdMapper(values, params));
+        return await this.db().selects(this.selectMenuListByRoleIdMapper(values, params));
     }
 
     selectMenuPermsMapper(values, params) {
@@ -70,7 +70,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuPerms(values, params) {
-        return await this.db().select(this.selectMenuPermsMapper(values, params));
+        return await this.db().selects(this.selectMenuPermsMapper(values, params));
     }
 
     selectMenuPermsByUserIdMapper(values, params) {
@@ -78,7 +78,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuPermsByUserId(values, params) {
-        return await this.db().select(this.selectMenuPermsByUserIdMapper(values, params));
+        return await this.db().selects(this.selectMenuPermsByUserIdMapper(values, params));
     }
 
     selectMenuPermsByRoleIdMapper(values, params) {
@@ -86,7 +86,7 @@ class SysMenuMapperService extends Service {
     }
 
     async selectMenuPermsByRoleId(values, params) {
-        return await this.db().select(this.selectMenuPermsByRoleIdMapper(values, params));
+        return await this.db().selects(this.selectMenuPermsByRoleIdMapper(values, params));
     }
 
     selectMenuByIdMapper(values, params) {

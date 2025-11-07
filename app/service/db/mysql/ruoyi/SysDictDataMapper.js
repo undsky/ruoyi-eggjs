@@ -30,7 +30,7 @@ class SysDictDataMapperService extends Service {
     }
 
     async selectDictDataList(values, params) {
-        return await this.db().select(this.selectDictDataListMapper(values, params));
+        return await this.db().selects(this.selectDictDataListMapper(values, params));
     }
 
     selectDictDataByTypeMapper(values, params) {
@@ -38,7 +38,7 @@ class SysDictDataMapperService extends Service {
     }
 
     async selectDictDataByType(values, params) {
-        return await this.db().select(this.selectDictDataByTypeMapper(values, params));
+        return await this.db().selects(this.selectDictDataByTypeMapper(values, params));
     }
 
     selectDictLabelMapper(values, params) {

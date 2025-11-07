@@ -30,7 +30,7 @@ class SysPostMapperService extends Service {
     }
 
     async selectPostList(values, params) {
-        return await this.db().select(this.selectPostListMapper(values, params));
+        return await this.db().selects(this.selectPostListMapper(values, params));
     }
 
     selectPostAllMapper(values, params) {
@@ -38,7 +38,7 @@ class SysPostMapperService extends Service {
     }
 
     async selectPostAll(values, params) {
-        return await this.db().select(this.selectPostAllMapper(values, params));
+        return await this.db().selects(this.selectPostAllMapper(values, params));
     }
 
     selectPostByIdMapper(values, params) {
@@ -54,7 +54,7 @@ class SysPostMapperService extends Service {
     }
 
     async selectPostListByUserId(values, params) {
-        return await this.db().select(this.selectPostListByUserIdMapper(values, params));
+        return await this.db().selects(this.selectPostListByUserIdMapper(values, params));
     }
 
     selectPostsByUserNameMapper(values, params) {
@@ -62,7 +62,7 @@ class SysPostMapperService extends Service {
     }
 
     async selectPostsByUserName(values, params) {
-        return await this.db().select(this.selectPostsByUserNameMapper(values, params));
+        return await this.db().selects(this.selectPostsByUserNameMapper(values, params));
     }
 
     checkPostNameUniqueMapper(values, params) {

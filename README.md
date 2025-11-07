@@ -10,12 +10,12 @@
 
 ---
 
-## 🎯 接口代码 AI 辅助生成，欢迎 PR 修复 BUG
+## 🎯 若依 API 实现
 
 #### 认证授权模块
 + `/captchaImage` - 获取验证码 ✅（已完成）
-+ `/login` - 用户登录
-+ `/logout` - 用户登出
++ `/login` - 用户登录 ✅（已完成）
++ `/logout` - 用户登出 ✅（已完成）
 + `/getInfo` - 获取用户信息
 + `/getRouters` - 获取路由菜单
 + `/register` - 用户注册

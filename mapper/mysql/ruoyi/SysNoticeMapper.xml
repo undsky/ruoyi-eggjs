@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where notice_id = #{noticeId}
     </select>
     
-    <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+    <selects id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
         <include refid="selectNoticeVo"/>
         <where>
 			<if test="noticeTitle != null and noticeTitle != ''">
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND create_by like concat('%', #{createBy}, '%')
 			</if>
 		</where>
-    </select>
+    </selects>
     
     <insert id="insertNotice" parameterType="SysNotice">
         insert into sys_notice (
