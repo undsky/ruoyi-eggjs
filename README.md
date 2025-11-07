@@ -6,7 +6,7 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org)
 [![Egg](https://img.shields.io/badge/egg-%5E3-blue.svg)](https://eggjs.org)
 
-一个基于 Egg.js 的企业级后台管理系统，参照若依（RuoYi）架构设计，采用 MyBatis XML 风格的 SQL 编写方式，提供完善的权限管理、用户管理等后台管理功能。
+基于 Egg.js 框架开发的企业级后台管理系统，完整还原若依（RuoYi）系统功能，采用 MyBatis XML 风格的 SQL，实现对若依数据库及 ruoyi-system/src/main/resources/mapper/system 目录下 XML 文件的无缝复用。
 
 ---
 
