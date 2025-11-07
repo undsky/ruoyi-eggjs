@@ -32,7 +32,7 @@ class OperlogService extends Service {
     };
 
     // 查询列表
-    const operLogList = await ctx.service.db.mysql.ruoyi.sysOperLogMapper.selectOperLogList([conditions]);
+    const operLogList = await ctx.service.db.mysql.ruoyi.sysOperLogMapper.selectOperLogList([], conditions);
     
     return operLogList || [];
   }
@@ -45,7 +45,7 @@ class OperlogService extends Service {
   async selectOperLogById(operId) {
     const { ctx } = this;
     
-    const operLogList = await ctx.service.db.mysql.ruoyi.sysOperLogMapper.selectOperLogById([operId]);
+    const operLogList = await ctx.service.db.mysql.ruoyi.sysOperLogMapper.selectOperLogById([], {operId});
     
     return operLogList && operLogList.length > 0 ? operLogList[0] : null;
   }
@@ -59,7 +59,7 @@ class OperlogService extends Service {
     const { ctx } = this;
     
     // 删除操作日志
-    const result = await ctx.service.db.mysql.ruoyi.sysOperLogMapper.deleteOperLogByIds([operIds]);
+    const result = await ctx.service.db.mysql.ruoyi.sysOperLogMapper.deleteOperLogByIds([], {operIds});
     
     return result && result.length > 0 ? operIds.length : 0;
   }
@@ -71,7 +71,7 @@ class OperlogService extends Service {
     const { ctx } = this;
     
     // 清空操作日志
-    await ctx.service.db.mysql.ruoyi.sysOperLogMapper.cleanOperLog([]);
+    await ctx.service.db.mysql.ruoyi.sysOperLogMapper.cleanOperLog();
   }
 
   /**

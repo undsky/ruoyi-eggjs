@@ -29,7 +29,7 @@ class LogininforService extends Service {
     };
 
     // 查询列表
-    const logininforList = await ctx.service.db.mysql.ruoyi.sysLogininforMapper.selectLogininforList([conditions]);
+    const logininforList = await ctx.service.db.mysql.ruoyi.sysLogininforMapper.selectLogininforList([], conditions);
     
     return logininforList || [];
   }
@@ -43,7 +43,7 @@ class LogininforService extends Service {
     const { ctx } = this;
     
     // 删除登录日志
-    const result = await ctx.service.db.mysql.ruoyi.sysLogininforMapper.deleteLogininforByIds([infoIds]);
+    const result = await ctx.service.db.mysql.ruoyi.sysLogininforMapper.deleteLogininforByIds([], {infoIds});
     
     return result && result.length > 0 ? infoIds.length : 0;
   }
@@ -55,7 +55,7 @@ class LogininforService extends Service {
     const { ctx } = this;
     
     // 清空登录日志
-    await ctx.service.db.mysql.ruoyi.sysLogininforMapper.cleanLogininfor([]);
+    await ctx.service.db.mysql.ruoyi.sysLogininforMapper.cleanLogininfor();
   }
 
   /**

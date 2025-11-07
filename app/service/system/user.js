@@ -31,7 +31,7 @@ class UserService extends Service {
 
     // 查询列表
     const users = await ctx.service.db.mysql.ruoyi.sysUserMapper.selectUserList(
-      [conditions]
+      [], conditions
     );
 
     return users || [];

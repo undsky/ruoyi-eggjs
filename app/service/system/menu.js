@@ -36,7 +36,7 @@ class MenuService extends Service {
         visible: menu.visible,
         status: menu.status
       };
-      menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuList([conditions]);
+      menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuList([], conditions);
     } else {
       // 普通用户显示有权限的菜单
       const conditions = {
@@ -47,7 +47,7 @@ class MenuService extends Service {
           userId
         }
       };
-      menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuListByUserId([conditions]);
+      menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuListByUserId([], conditions);
     }
     
     return menus || [];
@@ -61,7 +61,7 @@ class MenuService extends Service {
   async selectMenuById(menuId) {
     const { ctx } = this;
     
-    const menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuById([menuId]);
+    const menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuById([], {menuId});
     
     return menus && menus.length > 0 ? menus[0] : null;
   }
@@ -315,7 +315,7 @@ class MenuService extends Service {
       parentId: menu.parentId
     };
     
-    const menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.checkMenuNameUnique([conditions]);
+    const menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.checkMenuNameUnique([], conditions);
     
     if (menus && menus.length > 0 && menus[0].menuId !== menuId) {
       return false;
@@ -332,7 +332,7 @@ class MenuService extends Service {
   async hasChildByMenuId(menuId) {
     const { ctx } = this;
     
-    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.hasChildByMenuId([menuId]);
+    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.hasChildByMenuId([], {menuId});
     
     return result && result.length > 0 && result[0].count > 0;
   }
@@ -366,7 +366,7 @@ class MenuService extends Service {
     menu.createBy = ctx.state.user.userName;
     
     // 插入菜单
-    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.insertMenu([menu]);
+    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.insertMenu([], menu);
     
     return result && result.length > 0 ? 1 : 0;
   }
@@ -383,7 +383,7 @@ class MenuService extends Service {
     menu.updateBy = ctx.state.user.userName;
     
     // 更新菜单
-    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.updateMenu([menu]);
+    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.updateMenu([], menu);
     
     return result && result.length > 0 ? 1 : 0;
   }
@@ -397,7 +397,7 @@ class MenuService extends Service {
     const { ctx } = this;
     
     // 删除菜单
-    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.deleteMenuById([menuId]);
+    const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.deleteMenuById([], {menuId});
     
     return result && result.length > 0 ? 1 : 0;
   }

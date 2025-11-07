@@ -15,7 +15,7 @@ class PostService extends Service {
   async selectPostAll() {
     const { ctx } = this;
     
-    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostAll([]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostAll();
     
     return posts || [];
   }
@@ -28,7 +28,7 @@ class PostService extends Service {
   async selectPostListByUserId(userId) {
     const { ctx } = this;
     
-    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostListByUserId([userId]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostListByUserId([], {userId});
     
     return posts.map(p => p.postId);
   }
@@ -49,7 +49,7 @@ class PostService extends Service {
     };
 
     // 查询列表
-    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostList([conditions]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostList([], conditions);
     
     return posts || [];
   }
@@ -62,7 +62,7 @@ class PostService extends Service {
   async selectPostById(postId) {
     const { ctx } = this;
     
-    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostById([postId]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostById([], {postId});
     
     return posts && posts.length > 0 ? posts[0] : null;
   }
@@ -76,7 +76,7 @@ class PostService extends Service {
     const { ctx } = this;
     
     const postId = post.postId || -1;
-    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostNameUnique([post.postName]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostNameUnique([], {postName: post.postName});
     
     if (posts && posts.length > 0 && posts[0].postId !== postId) {
       return false;
@@ -94,7 +94,7 @@ class PostService extends Service {
     const { ctx } = this;
     
     const postId = post.postId || -1;
-    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostCodeUnique([post.postCode]);
+    const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostCodeUnique([], {postCode: post.postCode});
     
     if (posts && posts.length > 0 && posts[0].postId !== postId) {
       return false;
@@ -115,7 +115,7 @@ class PostService extends Service {
     post.createBy = ctx.state.user.userName;
     
     // 插入岗位
-    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.insertPost([post]);
+    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.insertPost([], post);
     
     return result && result.length > 0 ? 1 : 0;
   }
@@ -132,7 +132,7 @@ class PostService extends Service {
     post.updateBy = ctx.state.user.userName;
     
     // 更新岗位
-    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.updatePost([post]);
+    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.updatePost([], post);
     
     return result && result.length > 0 ? 1 : 0;
   }
@@ -146,7 +146,7 @@ class PostService extends Service {
     const { ctx } = this;
     
     // 删除岗位
-    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.deletePostByIds([postIds]);
+    const result = await ctx.service.db.mysql.ruoyi.sysPostMapper.deletePostByIds([], {postIds});
     
     return result && result.length > 0 ? postIds.length : 0;
   }
