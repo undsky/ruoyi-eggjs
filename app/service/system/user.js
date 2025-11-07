@@ -464,7 +464,7 @@ class UserService extends Service {
         { userName }
       );
 
-    return roles.map((r) => r.role_name).join(",");
+    return roles.map((r) => r.roleName).join(",");
   }
 
   /**
@@ -481,7 +481,7 @@ class UserService extends Service {
         { userName }
       );
 
-    return posts.map((p) => p.post_name).join(",");
+    return posts.map((p) => p.postName).join(",");
   }
 }
 

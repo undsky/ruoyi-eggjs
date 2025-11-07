@@ -82,7 +82,7 @@ class DictTypeService extends Service {
     const dictId = dictType.dictId || -1;
     const dictTypes = await ctx.service.db.mysql.ruoyi.sysDictTypeMapper.checkDictTypeUnique([dictType.dictType]);
     
-    if (dictTypes && dictTypes.length > 0 && dictTypes[0].dict_id !== dictId) {
+    if (dictTypes && dictTypes.length > 0 && dictTypes[0].dictId !== dictId) {
       return false;
     }
     
@@ -130,8 +130,8 @@ class DictTypeService extends Service {
     const result = await ctx.service.db.mysql.ruoyi.sysDictTypeMapper.updateDictType([dictType]);
     
     // 如果字典类型改变，需要更新字典数据表中的类型
-    if (oldDict && oldDict.dict_type !== dictType.dictType) {
-      await ctx.service.db.mysql.ruoyi.sysDictDataMapper.updateDictDataType([oldDict.dict_type, dictType.dictType]);
+    if (oldDict && oldDict.dictType !== dictType.dictType) {
+      await ctx.service.db.mysql.ruoyi.sysDictDataMapper.updateDictDataType([oldDict.dictType, dictType.dictType]);
     }
     
     // 清空缓存
@@ -162,10 +162,10 @@ class DictTypeService extends Service {
       }
       
       // 检查是否有字典数据
-      const count = await ctx.service.db.mysql.ruoyi.sysDictDataMapper.countDictDataByType([dictType.dict_type]);
+      const count = await ctx.service.db.mysql.ruoyi.sysDictDataMapper.countDictDataByType([dictType.dictType]);
       
       if (count && count.length > 0 && count[0].count > 0) {
-        throw new Error(`${dictType.dict_name}已分配,不能删除`);
+        throw new Error(`${dictType.dictName}已分配,不能删除`);
       }
       
       // 删除字典类型
@@ -200,10 +200,10 @@ class DictTypeService extends Service {
     // 按字典类型分组
     const dictDataMap = {};
     dictDataList.forEach(data => {
-      if (!dictDataMap[data.dict_type]) {
-        dictDataMap[data.dict_type] = [];
+      if (!dictDataMap[data.dictType]) {
+        dictDataMap[data.dictType] = [];
       }
-      dictDataMap[data.dict_type].push(data);
+      dictDataMap[data.dictType].push(data);
     });
     
     // 存入缓存

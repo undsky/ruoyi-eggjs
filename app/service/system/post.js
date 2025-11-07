@@ -30,7 +30,7 @@ class PostService extends Service {
     
     const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.selectPostListByUserId([userId]);
     
-    return posts.map(p => p.post_id);
+    return posts.map(p => p.postId);
   }
 
   /**
@@ -78,7 +78,7 @@ class PostService extends Service {
     const postId = post.postId || -1;
     const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostNameUnique([post.postName]);
     
-    if (posts && posts.length > 0 && posts[0].post_id !== postId) {
+    if (posts && posts.length > 0 && posts[0].postId !== postId) {
       return false;
     }
     
@@ -96,7 +96,7 @@ class PostService extends Service {
     const postId = post.postId || -1;
     const posts = await ctx.service.db.mysql.ruoyi.sysPostMapper.checkPostCodeUnique([post.postCode]);
     
-    if (posts && posts.length > 0 && posts[0].post_id !== postId) {
+    if (posts && posts.length > 0 && posts[0].postId !== postId) {
       return false;
     }
     

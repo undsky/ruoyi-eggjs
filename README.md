@@ -16,8 +16,8 @@
 + `/captchaImage` - 获取验证码 ✅（已完成）
 + `/login` - 用户登录 ✅（已完成）
 + `/logout` - 用户登出 ✅（已完成）
-+ `/getInfo` - 获取用户信息
-+ `/getRouters` - 获取路由菜单
++ `/getInfo` - 获取用户信息 ✅（已完成）
++ `/getRouters` - 获取路由菜单 ✅（已完成）
 + `/register` - 用户注册
 
 #### 用户管理模块

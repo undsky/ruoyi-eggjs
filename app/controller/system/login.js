@@ -4,21 +4,20 @@
  * @Date: 2025-10-23
  */
 
-const Controller = require('egg').Controller;
-const { Route, HttpPost, HttpGet, HttpAll } = require('egg-decorator-router');
+const Controller = require("egg").Controller;
+const { Route, HttpPost, HttpGet, HttpAll } = require("egg-decorator-router");
 
-module.exports = app => {
+module.exports = (app) => {
   const { secret, expiresIn } = app.config.jwt;
 
-  @Route('/api')
+  @Route("/api")
   class LoginController extends Controller {
-    
     /**
      * 用户登录
      * POST /api/login
      * 说明：公开接口，无需权限验证
      */
-    @HttpPost('/login')
+    @HttpPost("/login")
     async login() {
       const { ctx, service } = this;
       const { username, password, code, uuid } = ctx.request.body;
@@ -36,19 +35,19 @@ module.exports = app => {
         const tokenData = {
           userId: user.userId,
           userName: user.userName,
-          deptId: user.deptId
+          deptId: user.deptId,
         };
 
         const token = app.jwt.sign(tokenData, secret, {
           expiresIn,
-          jwtid: `${Date.now()}_${user.userId}`
+          jwtid: `${Date.now()}_${user.userId}`,
         });
 
         // 4. 记录登录日志
         await service.monitor.logininfor.recordLoginInfo(
           user.userName,
-          '0',
-          '登录成功',
+          "0",
+          "登录成功",
           ctx
         );
 
@@ -57,21 +56,21 @@ module.exports = app => {
 
         ctx.body = {
           code: 200,
-          msg: '登录成功',
-          token
+          msg: "登录成功",
+          token,
         };
       } catch (err) {
         // 记录登录失败日志
         await service.monitor.logininfor.recordLoginInfo(
-          username || '',
-          '1',
+          username || "",
+          "1",
           err.message,
           ctx
         );
 
         ctx.body = {
           code: 500,
-          msg: err.message || '登录失败'
+          msg: err.message || "登录失败",
         };
       }
     }
@@ -81,32 +80,32 @@ module.exports = app => {
      * POST /api/logout
      * 说明：需要登录，无需特殊权限
      */
-    @HttpPost('/logout')
+    @HttpPost("/logout")
     async logout() {
       const { ctx, service } = this;
-      
+
       try {
         const user = ctx.state.user;
-        
+
         // 删除在线用户信息
         await service.system.login.removeOnlineUser(user.jti);
-        
+
         // 记录登出日志
         await service.monitor.logininfor.recordLoginInfo(
           user.userName,
-          '0',
-          '退出成功',
+          "0",
+          "退出成功",
           ctx
         );
 
         ctx.body = {
           code: 200,
-          msg: '退出成功'
+          msg: "退出成功",
         };
       } catch (err) {
         ctx.body = {
           code: 500,
-          msg: err.message || '退出失败'
+          msg: err.message || "退出失败",
         };
       }
     }
@@ -116,33 +115,35 @@ module.exports = app => {
      * GET /api/getInfo
      * 说明：需要登录，无需特殊权限
      */
-    @HttpGet('/getInfo')
+    @HttpGet("/getInfo")
     async getInfo() {
       const { ctx, service } = this;
-      
+
       try {
         const userId = ctx.state.user.userId;
-        
+
         // 查询用户详细信息
         const user = await service.system.user.selectUserById(userId);
-        
+
         if (!user) {
           ctx.body = {
             code: 500,
-            msg: '用户不存在'
+            msg: "用户不存在",
           };
           return;
         }
 
         // 查询用户角色
         const roles = await service.system.role.selectRolesByUserId(userId);
-        
+
         // 查询用户权限
-        const permissions = await service.system.menu.selectPermsByUserId(userId);
+        const permissions = await service.system.menu.selectPermsByUserId(
+          userId
+        );
 
         ctx.body = {
           code: 200,
-          msg: '查询成功',
+          msg: "查询成功",
           user: {
             userId: user.userId,
             deptId: user.deptId,
@@ -153,16 +154,16 @@ module.exports = app => {
             sex: user.sex,
             avatar: user.avatar,
             status: user.status,
-            createTime: user.createTime
+            createTime: user.createTime,
           },
-          roles: roles.map(r => r.roleKey),
-          permissions
+          roles: roles.map((r) => r.roleKey),
+          permissions,
         };
       } catch (err) {
-        ctx.logger.error('获取用户信息失败:', err);
+        ctx.logger.error("获取用户信息失败:", err);
         ctx.body = {
           code: 500,
-          msg: err.message || '获取用户信息失败'
+          msg: err.message || "获取用户信息失败",
         };
       }
     }
@@ -172,26 +173,26 @@ module.exports = app => {
      * GET /api/getRouters
      * 说明：需要登录，无需特殊权限
      */
-    @HttpGet('/getRouters')
+    @HttpGet("/getRouters")
     async getRouters() {
       const { ctx, service } = this;
-      
+
       try {
         const userId = ctx.state.user.userId;
-        
+
         // 查询用户菜单
-        const menus = await service.system.menu.selectMenuTreeByUserId(userId);
+        let menus = await service.system.menu.selectMenuTreeByUserId(userId);
 
         ctx.body = {
           code: 200,
-          msg: '查询成功',
-          data: menus
+          msg: "查询成功",
+          data: await service.system.menu.buildMenus(menus),
         };
       } catch (err) {
-        ctx.logger.error('获取路由菜单失败:', err);
+        ctx.logger.error("获取路由菜单失败:", err);
         ctx.body = {
           code: 500,
-          msg: err.message || '获取路由菜单失败'
+          msg: err.message || "获取路由菜单失败",
         };
       }
     }
@@ -201,18 +202,20 @@ module.exports = app => {
      * POST /api/register
      * 说明：公开接口，无需权限验证
      */
-    @HttpPost('/register')
+    @HttpPost("/register")
     async register() {
       const { ctx, service, app } = this;
       const { username, password, code, uuid } = ctx.request.body;
 
       try {
         // 1. 检查是否允许注册
-        const registerEnabled = await service.system.config.selectConfigByKey('sys.account.registerUser');
-        if (registerEnabled === 'false') {
+        const registerEnabled = await service.system.config.selectConfigByKey(
+          "sys.account.registerUser"
+        );
+        if (registerEnabled === "false") {
           ctx.body = {
             code: 500,
-            msg: '当前系统没有开启注册功能'
+            msg: "当前系统没有开启注册功能",
           };
           return;
         }
@@ -227,7 +230,7 @@ module.exports = app => {
         if (exists) {
           ctx.body = {
             code: 500,
-            msg: '用户名已存在'
+            msg: "用户名已存在",
           };
           return;
         }
@@ -237,13 +240,13 @@ module.exports = app => {
 
         ctx.body = {
           code: 200,
-          msg: '注册成功'
+          msg: "注册成功",
         };
       } catch (err) {
-        ctx.logger.error('用户注册失败:', err);
+        ctx.logger.error("用户注册失败:", err);
         ctx.body = {
           code: 500,
-          msg: err.message || '注册失败'
+          msg: err.message || "注册失败",
         };
       }
     }
@@ -253,24 +256,24 @@ module.exports = app => {
      * GET /api/captchaImage
      * 说明：公开接口，无需权限验证
      */
-    @HttpGet('/captchaImage')
+    @HttpGet("/captchaImage")
     async captchaImage() {
       const { ctx, service } = this;
-      
+
       try {
         // 生成验证码
         const captcha = await service.system.login.createCaptcha();
 
         ctx.body = {
           code: 200,
-          msg: '操作成功',
-          ...captcha
+          msg: "操作成功",
+          ...captcha,
         };
       } catch (err) {
-        ctx.logger.error('生成验证码失败:', err);
+        ctx.logger.error("生成验证码失败:", err);
         ctx.body = {
           code: 500,
-          msg: err.message || '生成验证码失败'
+          msg: err.message || "生成验证码失败",
         };
       }
     }
@@ -278,4 +281,3 @@ module.exports = app => {
 
   return LoginController;
 };
-

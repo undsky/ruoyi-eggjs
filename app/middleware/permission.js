@@ -9,11 +9,8 @@ module.exports = (options = {}) => {
     // 跳过不需要权限验证的路由
     const skipRoutes = options.skipRoutes || [
       '/api/login',
-      '/api/logout',
       '/api/register',
-      '/api/captchaImage',
-      '/api/getInfo',
-      '/api/getRouters'
+      '/api/captchaImage'
     ];
     
     // 检查当前路由是否需要跳过

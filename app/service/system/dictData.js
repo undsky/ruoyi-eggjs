@@ -142,7 +142,7 @@ class DictDataService extends Service {
       await ctx.service.db.mysql.ruoyi.sysDictDataMapper.deleteDictDataById([dictCode]);
       
       // 记录需要更新缓存的字典类型
-      dictTypes.add(dictData.dict_type);
+      dictTypes.add(dictData.dictType);
       deletedCount++;
     }
     

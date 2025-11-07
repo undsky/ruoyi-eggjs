@@ -97,7 +97,7 @@ class RoleService extends Service {
         { roleId }
       );
 
-    if (roles && roles.length > 0 && roles[0].role_id !== roleId) {
+    if (roles && roles.length > 0 && roles[0].roleId !== roleId) {
       return false;
     }
 
@@ -119,7 +119,7 @@ class RoleService extends Service {
         { roleId }
       );
 
-    if (roles && roles.length > 0 && roles[0].role_id !== roleId) {
+    if (roles && roles.length > 0 && roles[0].roleId !== roleId) {
       return false;
     }
 

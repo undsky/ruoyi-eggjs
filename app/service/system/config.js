@@ -70,7 +70,7 @@ class ConfigService extends Service {
     const configs = await ctx.service.db.mysql.ruoyi.sysConfigMapper.selectConfig([conditions]);
     
     if (configs && configs.length > 0) {
-      configValue = configs[0].config_value;
+      configValue = configs[0].configValue;
       
       // 存入缓存（不过期）
       await app.cache.default.set(cacheKey, configValue, 0);
@@ -92,7 +92,7 @@ class ConfigService extends Service {
     const configId = config.configId || -1;
     const configs = await ctx.service.db.mysql.ruoyi.sysConfigMapper.checkConfigKeyUnique([config.configKey]);
     
-    if (configs && configs.length > 0 && configs[0].config_id !== configId) {
+    if (configs && configs.length > 0 && configs[0].configId !== configId) {
       return false;
     }
     
@@ -143,8 +143,8 @@ class ConfigService extends Service {
     // 更新缓存
     if (result && result.length > 0) {
       // 如果键名改变，删除旧的缓存
-      if (oldConfig && oldConfig.config_key !== config.configKey) {
-        const oldCacheKey = `config:${oldConfig.config_key}`;
+      if (oldConfig && oldConfig.configKey !== config.configKey) {
+        const oldCacheKey = `config:${oldConfig.configKey}`;
         await app.cache.default.del(oldCacheKey);
       }
       
@@ -177,15 +177,15 @@ class ConfigService extends Service {
       }
       
       // 检查是否为内置参数
-      if (config.config_type === 'Y') {
-        throw new Error(`内置参数【${config.config_key}】不能删除`);
+      if (config.configType === 'Y') {
+        throw new Error(`内置参数【${config.configKey}】不能删除`);
       }
       
       // 删除参数配置
       await ctx.service.db.mysql.ruoyi.sysConfigMapper.deleteConfigById([configId]);
       
       // 删除缓存
-      const cacheKey = `config:${config.config_key}`;
+      const cacheKey = `config:${config.configKey}`;
       await app.cache.default.del(cacheKey);
       
       deletedCount++;
@@ -205,8 +205,8 @@ class ConfigService extends Service {
     
     // 存入缓存
     for (const config of configs) {
-      const cacheKey = `config:${config.config_key}`;
-      await app.cache.default.set(cacheKey, config.config_value, 0);
+      const cacheKey = `config:${config.configKey}`;
+      await app.cache.default.set(cacheKey, config.configValue, 0);
     }
     
     ctx.logger.info('参数配置缓存加载完成');

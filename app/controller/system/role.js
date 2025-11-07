@@ -332,8 +332,8 @@ module.exports = app => {
         const roleId = parseInt(params.roleId);
         const filteredList = [];
         for (const user of list) {
-          const userRoles = await service.system.role.selectRolesByUserId(user.user_id);
-          if (userRoles.some(r => r.role_id === roleId)) {
+          const userRoles = await service.system.role.selectRolesByUserId(user.userId);
+          if (userRoles.some(r => r.roleId === roleId)) {
             filteredList.push(user);
           }
         }
@@ -388,8 +388,8 @@ module.exports = app => {
         const roleId = parseInt(params.roleId);
         const filteredList = [];
         for (const user of list) {
-          const userRoles = await service.system.role.selectRolesByUserId(user.user_id);
-          if (!userRoles.some(r => r.role_id === roleId)) {
+          const userRoles = await service.system.role.selectRolesByUserId(user.userId);
+          if (!userRoles.some(r => r.roleId === roleId)) {
             filteredList.push(user);
           }
         }

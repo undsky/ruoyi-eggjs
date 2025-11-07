@@ -63,7 +63,7 @@ module.exports = app => {
         const excludeDeptId = parseInt(deptId);
         const filteredDepts = depts.filter(d => {
           // 排除自己
-          if (d.dept_id === excludeDeptId) {
+          if (d.deptId === excludeDeptId) {
             return false;
           }
           

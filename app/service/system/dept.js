@@ -55,12 +55,12 @@ class DeptService extends Service {
     const { ctx } = this;
     
     // 找出所有部门ID
-    const deptIds = depts.map(d => d.dept_id);
+    const deptIds = depts.map(d => d.deptId);
     
     // 找出顶级节点（父节点不在列表中的）
     const tree = [];
     depts.forEach(dept => {
-      if (!deptIds.includes(dept.parent_id)) {
+      if (!deptIds.includes(dept.parentId)) {
         this.recursionFn(depts, dept);
         tree.push(dept);
       }
@@ -75,7 +75,7 @@ class DeptService extends Service {
    * @param {object} dept - 当前部门
    */
   recursionFn(depts, dept) {
-    const children = depts.filter(d => d.parent_id === dept.dept_id);
+    const children = depts.filter(d => d.parentId === dept.deptId);
     
     if (children.length > 0) {
       dept.children = children;
@@ -105,8 +105,8 @@ class DeptService extends Service {
     
     depts.forEach(dept => {
       const node = {
-        id: dept.dept_id,
-        label: dept.dept_name
+        id: dept.deptId,
+        label: dept.deptName
       };
       
       if (dept.children && dept.children.length > 0) {
@@ -142,7 +142,7 @@ class DeptService extends Service {
     
     // 查询角色信息
     const role = await ctx.service.system.role.selectRoleById(roleId);
-    const deptCheckStrictly = role && role.dept_check_strictly;
+    const deptCheckStrictly = role && role.deptCheckStrictly;
     
     const sql = `
       SELECT d.dept_id
@@ -156,7 +156,7 @@ class DeptService extends Service {
     const params = deptCheckStrictly ? [roleId, roleId] : [roleId];
     const depts = await ctx.app.mysql.get('ruoyi').query(sql, params);
     
-    return depts.map(d => d.dept_id);
+    return depts.map(d => d.deptId);
   }
 
   /**
@@ -175,7 +175,7 @@ class DeptService extends Service {
     
     const depts = await ctx.service.db.mysql.ruoyi.sysDeptMapper.checkDeptNameUnique([conditions]);
     
-    if (depts && depts.length > 0 && depts[0].dept_id !== deptId) {
+    if (depts && depts.length > 0 && depts[0].deptId !== deptId) {
       return false;
     }
     
@@ -292,7 +292,7 @@ class DeptService extends Service {
     
     if (newParentDept && oldDept) {
       // 计算新的祖级列表
-      const newAncestors = `${newParentDept.ancestors},${newParentDept.dept_id}`;
+      const newAncestors = `${newParentDept.ancestors},${newParentDept.deptId}`;
       const oldAncestors = oldDept.ancestors;
       
       dept.ancestors = newAncestors;

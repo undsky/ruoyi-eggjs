@@ -6,6 +6,16 @@
 
 const Service = require('egg').Service;
 
+// 菜单常量
+const TYPE_DIR = 'M';     // 目录
+const TYPE_MENU = 'C';    // 菜单
+const TYPE_BUTTON = 'F';  // 按钮
+const YES_FRAME = 0;      // 是外链
+const NO_FRAME = 1;       // 否外链
+const LAYOUT = 'Layout';
+const PARENT_VIEW = 'ParentView';
+const INNER_LINK = 'InnerLink';
+
 class MenuService extends Service {
 
   /**
@@ -103,33 +113,14 @@ class MenuService extends Service {
     
     // 如果是管理员，查询所有菜单
     if (ctx.helper.isAdmin(userId)) {
-      const sql = `
-        SELECT DISTINCT m.menu_id, m.parent_id, m.menu_name, m.path, m.component,
-               m.query, m.route_name, m.visible, m.status, m.perms, m.is_frame, m.is_cache, m.menu_type,
-               m.icon, m.order_num, m.create_time
-        FROM sys_menu m
-        WHERE m.menu_type IN ('M', 'C') AND m.status = '0'
-        ORDER BY m.parent_id, m.order_num
-      `;
-      menus = await ctx.app.mysql.get('ruoyi').query(sql);
+      menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuTreeAll();
     } else {
       // 查询用户菜单
-      const sql = `
-        SELECT DISTINCT m.menu_id, m.parent_id, m.menu_name, m.path, m.component,
-               m.query, m.route_name, m.visible, m.status, m.perms, m.is_frame, m.is_cache, m.menu_type,
-               m.icon, m.order_num, m.create_time
-        FROM sys_menu m
-        LEFT JOIN sys_role_menu rm ON m.menu_id = rm.menu_id
-        LEFT JOIN sys_user_role ur ON ur.role_id = rm.role_id
-        LEFT JOIN sys_role ro ON ro.role_id = ur.role_id
-        WHERE ur.user_id = ? AND m.menu_type IN ('M', 'C') AND m.status = '0' AND ro.status = '0'
-        ORDER BY m.parent_id, m.order_num
-      `;
-      menus = await ctx.app.mysql.get('ruoyi').query(sql, [userId]);
+      menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuTreeByUserId([],{userId});
     }
     
-    // 构建菜单树
-    return this.buildRouterMenuTree(menus, 0);
+    // 使用 getChildPerms 构建菜单树
+    return this.getChildPerms(menus, 0);
   }
 
   /**
@@ -142,19 +133,19 @@ class MenuService extends Service {
     const tree = [];
     
     menus.forEach(menu => {
-      if (menu.parent_id === parentId) {
-        const children = this.buildRouterMenuTree(menus, menu.menu_id);
+      if (menu.parentId === parentId) {
+        const children = this.buildRouterMenuTree(menus, menu.menuId);
         
         const menuNode = {
-          name: menu.route_name || menu.menu_name,
+          name: menu.routeName || menu.menuName,
           path: menu.path,
           hidden: menu.visible === '1',
           component: menu.component,
           query: menu.query,
           meta: {
-            title: menu.menu_name,
+            title: menu.menuName,
             icon: menu.icon,
-            noCache: menu.is_cache === '1',
+            noCache: menu.isCache === '1',
             link: menu.path
           }
         };
@@ -173,6 +164,26 @@ class MenuService extends Service {
   }
 
   /**
+   * 根据父节点ID获取所有子节点
+   * @param {array} list - 菜单列表
+   * @param {number} parentId - 父节点ID
+   * @return {array} 子节点列表
+   */
+  getChildPerms(list, parentId) {
+    const returnList = [];
+    
+    for (const menu of list) {
+      // 根据传入的某个父节点ID，遍历该父节点的所有子节点
+      if (menu.parentId === parentId) {
+        this.recursionFn(list, menu);
+        returnList.push(menu);
+      }
+    }
+    
+    return returnList;
+  }
+
+  /**
    * 构建菜单树（用于管理界面）
    * @param {array} menus - 菜单列表
    * @return {array} 菜单树
@@ -181,12 +192,12 @@ class MenuService extends Service {
     const { ctx } = this;
     
     // 找出所有菜单ID
-    const menuIds = menus.map(m => m.menu_id);
+    const menuIds = menus.map(m => m.menuId);
     
     // 找出顶级节点（父节点不在列表中的）
     const tree = [];
     menus.forEach(menu => {
-      if (!menuIds.includes(menu.parent_id)) {
+      if (!menuIds.includes(menu.parentId)) {
         this.recursionFn(menus, menu);
         tree.push(menu);
       }
@@ -196,19 +207,48 @@ class MenuService extends Service {
   }
 
   /**
-   * 递归查找子菜单
-   * @param {array} menus - 菜单列表
-   * @param {object} menu - 当前菜单
+   * 递归列表
+   * @param {array} list - 菜单列表
+   * @param {object} t - 当前菜单节点
    */
-  recursionFn(menus, menu) {
-    const children = menus.filter(m => m.parent_id === menu.menu_id);
+  recursionFn(list, t) {
+    // 得到子节点列表
+    const childList = this.getChildList(list, t);
+    t.children = childList;
     
-    if (children.length > 0) {
-      menu.children = children;
-      children.forEach(child => {
-        this.recursionFn(menus, child);
-      });
+    for (const tChild of childList) {
+      if (this.hasChild(list, tChild)) {
+        this.recursionFn(list, tChild);
+      }
     }
+  }
+
+  /**
+   * 得到子节点列表
+   * @param {array} list - 菜单列表
+   * @param {object} t - 当前菜单节点
+   * @return {array} 子节点列表
+   */
+  getChildList(list, t) {
+    const tlist = [];
+    
+    for (const n of list) {
+      if (n.parentId === t.menuId) {
+        tlist.push(n);
+      }
+    }
+    
+    return tlist;
+  }
+
+  /**
+   * 判断是否有子节点
+   * @param {array} list - 菜单列表
+   * @param {object} t - 当前菜单节点
+   * @return {boolean} 是否有子节点
+   */
+  hasChild(list, t) {
+    return this.getChildList(list, t).length > 0;
   }
 
   /**
@@ -231,8 +271,8 @@ class MenuService extends Service {
     
     menus.forEach(menu => {
       const node = {
-        id: menu.menu_id,
-        label: menu.menu_name
+        id: menu.menuId,
+        label: menu.menuName
       };
       
       if (menu.children && menu.children.length > 0) {
@@ -255,21 +295,10 @@ class MenuService extends Service {
     
     // 查询角色信息
     const role = await ctx.service.system.role.selectRoleById(roleId);
-    const menuCheckStrictly = role && role.menu_check_strictly;
+    const menuCheckStrictly = role && role.menuCheckStrictly;
+
+    return await ctx.service.db.mysql.ruoyi.sysMenuMapper.selectMenuListByRoleId([],{roleId,menuCheckStrictly});
     
-    const sql = `
-      SELECT m.menu_id
-      FROM sys_menu m
-      LEFT JOIN sys_role_menu rm ON m.menu_id = rm.menu_id
-      WHERE rm.role_id = ?
-      ${menuCheckStrictly ? 'AND m.menu_id NOT IN (SELECT m.parent_id FROM sys_menu m INNER JOIN sys_role_menu rm ON m.menu_id = rm.menu_id AND rm.role_id = ?)' : ''}
-      ORDER BY m.parent_id, m.order_num
-    `;
-    
-    const params = menuCheckStrictly ? [roleId, roleId] : [roleId];
-    const menus = await ctx.app.mysql.get('ruoyi').query(sql, params);
-    
-    return menus.map(m => m.menu_id);
   }
 
   /**
@@ -288,7 +317,7 @@ class MenuService extends Service {
     
     const menus = await ctx.service.db.mysql.ruoyi.sysMenuMapper.checkMenuNameUnique([conditions]);
     
-    if (menus && menus.length > 0 && menus[0].menu_id !== menuId) {
+    if (menus && menus.length > 0 && menus[0].menuId !== menuId) {
       return false;
     }
     
@@ -371,6 +400,233 @@ class MenuService extends Service {
     const result = await ctx.service.db.mysql.ruoyi.sysMenuMapper.deleteMenuById([menuId]);
     
     return result && result.length > 0 ? 1 : 0;
+  }
+
+  /**
+   * 根据角色ID查询权限标识
+   * @param {number} roleId - 角色ID
+   * @return {array} 权限标识列表
+   */
+  async selectMenuPermsByRoleId(roleId) {
+    const { ctx } = this;
+    
+    const sql = `
+      SELECT DISTINCT m.perms
+      FROM sys_menu m
+      LEFT JOIN sys_role_menu rm ON m.menu_id = rm.menu_id
+      WHERE m.status = '0' AND rm.role_id = ?
+    `;
+    
+    const rows = await ctx.app.mysql.get('ruoyi').query(sql, [roleId]);
+    
+    const perms = [];
+    rows.forEach(row => {
+      if (row.perms && row.perms.trim()) {
+        perms.push(...row.perms.trim().split(','));
+      }
+    });
+    
+    return [...new Set(perms)];  // 去重
+  }
+
+  /**
+   * 构建前端路由所需要的菜单（完整版）
+   * @param {array} menus - 菜单列表
+   * @return {array} 路由列表
+   */
+  buildMenus(menus) {
+    const routers = [];
+    
+    for (const menu of menus) {
+      const router = {
+        hidden: menu.visible === '1',
+        name: this.getRouteName(menu),
+        path: this.getRouterPath(menu),
+        component: this.getComponent(menu),
+        query: menu.query,
+        meta: {
+          title: menu.menuName,
+          icon: menu.icon,
+          noCache: menu.isCache === '1',
+          link: menu.path
+        }
+      };
+      
+      const cMenus = menu.children || [];
+      
+      // 目录类型并且有子菜单
+      if (cMenus.length > 0 && menu.menuType === TYPE_DIR) {
+        router.alwaysShow = true;
+        router.redirect = 'noRedirect';
+        router.children = this.buildMenus(cMenus);
+      }
+      // 菜单内部跳转
+      else if (this.isMenuFrame(menu)) {
+        router.meta = null;
+        const children = {
+          path: menu.path,
+          component: menu.component,
+          name: this.getRouteNameFromPath(menu.routeName, menu.path),
+          meta: {
+            title: menu.menuName,
+            icon: menu.icon,
+            noCache: menu.isCache === '1',
+            link: menu.path
+          },
+          query: menu.query
+        };
+        router.children = [children];
+      }
+      // 一级目录内链
+      else if (menu.parentId === 0 && this.isInnerLink(menu)) {
+        router.meta = {
+          title: menu.menuName,
+          icon: menu.icon
+        };
+        router.path = '/';
+        const routerPath = this.innerLinkReplaceEach(menu.path);
+        const children = {
+          path: routerPath,
+          component: INNER_LINK,
+          name: this.getRouteNameFromPath(menu.routeName, routerPath),
+          meta: {
+            title: menu.menuName,
+            icon: menu.icon,
+            link: menu.path
+          }
+        };
+        router.children = [children];
+      }
+      
+      routers.push(router);
+    }
+    
+    return routers;
+  }
+
+  /**
+   * 获取路由名称
+   * @param {object} menu - 菜单信息
+   * @return {string} 路由名称
+   */
+  getRouteName(menu) {
+    // 非外链并且是一级目录（类型为目录）
+    if (this.isMenuFrame(menu)) {
+      return '';
+    }
+    return this.getRouteNameFromPath(menu.routeName, menu.path);
+  }
+
+  /**
+   * 获取路由名称，如没有配置路由名称则取路由地址
+   * @param {string} name - 路由名称
+   * @param {string} path - 路由地址
+   * @return {string} 路由名称（首字母大写）
+   */
+  getRouteNameFromPath(name, path) {
+    const routerName = name || path || '';
+    // 首字母大写
+    return routerName.charAt(0).toUpperCase() + routerName.slice(1);
+  }
+
+  /**
+   * 获取路由地址
+   * @param {object} menu - 菜单信息
+   * @return {string} 路由地址
+   */
+  getRouterPath(menu) {
+    let routerPath = menu.path;
+    
+    // 内链打开外网方式
+    if (menu.parentId !== 0 && this.isInnerLink(menu)) {
+      routerPath = this.innerLinkReplaceEach(routerPath);
+    }
+    // 非外链并且是一级目录（类型为目录）
+    else if (menu.parentId === 0 && menu.menuType === TYPE_DIR && menu.isFrame === NO_FRAME) {
+      routerPath = '/' + menu.path;
+    }
+    // 非外链并且是一级目录（类型为菜单）
+    else if (this.isMenuFrame(menu)) {
+      routerPath = '/';
+    }
+    
+    return routerPath;
+  }
+
+  /**
+   * 获取组件信息
+   * @param {object} menu - 菜单信息
+   * @return {string} 组件信息
+   */
+  getComponent(menu) {
+    let component = LAYOUT;
+    
+    if (menu.component && !this.isMenuFrame(menu)) {
+      component = menu.component;
+    }
+    else if (!menu.component && menu.parentId !== 0 && this.isInnerLink(menu)) {
+      component = INNER_LINK;
+    }
+    else if (!menu.component && this.isParentView(menu)) {
+      component = PARENT_VIEW;
+    }
+    
+    return component;
+  }
+
+  /**
+   * 是否为菜单内部跳转
+   * @param {object} menu - 菜单信息
+   * @return {boolean} 结果
+   */
+  isMenuFrame(menu) {
+    return menu.parentId === 0 
+      && menu.menuType === TYPE_MENU 
+      && menu.isFrame === NO_FRAME;
+  }
+
+  /**
+   * 是否为内链组件
+   * @param {object} menu - 菜单信息
+   * @return {boolean} 结果
+   */
+  isInnerLink(menu) {
+    return menu.isFrame === NO_FRAME && this.isHttp(menu.path);
+  }
+
+  /**
+   * 是否为parent_view组件
+   * @param {object} menu - 菜单信息
+   * @return {boolean} 结果
+   */
+  isParentView(menu) {
+    return menu.parentId !== 0 && menu.menuType === TYPE_DIR;
+  }
+
+  /**
+   * 判断是否为http(s)://开头
+   * @param {string} link - 链接
+   * @return {boolean} 结果
+   */
+  isHttp(link) {
+    if (!link) return false;
+    return link.startsWith('http://') || link.startsWith('https://');
+  }
+
+  /**
+   * 内链域名特殊字符替换
+   * @param {string} path - 路径
+   * @return {string} 替换后的内链域名
+   */
+  innerLinkReplaceEach(path) {
+    if (!path) return '';
+    
+    return path
+      .replace(/http:\/\//g, '')
+      .replace(/https:\/\//g, '')
+      .replace(/www\./g, '')
+      .replace(/\./g, '/')
+      .replace(/:/g, '/');
   }
 }
 
