@@ -30,7 +30,7 @@
     "lodash": "^4.17.21",
     "nanoid": "^3.3.7",
     "ruoyi-eggjs-cache": "^1",
-    "ruoyi-eggjs-mybatis": "^1",
+    "ruoyi-eggjs-mybatis": "^1.1.6",
     "ruoyi-eggjs-mysql": "^1.1.7",
     "ruoyi-eggjs-ratelimiter": "^1",
     "stream-wormhole": "^2.0.1",
