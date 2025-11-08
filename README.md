@@ -35,8 +35,6 @@
 + `/api/system/user/import` - 导入用户
 + `/api/system/user/importTemplate` - 导入模板
 
-📖 详细 API 文档: [用户管理 API 文档](docs/USER_MANAGEMENT_API.md)
-
 #### 角色管理模块
 + `/api/system/role/list` - 角色列表（分页）
 + `/api/system/role/:roleId` - 角色详情
@@ -53,8 +51,6 @@
 + `/api/system/role/deptTree/:roleId` - 角色部门树
 + `/api/system/role/export` - 导出角色
 
-📖 详细 API 文档: [角色管理 API 文档](docs/ROLE_MANAGEMENT_API.md)
-
 #### 菜单管理模块
 + `/api/system/menu/list` - 菜单列表（树形）
 + `/api/system/menu/:menuId` - 菜单详情
@@ -63,8 +59,6 @@
 + `/api/system/menu/:menuId` (DELETE) - 删除菜单
 + `/api/system/menu/treeselect` - 菜单树选择
 + `/api/system/menu/roleMenuTreeselect/:roleId` - 角色菜单树
-
-📖 详细 API 文档: [菜单管理 API 文档](docs/MENU_MANAGEMENT_API.md)
 
 #### 部门管理模块
 + `/api/system/dept/list` - 部门列表（树形）
@@ -76,8 +70,6 @@
 + `/api/system/dept/treeselect` - 部门树选择
 + `/api/system/dept/roleDeptTreeselect/:roleId` - 角色部门树
 
-📖 详细 API 文档: [部门管理 API 文档](docs/DEPT_MANAGEMENT_API.md)
-
 #### 岗位管理模块
 + `/api/system/post/list` - 岗位列表（分页）
 + `/api/system/post/:postId` - 岗位详情
@@ -85,8 +77,6 @@
 + `/api/system/post` (PUT) - 修改岗位
 + `/api/system/post/:postIds` (DELETE) - 删除岗位
 + `/api/system/post/export` - 导出岗位
-
-📖 详细 API 文档: [岗位管理 API 文档](docs/POST_MANAGEMENT_API.md)
 
 #### 字典类型管理模块
 + `/api/system/dict/type/list` - 字典类型列表（分页）
@@ -98,8 +88,6 @@
 + `/api/system/dict/type/optionselect` - 字典选择框列表
 + `/api/system/dict/type/export` - 导出字典类型
 
-📖 详细 API 文档: [字典类型管理 API 文档](docs/DICT_TYPE_MANAGEMENT_API.md)
-
 #### 字典数据管理模块
 + `/api/system/dict/data/list` - 字典数据列表（分页）
 + `/api/system/dict/data/:dictCode` - 字典数据详情
@@ -108,8 +96,6 @@
 + `/api/system/dict/data` (PUT) - 修改字典数据
 + `/api/system/dict/data/:dictCodes` (DELETE) - 删除字典数据
 + `/api/system/dict/data/export` - 导出字典数据
-
-📖 详细 API 文档: [字典数据管理 API 文档](docs/DICT_DATA_MANAGEMENT_API.md)
 
 #### 参数配置管理模块
 + `/api/system/config/list` - 参数配置列表（分页）
@@ -121,16 +107,12 @@
 + `/api/system/config/refreshCache` (DELETE) - 刷新参数缓存
 + `/api/system/config/export` - 导出参数配置
 
-📖 详细 API 文档: [参数配置管理 API 文档](docs/CONFIG_MANAGEMENT_API.md)
-
 #### 通知公告管理模块
 + `/api/system/notice/list` - 通知公告列表（分页）
 + `/api/system/notice/:noticeId` - 通知公告详情
 + `/api/system/notice` (POST) - 新增通知公告
 + `/api/system/notice` (PUT) - 修改通知公告
 + `/api/system/notice/:noticeIds` (DELETE) - 删除通知公告
-
-📖 详细 API 文档: [通知公告管理 API 文档](docs/NOTICE_MANAGEMENT_API.md)
 
 ---
 
@@ -140,8 +122,6 @@
 + `/api/monitor/online/list` - 在线用户列表
 + `/api/monitor/online/:tokenId` (DELETE) - 强退用户
 
-📖 详细 API 文档: [在线用户监控 API 文档](docs/ONLINE_USER_MONITORING_API.md)
-
 #### 登录日志监控
 + `/api/monitor/logininfor/list` - 登录日志列表（分页）
 + `/api/monitor/logininfor/:infoIds` (DELETE) - 删除登录日志
@@ -149,20 +129,14 @@
 + `/api/monitor/logininfor/unlock/:userName` - 解锁用户
 + `/api/monitor/logininfor/export` - 导出登录日志
 
-📖 详细 API 文档: [登录日志监控 API 文档](docs/LOGININFOR_MONITORING_API.md)
-
 #### 操作日志监控
 + `/api/monitor/operlog/list` - 操作日志列表（分页）
 + `/api/monitor/operlog/:operIds` (DELETE) - 删除操作日志
 + `/api/monitor/operlog/clean` (DELETE) - 清空操作日志
 + `/api/monitor/operlog/export` - 导出操作日志
 
-📖 详细 API 文档: [操作日志监控 API 文档](docs/OPERLOG_MONITORING_API.md)
-
 #### 服务监控
 + `/api/monitor/server` - 获取服务器信息
-
-📖 详细 API 文档: [服务监控 API 文档](docs/SERVER_MONITORING_API.md)
 
 #### 缓存监控
 + `/api/monitor/cache` - 缓存信息
@@ -173,8 +147,6 @@
 + `/api/monitor/cache/clearCacheKey/:cacheKey` (DELETE) - 清空缓存键值
 + `/api/monitor/cache/clearCacheAll` (DELETE) - 清空全部缓存
 
-📖 详细 API 文档: [缓存监控 API 文档](docs/CACHE_MONITORING_API.md)
-
 #### 定时任务监控 ✨ NEW
 + `/api/monitor/job/list` - 定时任务列表（分页）
 + `/api/monitor/job/:jobId` - 定时任务详情
@@ -184,8 +156,6 @@
 + `/api/monitor/job/changeStatus` - 修改状态
 + `/api/monitor/job/run` - 立即执行
 + `/api/monitor/job/export` - 导出定时任务
-
-📖 详细 API 文档: [定时任务监控 API 文档](docs/JOB_MONITORING_API.md)
 
 **注意**: 定时任务为简化实现，完整功能需集成 node-cron 或 agenda
 
@@ -207,8 +177,6 @@
 + `/api/tool/gen/synchDb/:tableName` - 同步数据库
 + `/api/tool/gen/batchGenCode` - 批量生成代码
 
-📖 详细 API 文档: [代码生成工具 API 文档](docs/GEN_TOOL_API.md)
-
 **注意**: 代码生成为简化实现，建议使用 **ruoyi-eggjs-cli** 命令行工具
 
 ---
@@ -221,8 +189,6 @@
 + `/api/system/user/profile/updatePwd` - 修改密码
 + `/api/system/user/profile/avatar` - 上传头像
 
-📖 详细 API 文档: [个人中心 API 文档](docs/PROFILE_API.md)
-
 ---
 
 ### 公共接口模块
@@ -231,8 +197,6 @@
 + `/api/common/upload` - 文件上传
 + `/api/common/download` - 文件下载
 + `/api/common/download/resource` - 本地资源下载
-
-📖 详细 API 文档: [公共接口 API 文档](docs/COMMON_API.md)
 
 
 
@@ -248,7 +212,7 @@
 - 📝 **文件模版** - 使用 VSCode 插件快速生成代码模板（[文档](https://marketplace.visualstudio.com/items?itemName=qiu8310.dot-template-vscode)）
 - 🎯 **路由注解** - 使用装饰器定义路由，简洁优雅（[文档](https://github.com/fyl080801/egg-decorator-router)）
 - 🔐 **JWT 认证** - 基于 JWT 的用户认证和权限控制
-- 🔒 **权限控制** ✨ NEW - 类似 Spring Boot `@PreAuthorize` 的权限装饰器，支持通配符、AND/OR 逻辑（[文档](./docs/PERMISSION_QUICK_START.md)）
+- 🔒 **权限控制** ✨ NEW - 类似 Spring Boot `@PreAuthorize` 的权限装饰器，支持通配符、AND/OR 逻辑
 - 🚀 **缓存支持** - 多层级缓存策略（内存、文件、Redis）
 - 🛡️ **限流保护** - API 请求频率限制，防止恶意攻击
 - 📦 **文件上传** - 支持多种文件类型上传
@@ -763,14 +727,12 @@ server {
 - [x] 统一响应格式
 
 #### 认证授权模块 (NEW! 🎉)
-- [x] **用户登录**：用户名密码认证、JWT Token 生成 ([文档](docs/AUTH_MODULE_README.md))
+- [x] **用户登录**：用户名密码认证、JWT Token 生成
 - [x] **用户登出**：Token 黑名单、在线用户管理
 - [x] **获取用户信息**：用户基本信息、角色、权限查询
 - [x] **获取路由菜单**：基于权限的菜单树生成
 - [x] **用户注册**：用户注册功能（可配置开关）
 - [x] **验证码**：SVG 验证码生成和校验
-
-**快速开始**：[认证模块快速测试指南](docs/QUICK_START_AUTH.md)
 
 #### 权限控制模块 (NEW! 🎉 2025-10-27)
 - [x] **@RequiresPermissions**：权限验证装饰器，类似 Spring Boot `@PreAuthorize`
@@ -779,13 +741,6 @@ server {
 - [x] **权限缓存**：Redis 缓存用户权限和角色（10分钟）
 - [x] **通配符支持**：支持 `*:*:*`、`system:*:*` 等通配符权限
 - [x] **AND/OR 逻辑**：支持多权限逻辑组合
-- [x] **完整文档**：2400+ 行详细文档和示例
-
-**快速开始**：[权限控制快速上手（5分钟）](docs/PERMISSION_QUICK_START.md)  
-**详细文档**：
-- [权限控制完整指南](docs/PERMISSION_GUIDE.md) - 700+ 行详细说明
-- [权限控制实现总结](docs/PERMISSION_IMPLEMENTATION.md) - 技术实现细节
-- [示例代码](app/controller/system/config_with_permission.example.js) - 完整使用示例
 
 ### ⏳ 待实现（TODO）
 
