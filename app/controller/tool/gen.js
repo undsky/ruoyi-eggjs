@@ -106,19 +106,19 @@ module.exports = app => {
       try {
         const { tableId } = ctx.params;
         
-        // 查询表信息
+        // 查询表信息（已包含列信息）
         const table = await service.tool.gen.selectGenTableById(parseInt(tableId));
         
-        // 查询表字段
-        const columns = await service.tool.gen.selectGenTableColumnListByTableId(parseInt(tableId));
+        // 查询所有表信息（用于主子表选择）
+        const tables = await service.tool.gen.selectGenTableAll();
         
         ctx.body = {
           code: 200,
           msg: '操作成功',
           data: {
             info: table,
-            rows: columns,
-            tables: []
+            rows: table ? table.columns : [],
+            tables: tables
           }
         };
       } catch (err) {
@@ -182,10 +182,7 @@ module.exports = app => {
         
         ctx.body = {
           code: 200,
-          msg: rows > 0 ? '导入成功' : '导入失败',
-          data: {
-            note: '代码生成功能为简化实现，建议使用 ruoyi-eggjs-cli 工具'
-          }
+          msg: rows > 0 ? '导入成功' : '导入失败'
         };
       } catch (err) {
         ctx.logger.error('导入表结构失败:', err);

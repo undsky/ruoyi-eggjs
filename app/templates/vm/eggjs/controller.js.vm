@@ -1,0 +1,108 @@
+/*
+ * @Description: ${functionName}控制器
+ * @Author: ${author}
+ * @Date: ${datetime}
+ */
+
+const Controller = require('egg').Controller;
+const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
+const { RequiresPermissions } = require('../../decorator/permission');
+
+module.exports = app => {
+
+  @Route('/api/${moduleName}/${businessName}')
+  class ${ClassName}Controller extends Controller {
+
+    /**
+     * 查询${functionName}列表
+     * GET /api/${moduleName}/${businessName}/list
+     * 权限：${permissionPrefix}:list
+     */
+    @RequiresPermissions('${permissionPrefix}:list')
+    @HttpGet('/list')
+    async list() {
+      const { ctx } = this;
+      
+      const result = await ctx.service.${moduleName}.${businessName}.select${ClassName}List(
+        ctx.helper.page(ctx.query),
+        ctx.query
+      );
+      
+      ctx.body = result;
+    }
+
+    /**
+     * 查询${functionName}详情
+     * GET /api/${moduleName}/${businessName}/:${pkColumn.javaField}
+     * 权限：${permissionPrefix}:query
+     */
+    @RequiresPermissions('${permissionPrefix}:query')
+    @HttpGet('/:${pkColumn.javaField}')
+    async getInfo() {
+      const { ctx } = this;
+      const { ${pkColumn.javaField} } = ctx.params;
+      
+      const result = await ctx.service.${moduleName}.${businessName}.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField});
+      
+      ctx.body = { code: 200, msg: '操作成功', data: result };
+    }
+
+    /**
+     * 新增${functionName}
+     * POST /api/${moduleName}/${businessName}
+     * 权限：${permissionPrefix}:add
+     */
+    @RequiresPermissions('${permissionPrefix}:add')
+    @HttpPost('/')
+    async add() {
+      const { ctx } = this;
+      const data = ctx.request.body;
+      
+      // 添加创建人信息
+      data.createBy = ctx.state.user.userName;
+      
+      const result = await ctx.service.${moduleName}.${businessName}.insert${ClassName}(data);
+      
+      ctx.body = result;
+    }
+
+    /**
+     * 修改${functionName}
+     * PUT /api/${moduleName}/${businessName}
+     * 权限：${permissionPrefix}:edit
+     */
+    @RequiresPermissions('${permissionPrefix}:edit')
+    @HttpPut('/')
+    async edit() {
+      const { ctx } = this;
+      const data = ctx.request.body;
+      
+      // 添加更新人信息
+      data.updateBy = ctx.state.user.userName;
+      
+      const result = await ctx.service.${moduleName}.${businessName}.update${ClassName}(data);
+      
+      ctx.body = result;
+    }
+
+    /**
+     * 删除${functionName}
+     * DELETE /api/${moduleName}/${businessName}/:${pkColumn.javaField}s
+     * 权限：${permissionPrefix}:remove
+     */
+    @RequiresPermissions('${permissionPrefix}:remove')
+    @HttpDelete('/:${pkColumn.javaField}s')
+    async remove() {
+      const { ctx } = this;
+      const { ${pkColumn.javaField}s } = ctx.params;
+      
+      const ids = ${pkColumn.javaField}s.split(',');
+      const result = await ctx.service.${moduleName}.${businessName}.delete${ClassName}By${pkColumn.capJavaField}s(ids);
+      
+      ctx.body = result;
+    }
+  }
+
+  return ${ClassName}Controller;
+};
+

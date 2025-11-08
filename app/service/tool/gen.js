@@ -1,10 +1,16 @@
 /*
  * @Description: 代码生成服务层
- * @Author: AI Assistant
- * @Date: 2025-10-24
+ * @Author: 姜彦汐
+ * @Date: 2025-11-08
  */
 
 const Service = require('egg').Service;
+const path = require('path');
+const fs = require('fs-extra');
+const archiver = require('archiver');
+const GenUtils = require('../../util/genUtils');
+const VelocityUtils = require('../../util/velocityUtils');
+const GenConstants = require('../../constant/genConstants');
 
 class GenService extends Service {
 
@@ -16,11 +22,17 @@ class GenService extends Service {
   async selectGenTableList(genTable = {}) {
     const { ctx } = this;
     
-    // 注意：简化实现
-    // 实际项目需要创建 gen_table 表存储代码生成配置
-    
-    // 示例：返回空列表
-    return [];
+    try {
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.selectGenTableList(
+        {},
+        genTable
+      );
+      
+      return result || [];
+    } catch (err) {
+      ctx.logger.error('查询代码生成表列表失败:', err);
+      return [];
+    }
   }
 
   /**
@@ -32,31 +44,49 @@ class GenService extends Service {
     const { ctx } = this;
     
     try {
-      // 查询数据库中的所有表
-      const sql = `
-        SELECT 
-          table_name as tableName,
-          table_comment as tableComment,
-          create_time as createTime,
-          update_time as updateTime
-        FROM information_schema.tables
-        WHERE table_schema = (SELECT DATABASE())
-          AND table_name NOT LIKE 'qrtz_%'
-          AND table_name NOT LIKE 'gen_%'
-        ${genTable.tableName ? "AND table_name LIKE CONCAT('%', ?, '%')" : ''}
-        ${genTable.tableComment ? "AND table_comment LIKE CONCAT('%', ?, '%')" : ''}
-        ORDER BY create_time DESC
-      `;
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.selectDbTableList(
+        {},
+        genTable
+      );
       
-      const params = [];
-      if (genTable.tableName) params.push(genTable.tableName);
-      if (genTable.tableComment) params.push(genTable.tableComment);
-      
-      const tables = await ctx.app.mysql.get('ruoyi').query(sql, params);
-      
-      return tables || [];
+      return result || [];
     } catch (err) {
       ctx.logger.error('查询数据库表列表失败:', err);
+      return [];
+    }
+  }
+
+  /**
+   * 根据表名查询数据库表列表
+   * @param {array} tableNames - 表名数组
+   * @return {array} 数据库表列表
+   */
+  async selectDbTableListByNames(tableNames) {
+    const { ctx } = this;
+    
+    try {
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.selectDbTableListByNames([tableNames]);
+      
+      return result || [];
+    } catch (err) {
+      ctx.logger.error('查询数据库表列表失败:', err);
+      return [];
+    }
+  }
+
+  /**
+   * 查询所有表信息
+   * @return {array} 表信息集合
+   */
+  async selectGenTableAll() {
+    const { ctx } = this;
+    
+    try {
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.selectGenTableAll([]);
+      
+      return result || [];
+    } catch (err) {
+      ctx.logger.error('查询所有表信息失败:', err);
       return [];
     }
   }
@@ -67,8 +97,50 @@ class GenService extends Service {
    * @return {object} 表信息
    */
   async selectGenTableById(tableId) {
-    // 注意：简化实现
-    return null;
+    const { ctx } = this;
+    
+    try {
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.selectGenTableById([tableId]);
+      
+      if (result && result.length > 0) {
+        const genTable = result[0];
+        await this.setTableFromOptions(genTable);
+        // 查询列信息
+        genTable.columns = await this.selectGenTableColumnListByTableId(tableId);
+        return genTable;
+      }
+      
+      return null;
+    } catch (err) {
+      ctx.logger.error('查询代码生成表信息失败:', err);
+      return null;
+    }
+  }
+
+  /**
+   * 根据表名查询代码生成表信息
+   * @param {string} tableName - 表名
+   * @return {object} 表信息
+   */
+  async selectGenTableByName(tableName) {
+    const { ctx } = this;
+    
+    try {
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.selectGenTableByName([tableName]);
+      
+      if (result && result.length > 0) {
+        const genTable = result[0];
+        await this.setTableFromOptions(genTable);
+        // 查询列信息
+        genTable.columns = await this.selectGenTableColumnListByTableId(genTable.tableId);
+        return genTable;
+      }
+      
+      return null;
+    } catch (err) {
+      ctx.logger.error('查询代码生成表信息失败:', err);
+      return null;
+    }
   }
 
   /**
@@ -77,8 +149,16 @@ class GenService extends Service {
    * @return {array} 字段列表
    */
   async selectGenTableColumnListByTableId(tableId) {
-    // 注意：简化实现
-    return [];
+    const { ctx } = this;
+    
+    try {
+      const result = await ctx.service.db.mysql.ruoyi.genTableColumnMapper.selectGenTableColumnListByTableId([tableId]);
+      
+      return result || [];
+    } catch (err) {
+      ctx.logger.error('查询表字段列表失败:', err);
+      return [];
+    }
   }
 
   /**
@@ -90,24 +170,9 @@ class GenService extends Service {
     const { ctx } = this;
     
     try {
-      const sql = `
-        SELECT 
-          column_name as columnName,
-          column_comment as columnComment,
-          column_type as columnType,
-          data_type as dataType,
-          column_key as columnKey,
-          extra,
-          is_nullable as isNullable
-        FROM information_schema.columns
-        WHERE table_schema = (SELECT DATABASE())
-          AND table_name = ?
-        ORDER BY ordinal_position
-      `;
+      const result = await ctx.service.db.mysql.ruoyi.genTableColumnMapper.selectDbTableColumnsByName([tableName]);
       
-      const columns = await ctx.app.mysql.get('ruoyi').query(sql, [tableName]);
-      
-      return columns || [];
+      return result || [];
     } catch (err) {
       ctx.logger.error('查询表字段失败:', err);
       return [];
@@ -120,13 +185,45 @@ class GenService extends Service {
    * @return {number} 影响行数
    */
   async importGenTable(tableNames) {
-    // 注意：简化实现
-    // 实际需要：
-    // 1. 查询表结构
-    // 2. 保存到 gen_table 表
-    // 3. 保存字段信息到 gen_table_column 表
+    const { ctx } = this;
     
-    return tableNames.length;
+    try {
+      const operName = ctx.state.user.userName || 'admin';
+      
+      // 查询表信息
+      const tableList = await this.selectDbTableListByNames(tableNames);
+      
+      let count = 0;
+      for (const table of tableList) {
+        const tableName = table.tableName;
+        
+        // 初始化表信息
+        GenUtils.initTable(table, operName);
+        
+        // 保存表信息
+        const result = await ctx.service.db.mysql.ruoyi.genTableMapper.insertGenTable([table]);
+        
+        if (result && result.affectedRows > 0) {
+          // 获取插入的表ID
+          const tableId = result.insertId;
+          
+          // 保存列信息
+          const genTableColumns = await this.selectDbTableColumnsByName(tableName);
+          for (const column of genTableColumns) {
+            GenUtils.initColumnField(column, table);
+            column.tableId = tableId;
+            await ctx.service.db.mysql.ruoyi.genTableColumnMapper.insertGenTableColumn([column]);
+          }
+          
+          count++;
+        }
+      }
+      
+      return count;
+    } catch (err) {
+      ctx.logger.error('导入表结构失败:', err);
+      throw new Error('导入失败：' + err.message);
+    }
   }
 
   /**
@@ -135,8 +232,30 @@ class GenService extends Service {
    * @return {number} 影响行数
    */
   async updateGenTable(genTable) {
-    // 注意：简化实现
-    return 1;
+    const { ctx } = this;
+    
+    try {
+      // 序列化 options
+      const options = JSON.stringify(genTable.params || {});
+      genTable.options = options;
+      
+      // 更新表信息
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.updateGenTable([genTable]);
+      
+      if (result && result.affectedRows > 0) {
+        // 更新列信息
+        if (genTable.columns && genTable.columns.length > 0) {
+          for (const column of genTable.columns) {
+            await ctx.service.db.mysql.ruoyi.genTableColumnMapper.updateGenTableColumn([column]);
+          }
+        }
+      }
+      
+      return result ? result.affectedRows : 0;
+    } catch (err) {
+      ctx.logger.error('修改代码生成配置失败:', err);
+      throw new Error('修改失败：' + err.message);
+    }
   }
 
   /**
@@ -145,8 +264,20 @@ class GenService extends Service {
    * @return {number} 影响行数
    */
   async deleteGenTableByIds(tableIds) {
-    // 注意：简化实现
-    return tableIds.length;
+    const { ctx } = this;
+    
+    try {
+      // 删除列信息
+      await ctx.service.db.mysql.ruoyi.genTableColumnMapper.deleteGenTableColumnByIds([tableIds]);
+      
+      // 删除表信息
+      const result = await ctx.service.db.mysql.ruoyi.genTableMapper.deleteGenTableByIds([tableIds]);
+      
+      return result ? result.affectedRows : 0;
+    } catch (err) {
+      ctx.logger.error('删除代码生成表配置失败:', err);
+      throw new Error('删除失败：' + err.message);
+    }
   }
 
   /**
@@ -155,17 +286,47 @@ class GenService extends Service {
    * @return {object} 代码预览
    */
   async previewCode(tableId) {
-    // 注意：简化实现
-    // 实际需要：
-    // 1. 读取表配置
-    // 2. 使用模板引擎生成代码
-    // 3. 返回各个文件的代码内容
+    const { ctx, app } = this;
     
-    return {
-      'controller.js': '// Controller 代码',
-      'service.js': '// Service 代码',
-      'mapper.xml': '<!-- Mapper XML -->'
-    };
+    try {
+      // 查询表信息
+      const table = await this.selectGenTableById(tableId);
+      if (!table) {
+        throw new Error('表信息不存在');
+      }
+      
+      // 设置主子表信息
+      await this.setSubTable(table);
+      
+      // 设置主键列信息
+      this.setPkColumn(table);
+      
+      // 准备模板上下文
+      const context = VelocityUtils.prepareContext(table);
+      
+      // 获取模板列表
+      const templates = VelocityUtils.getTemplateList(table.tplCategory, table.tplWebType);
+      
+      const dataMap = {};
+      
+      // 渲染每个模板
+      for (const template of templates) {
+        const templatePath = path.join(app.baseDir, 'app/templates', template);
+        
+        if (await fs.pathExists(templatePath)) {
+          const templateContent = await fs.readFile(templatePath, 'utf-8');
+          const code = VelocityUtils.render(templateContent, context);
+          dataMap[template] = code;
+        } else {
+          ctx.logger.warn(`模板文件不存在: ${templatePath}`);
+        }
+      }
+      
+      return dataMap;
+    } catch (err) {
+      ctx.logger.error('预览代码失败:', err);
+      throw new Error('预览失败：' + err.message);
+    }
   }
 
   /**
@@ -174,13 +335,51 @@ class GenService extends Service {
    * @return {Buffer} 代码压缩包
    */
   async downloadCode(tableName) {
-    // 注意：简化实现
-    // 实际需要：
-    // 1. 生成代码文件
-    // 2. 打包成 zip
-    // 3. 返回文件流
+    const { ctx } = this;
     
-    return Buffer.from('');
+    try {
+      // 查询表信息
+      const table = await this.selectGenTableByName(tableName);
+      if (!table) {
+        throw new Error('表信息不存在');
+      }
+      
+      // 设置主子表信息
+      await this.setSubTable(table);
+      
+      // 设置主键列信息
+      this.setPkColumn(table);
+      
+      // 生成代码
+      const codeMap = await this.generatorCode(table);
+      
+      // 创建 zip 压缩包
+      const archive = archiver('zip', {
+        zlib: { level: 9 }
+      });
+      
+      // 添加文件到压缩包
+      for (const [fileName, content] of Object.entries(codeMap)) {
+        archive.append(content, { name: fileName });
+      }
+      
+      // 完成压缩
+      archive.finalize();
+      
+      // 转换为 Buffer
+      const chunks = [];
+      archive.on('data', chunk => chunks.push(chunk));
+      
+      return new Promise((resolve, reject) => {
+        archive.on('end', () => {
+          resolve(Buffer.concat(chunks));
+        });
+        archive.on('error', reject);
+      });
+    } catch (err) {
+      ctx.logger.error('生成代码失败:', err);
+      throw new Error('生成失败：' + err.message);
+    }
   }
 
   /**
@@ -189,8 +388,43 @@ class GenService extends Service {
    * @return {number} 影响行数
    */
   async genCode(tableName) {
-    // 注意：简化实现
-    return 1;
+    const { ctx, app } = this;
+    
+    try {
+      // 查询表信息
+      const table = await this.selectGenTableByName(tableName);
+      if (!table) {
+        throw new Error('表信息不存在');
+      }
+      
+      // 设置主子表信息
+      await this.setSubTable(table);
+      
+      // 设置主键列信息
+      this.setPkColumn(table);
+      
+      // 生成代码
+      const codeMap = await this.generatorCode(table);
+      
+      // 写入文件
+      let count = 0;
+      for (const [fileName, content] of Object.entries(codeMap)) {
+        // 排除 sql、api.js、vue 文件（这些通常不直接写入后端项目）
+        if (!fileName.includes('.sql') && 
+            !fileName.includes('api.js') && 
+            !fileName.includes('.vue')) {
+          const filePath = this.getGenPath(table, fileName);
+          await fs.ensureDir(path.dirname(filePath));
+          await fs.writeFile(filePath, content, 'utf-8');
+          count++;
+        }
+      }
+      
+      return count;
+    } catch (err) {
+      ctx.logger.error('生成代码失败:', err);
+      throw new Error('生成失败：' + err.message);
+    }
   }
 
   /**
@@ -199,12 +433,70 @@ class GenService extends Service {
    * @return {number} 影响行数
    */
   async synchDb(tableName) {
-    // 注意：简化实现
-    // 实际需要：
-    // 1. 从数据库读取最新表结构
-    // 2. 更新 gen_table_column 表
+    const { ctx } = this;
     
-    return 1;
+    try {
+      // 查询表信息
+      const table = await this.selectGenTableByName(tableName);
+      if (!table) {
+        throw new Error('表信息不存在');
+      }
+      
+      const tableColumns = table.columns || [];
+      const tableColumnMap = {};
+      for (const column of tableColumns) {
+        tableColumnMap[column.columnName] = column;
+      }
+      
+      // 查询数据库表列
+      const dbTableColumns = await this.selectDbTableColumnsByName(tableName);
+      if (!dbTableColumns || dbTableColumns.length === 0) {
+        throw new Error('同步数据失败，原表结构不存在');
+      }
+      
+      const dbTableColumnNames = dbTableColumns.map(col => col.columnName);
+      
+      // 同步列信息
+      for (const column of dbTableColumns) {
+        GenUtils.initColumnField(column, table);
+        
+        if (tableColumnMap[column.columnName]) {
+          // 更新已有列
+          const prevColumn = tableColumnMap[column.columnName];
+          column.columnId = prevColumn.columnId;
+          
+          if (column.isList === '1') {
+            // 如果是列表，继续保留查询方式/字典类型选项
+            column.dictType = prevColumn.dictType;
+            column.queryType = prevColumn.queryType;
+          }
+          
+          if (prevColumn.isRequired && !column.isPk &&
+              (column.isInsert === '1' || column.isEdit === '1')) {
+            // 继续保留必填/显示类型选项
+            column.isRequired = prevColumn.isRequired;
+            column.htmlType = prevColumn.htmlType;
+          }
+          
+          await ctx.service.db.mysql.ruoyi.genTableColumnMapper.updateGenTableColumn([column]);
+        } else {
+          // 新增列
+          column.tableId = table.tableId;
+          await ctx.service.db.mysql.ruoyi.genTableColumnMapper.insertGenTableColumn([column]);
+        }
+      }
+      
+      // 删除不存在的列
+      const delColumns = tableColumns.filter(col => !dbTableColumnNames.includes(col.columnName));
+      if (delColumns.length > 0) {
+        await ctx.service.db.mysql.ruoyi.genTableColumnMapper.deleteGenTableColumns([delColumns]);
+      }
+      
+      return 1;
+    } catch (err) {
+      ctx.logger.error('同步数据库失败:', err);
+      throw new Error('同步失败：' + err.message);
+    }
   }
 
   /**
@@ -213,10 +505,172 @@ class GenService extends Service {
    * @return {Buffer} 代码压缩包
    */
   async batchGenCode(tableNames) {
-    // 注意：简化实现
-    return Buffer.from('');
+    const { ctx } = this;
+    
+    try {
+      const archive = archiver('zip', {
+        zlib: { level: 9 }
+      });
+      
+      for (const tableName of tableNames) {
+        // 查询表信息
+        const table = await this.selectGenTableByName(tableName);
+        if (!table) {
+          continue;
+        }
+        
+        // 设置主子表信息
+        await this.setSubTable(table);
+        
+        // 设置主键列信息
+        this.setPkColumn(table);
+        
+        // 生成代码
+        const codeMap = await this.generatorCode(table);
+        
+        // 添加文件到压缩包
+        for (const [fileName, content] of Object.entries(codeMap)) {
+          archive.append(content, { name: fileName });
+        }
+      }
+      
+      // 完成压缩
+      archive.finalize();
+      
+      // 转换为 Buffer
+      const chunks = [];
+      archive.on('data', chunk => chunks.push(chunk));
+      
+      return new Promise((resolve, reject) => {
+        archive.on('end', () => {
+          resolve(Buffer.concat(chunks));
+        });
+        archive.on('error', reject);
+      });
+    } catch (err) {
+      ctx.logger.error('批量生成代码失败:', err);
+      throw new Error('生成失败：' + err.message);
+    }
+  }
+
+  /**
+   * 生成代码
+   * @param {object} table - 表信息
+   * @return {object} 代码映射
+   */
+  async generatorCode(table) {
+    const { app } = this;
+    
+    // 准备模板上下文
+    const context = VelocityUtils.prepareContext(table);
+    
+    // 获取模板列表
+    const templates = VelocityUtils.getTemplateList(table.tplCategory, table.tplWebType);
+    
+    const codeMap = {};
+    
+    // 渲染每个模板
+    for (const template of templates) {
+      const templatePath = path.join(app.baseDir, 'app/templates', template);
+      
+      if (await fs.pathExists(templatePath)) {
+        const templateContent = await fs.readFile(templatePath, 'utf-8');
+        const code = VelocityUtils.render(templateContent, context);
+        const fileName = VelocityUtils.getFileName(template, table);
+        codeMap[fileName] = code;
+      }
+    }
+    
+    return codeMap;
+  }
+
+  /**
+   * 设置主键列信息
+   * @param {object} table - 表信息
+   */
+  setPkColumn(table) {
+    const columns = table.columns || [];
+    
+    for (const column of columns) {
+      if (column.isPk === '1') {
+        table.pkColumn = column;
+        // 设置大写字段名
+        column.capJavaField = GenUtils.capitalize(column.javaField);
+        break;
+      }
+    }
+    
+    if (!table.pkColumn && columns.length > 0) {
+      table.pkColumn = columns[0];
+      table.pkColumn.capJavaField = GenUtils.capitalize(table.pkColumn.javaField);
+    }
+    
+    // 处理子表
+    if (table.tplCategory === GenConstants.TPL_SUB && table.subTable) {
+      const subColumns = table.subTable.columns || [];
+      for (const column of subColumns) {
+        if (column.isPk === '1') {
+          table.subTable.pkColumn = column;
+          column.capJavaField = GenUtils.capitalize(column.javaField);
+          break;
+        }
+      }
+      
+      if (!table.subTable.pkColumn && subColumns.length > 0) {
+        table.subTable.pkColumn = subColumns[0];
+        table.subTable.pkColumn.capJavaField = GenUtils.capitalize(table.subTable.pkColumn.javaField);
+      }
+    }
+  }
+
+  /**
+   * 设置主子表信息
+   * @param {object} table - 表信息
+   */
+  async setSubTable(table) {
+    const subTableName = table.subTableName;
+    if (subTableName) {
+      table.subTable = await this.selectGenTableByName(subTableName);
+    }
+  }
+
+  /**
+   * 设置代码生成其他选项值
+   * @param {object} genTable - 表信息
+   */
+  async setTableFromOptions(genTable) {
+    const options = genTable.options;
+    if (options) {
+      try {
+        const paramsObj = typeof options === 'string' ? JSON.parse(options) : options;
+        
+        genTable.treeCode = paramsObj[GenConstants.TREE_CODE];
+        genTable.treeParentCode = paramsObj[GenConstants.TREE_PARENT_CODE];
+        genTable.treeName = paramsObj[GenConstants.TREE_NAME];
+        genTable.parentMenuId = paramsObj[GenConstants.PARENT_MENU_ID];
+        genTable.parentMenuName = paramsObj[GenConstants.PARENT_MENU_NAME];
+      } catch (e) {
+        // 解析失败，忽略
+      }
+    }
+  }
+
+  /**
+   * 获取代码生成地址
+   * @param {object} table - 表信息
+   * @param {string} fileName - 文件名
+   * @return {string} 生成地址
+   */
+  getGenPath(table, fileName) {
+    const { app } = this;
+    const genPath = table.genPath || '/';
+    
+    if (genPath === '/') {
+      return path.join(app.baseDir, fileName);
+    }
+    
+    return path.join(genPath, fileName);
   }
 }
 
 module.exports = GenService;
-
