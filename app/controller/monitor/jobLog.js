@@ -1,7 +1,7 @@
-/*
- * @Description: 定时任务调度日志控制器
- * @Author: AI Assistant
- * @Date: 2025-10-27
+/**
+ * 定时任务调度日志控制器
+ * @Author: 姜彦汐
+ * @Date: 2025-11-08
  */
 
 const Controller = require('egg').Controller;
@@ -35,6 +35,7 @@ module.exports = app => {
           jobName: query.jobName,
           jobGroup: query.jobGroup,
           status: query.status,
+          invokeTarget: query.invokeTarget,
           beginTime: query.beginTime,
           endTime: query.endTime
         };
@@ -64,6 +65,44 @@ module.exports = app => {
     }
 
     /**
+     * 根据调度编号获取详细信息
+     * GET /api/monitor/jobLog/:jobLogId
+     * 权限：monitor:job:query
+     */
+    @RequiresPermissions('monitor:job:query')
+    @HttpGet('/:jobLogId')
+    async getInfo() {
+      const { ctx, service } = this;
+      
+      try {
+        const jobLogId = parseInt(ctx.params.jobLogId);
+        
+        // 查询调度日志信息
+        const jobLog = await service.monitor.jobLog.selectJobLogById(jobLogId);
+        
+        if (!jobLog) {
+          ctx.body = {
+            code: 500,
+            msg: '调度日志不存在'
+          };
+          return;
+        }
+        
+        ctx.body = {
+          code: 200,
+          msg: '操作成功',
+          data: jobLog
+        };
+      } catch (err) {
+        ctx.logger.error('查询调度日志详情失败:', err);
+        ctx.body = {
+          code: 500,
+          msg: err.message || '查询失败'
+        };
+      }
+    }
+
+    /**
      * 删除调度日志
      * DELETE /api/monitor/jobLog/:jobLogIds
      * 权限：monitor:job:remove
@@ -79,17 +118,10 @@ module.exports = app => {
         // 删除调度日志
         const result = await service.monitor.jobLog.deleteJobLogByIds(jobLogIds);
         
-        if (result > 0) {
-          ctx.body = {
-            code: 200,
-            msg: '删除成功'
-          };
-        } else {
-          ctx.body = {
-            code: 500,
-            msg: '删除失败'
-          };
-        }
+        ctx.body = {
+          code: 200,
+          msg: result > 0 ? '删除成功' : '删除失败'
+        };
       } catch (err) {
         ctx.logger.error('删除调度日志失败:', err);
         ctx.body = {
@@ -145,12 +177,12 @@ module.exports = app => {
           params
         );
         
-        // 导出 Excel
+        // 导出为 CSV
         const buffer = await service.monitor.jobLog.exportJobLog(list);
         
         // 设置响应头
-        ctx.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        ctx.set('Content-Disposition', `attachment; filename=job_log_${Date.now()}.xlsx`);
+        ctx.set('Content-Type', 'text/csv');
+        ctx.set('Content-Disposition', `attachment; filename=job_log_${Date.now()}.csv`);
         
         ctx.body = buffer;
       } catch (err) {
@@ -161,8 +193,45 @@ module.exports = app => {
         };
       }
     }
+
+    /**
+     * 获取任务执行统计信息
+     * GET /api/monitor/jobLog/statistics
+     * 权限：monitor:job:list
+     */
+    @RequiresPermissions('monitor:job:list')
+    @HttpGet('/statistics')
+    async statistics() {
+      const { ctx, service } = this;
+      
+      try {
+        const query = ctx.query;
+        
+        // 查询条件
+        const params = {
+          jobName: query.jobName,
+          jobGroup: query.jobGroup,
+          beginTime: query.beginTime,
+          endTime: query.endTime
+        };
+        
+        // 获取统计信息
+        const statistics = await service.monitor.jobLog.getJobLogStatistics(params);
+        
+        ctx.body = {
+          code: 200,
+          msg: '查询成功',
+          data: statistics
+        };
+      } catch (err) {
+        ctx.logger.error('获取统计信息失败:', err);
+        ctx.body = {
+          code: 500,
+          msg: err.message || '查询失败'
+        };
+      }
+    }
   }
 
   return JobLogController;
 };
-

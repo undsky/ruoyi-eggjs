@@ -1,12 +1,32 @@
-/*
- * @Description: 定时任务监控控制器
- * @Author: AI Assistant
- * @Date: 2025-10-24
+/**
+ * 定时任务监控控制器
+ * @Author: 姜彦汐
+ * @Date: 2025-11-08
  */
 
 const Controller = require('egg').Controller;
 const { Route, HttpGet, HttpPost, HttpPut, HttpDelete } = require('egg-decorator-router');
 const { RequiresPermissions } = require('../../decorator/permission');
+
+// 常量定义
+const Constants = {
+  LOOKUP_RMI: 'rmi://',
+  LOOKUP_LDAP: 'ldap://',
+  LOOKUP_LDAPS: 'ldaps://',
+  HTTP: 'http://',
+  HTTPS: 'https://',
+  JOB_ERROR_STR: [
+    'java.net.URL',
+    'javax.naming.InitialContext',
+    'org.yaml.snakeyaml',
+    'org.springframework',
+    'org.apache',
+    'eval',
+    'exec',
+    'require',
+    'import'
+  ]
+};
 
 module.exports = app => {
 
@@ -24,24 +44,33 @@ module.exports = app => {
       const { ctx, service } = this;
       
       try {
-        const params = ctx.query;
+        const query = ctx.query;
         
         // 分页参数
-        const pageNum = parseInt(params.pageNum) || 1;
-        const pageSize = parseInt(params.pageSize) || 10;
+        const pageNum = parseInt(query.pageNum) || 1;
+        const pageSize = parseInt(query.pageSize) || 10;
+        
+        // 查询条件
+        const params = {
+          jobName: query.jobName,
+          jobGroup: query.jobGroup,
+          status: query.status,
+          invokeTarget: query.invokeTarget
+        };
         
         // 查询定时任务列表
-        const list = await service.monitor.job.selectJobList(params);
+        const list = await service.monitor.job.selectJobList(
+          { pageNum, pageSize },
+          params
+        );
         
-        // 手动分页
-        const total = list.length;
-        const start = (pageNum - 1) * pageSize;
-        const rows = list.slice(start, start + pageSize);
+        // 查询总数
+        const total = await service.monitor.job.selectJobCount(params);
         
         ctx.body = {
           code: 200,
           msg: '查询成功',
-          rows,
+          rows: list,
           total
         };
       } catch (err) {
@@ -113,15 +142,22 @@ module.exports = app => {
           return;
         }
         
+        // 安全校验
+        const securityCheck = this.checkJobSecurity(job);
+        if (!securityCheck.pass) {
+          ctx.body = {
+            code: 500,
+            msg: `新增任务'${job.jobName}'失败，${securityCheck.message}`
+          };
+          return;
+        }
+        
         // 新增定时任务
         const rows = await service.monitor.job.insertJob(job);
         
         ctx.body = {
           code: 200,
-          msg: rows > 0 ? '新增成功' : '新增失败',
-          data: {
-            note: '注意：定时任务功能需要完善，建议使用 Egg.js schedule 或集成 node-cron'
-          }
+          msg: rows > 0 ? '新增成功' : '新增失败'
         };
       } catch (err) {
         ctx.logger.error('新增定时任务失败:', err);
@@ -150,6 +186,16 @@ module.exports = app => {
           ctx.body = {
             code: 500,
             msg: `修改任务'${job.jobName}'失败，Cron表达式不正确`
+          };
+          return;
+        }
+        
+        // 安全校验
+        const securityCheck = this.checkJobSecurity(job);
+        if (!securityCheck.pass) {
+          ctx.body = {
+            code: 500,
+            msg: `修改任务'${job.jobName}'失败，${securityCheck.message}`
           };
           return;
         }
@@ -273,11 +319,17 @@ module.exports = app => {
       try {
         const params = ctx.request.body;
         
-        // 查询定时任务列表
-        const list = await service.monitor.job.selectJobList(params);
+        // 查询所有定时任务
+        const list = await service.monitor.job.selectJobList(
+          { pageNum: 1, pageSize: 100000 },
+          params
+        );
         
-        // TODO: 实现 Excel 导出功能
-        // 目前返回 JSON 数据
+        // 简化实现：返回 JSON 数据
+        // 实际项目中建议使用 Excel 导出
+        ctx.set('Content-Type', 'application/json');
+        ctx.set('Content-Disposition', `attachment; filename=job_${Date.now()}.json`);
+        
         ctx.body = {
           code: 200,
           msg: '导出成功',
@@ -291,8 +343,88 @@ module.exports = app => {
         };
       }
     }
+
+    /**
+     * 安全校验
+     * @param {object} job - 任务对象
+     * @return {object} 校验结果 {pass: boolean, message: string}
+     */
+    checkJobSecurity(job) {
+      const { invokeTarget } = job;
+      
+      // 检查是否包含 rmi 调用
+      if (this.containsIgnoreCase(invokeTarget, Constants.LOOKUP_RMI)) {
+        return {
+          pass: false,
+          message: "目标字符串不允许'rmi'调用"
+        };
+      }
+      
+      // 检查是否包含 ldap(s) 调用
+      if (this.containsAnyIgnoreCase(invokeTarget, [Constants.LOOKUP_LDAP, Constants.LOOKUP_LDAPS])) {
+        return {
+          pass: false,
+          message: "目标字符串不允许'ldap(s)'调用"
+        };
+      }
+      
+      // 检查是否包含 http(s) 调用
+      if (this.containsAnyIgnoreCase(invokeTarget, [Constants.HTTP, Constants.HTTPS])) {
+        return {
+          pass: false,
+          message: "目标字符串不允许'http(s)'调用"
+        };
+      }
+      
+      // 检查是否包含违规字符串
+      if (this.containsAnyIgnoreCase(invokeTarget, Constants.JOB_ERROR_STR)) {
+        return {
+          pass: false,
+          message: '目标字符串存在违规'
+        };
+      }
+      
+      // 白名单校验
+      const scheduleUtils = require('../../util/scheduleUtils');
+      if (!scheduleUtils.constructor.whiteList(invokeTarget)) {
+        return {
+          pass: false,
+          message: '目标字符串不在白名单内'
+        };
+      }
+      
+      return {
+        pass: true,
+        message: ''
+      };
+    }
+
+    /**
+     * 检查字符串是否包含（忽略大小写）
+     * @param {string} str - 字符串
+     * @param {string} searchStr - 搜索字符串
+     * @return {boolean} 是否包含
+     */
+    containsIgnoreCase(str, searchStr) {
+      if (!str || !searchStr) {
+        return false;
+      }
+      return str.toLowerCase().includes(searchStr.toLowerCase());
+    }
+
+    /**
+     * 检查字符串是否包含任意一个（忽略大小写）
+     * @param {string} str - 字符串
+     * @param {array} searchStrs - 搜索字符串数组
+     * @return {boolean} 是否包含
+     */
+    containsAnyIgnoreCase(str, searchStrs) {
+      if (!str || !searchStrs || searchStrs.length === 0) {
+        return false;
+      }
+      return searchStrs.some(searchStr => this.containsIgnoreCase(str, searchStr));
+    }
   }
 
   return JobController;
 };
-

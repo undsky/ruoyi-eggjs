@@ -2,11 +2,27 @@ const Service = require('egg').Service;
 
 class SysJobLogMapperService extends Service {
     mapper(sqlid, values, params) {
-        return this.app.mapper('mapper/mysql/ruoyi/SysJobLogMapper.xml', sqlid, values, params)
+        return this.app.mapper('mapper/mysql/ruoyi/SysJobLogMapper', sqlid, values, params)
     }
 
     db() {
         return this.app.mysql.get('ruoyi');
+    }
+
+    sysJobLogResultMapper(values, params) {
+        return this.mapper('SysJobLogResult', values, params);
+    }
+
+    async sysJobLogResult(values, params) {
+        return await this.db().resultMap(this.sysJobLogResultMapper(values, params));
+    }
+
+    selectJobLogVoMapper(values, params) {
+        return this.mapper('selectJobLogVo', values, params);
+    }
+
+    async selectJobLogVo(values, params) {
+        return await this.db().run(this.selectJobLogVoMapper(values, params));
     }
 
     selectJobLogListMapper(values, params) {
@@ -14,15 +30,15 @@ class SysJobLogMapperService extends Service {
     }
 
     async selectJobLogList(values, params) {
-        return await this.db().selects(this.selectJobLogListMapper(values, params));
+        return await this.db().select(this.selectJobLogListMapper(values, params));
     }
 
-    countJobLogListMapper(values, params) {
-        return this.mapper('countJobLogList', values, params);
+    selectJobLogAllMapper(values, params) {
+        return this.mapper('selectJobLogAll', values, params);
     }
 
-    async countJobLogList(values, params) {
-        return await this.db().select(this.countJobLogListMapper(values, params));
+    async selectJobLogAll(values, params) {
+        return await this.db().select(this.selectJobLogAllMapper(values, params));
     }
 
     selectJobLogByIdMapper(values, params) {
@@ -33,12 +49,12 @@ class SysJobLogMapperService extends Service {
         return await this.db().select(this.selectJobLogByIdMapper(values, params));
     }
 
-    insertJobLogMapper(values, params) {
-        return this.mapper('insertJobLog', values, params);
+    deleteJobLogByIdMapper(values, params) {
+        return this.mapper('deleteJobLogById', values, params);
     }
 
-    async insertJobLog(values, params) {
-        return await this.db().insert(this.insertJobLogMapper(values, params));
+    async deleteJobLogById(values, params) {
+        return await this.db().del(this.deleteJobLogByIdMapper(values, params));
     }
 
     deleteJobLogByIdsMapper(values, params) {
@@ -54,7 +70,15 @@ class SysJobLogMapperService extends Service {
     }
 
     async cleanJobLog(values, params) {
-        return await this.db().del(this.cleanJobLogMapper(values, params));
+        return await this.db().update(this.cleanJobLogMapper(values, params));
+    }
+
+    insertJobLogMapper(values, params) {
+        return this.mapper('insertJobLog', values, params);
+    }
+
+    async insertJobLog(values, params) {
+        return await this.db().insert(this.insertJobLogMapper(values, params));
     }
 }
 

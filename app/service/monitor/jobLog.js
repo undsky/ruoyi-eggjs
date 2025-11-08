@@ -1,11 +1,10 @@
-/*
- * @Description: 定时任务调度日志服务层
- * @Author: AI Assistant
- * @Date: 2025-10-27
+/**
+ * 定时任务调度日志服务层
+ * @Author: 姜彦汐
+ * @Date: 2025-11-08
  */
 
 const Service = require('egg').Service;
-const dayjs = require('dayjs');
 
 class JobLogService extends Service {
 
@@ -19,13 +18,24 @@ class JobLogService extends Service {
     const { ctx } = this;
     
     try {
-      // 从数据库查询调度日志列表
       const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
-      const offset = (page.pageNum - 1) * page.pageSize;
       
+      // 构造分页参数
+      const values = ctx.helper.page({ pageNum: page.pageNum, pageSize: page.pageSize });
+      
+      // 构造查询参数，支持时间范围查询
+      const params = {
+        ...jobLog,
+        params: {
+          beginTime: jobLog.beginTime,
+          endTime: jobLog.endTime
+        }
+      };
+      
+      // 查询日志列表
       const list = await mapper.selectJobLogList(
-        [offset, page.pageSize],
-        jobLog
+        [values.offset, values.pageSize],
+        params
       );
       
       return list || [];
@@ -45,12 +55,67 @@ class JobLogService extends Service {
     
     try {
       const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
-      const result = await mapper.countJobLogList([], jobLog);
       
-      return result ? result[0].count : 0;
+      // 构造查询参数，支持时间范围查询
+      const params = {
+        ...jobLog,
+        params: {
+          beginTime: jobLog.beginTime,
+          endTime: jobLog.endTime
+        }
+      };
+      
+      const result = await mapper.countJobLogList([], params);
+      
+      return result && result[0] ? result[0].count : 0;
     } catch (err) {
       ctx.logger.error('查询调度日志总数失败:', err);
       return 0;
+    }
+  }
+
+  /**
+   * 根据日志ID查询调度日志
+   * @param {number} jobLogId - 日志ID
+   * @return {object} 调度日志信息
+   */
+  async selectJobLogById(jobLogId) {
+    const { ctx } = this;
+    
+    try {
+      const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
+      const result = await mapper.selectJobLogById([jobLogId]);
+      
+      return result && result[0] ? result[0] : null;
+    } catch (err) {
+      ctx.logger.error('查询调度日志详情失败:', err);
+      throw err;
+    }
+  }
+
+  /**
+   * 新增调度日志
+   * @param {object} jobLog - 调度日志信息
+   * @return {number} 影响行数
+   */
+  async insertJobLog(jobLog) {
+    const { ctx } = this;
+    
+    try {
+      const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
+      
+      // 设置创建时间
+      if (!jobLog.createTime) {
+        jobLog.createTime = ctx.helper.formatDate(new Date());
+      }
+      
+      // 插入日志
+      const result = await mapper.insertJobLog([jobLog]);
+      
+      return result.affectedRows;
+    } catch (err) {
+      ctx.logger.error('新增调度日志失败:', err);
+      throw err;
     }
   }
 
@@ -74,6 +139,25 @@ class JobLogService extends Service {
   }
 
   /**
+   * 删除单条调度日志
+   * @param {number} jobLogId - 调度日志ID
+   * @return {number} 影响行数
+   */
+  async deleteJobLogById(jobLogId) {
+    const { ctx } = this;
+    
+    try {
+      const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
+      const result = await mapper.deleteJobLogById([jobLogId]);
+      
+      return result.affectedRows;
+    } catch (err) {
+      ctx.logger.error('删除调度日志失败:', err);
+      throw err;
+    }
+  }
+
+  /**
    * 清空调度日志
    * @return {number} 影响行数
    */
@@ -84,7 +168,7 @@ class JobLogService extends Service {
       const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
       const result = await mapper.cleanJobLog([]);
       
-      return result.affectedRows;
+      return result.affectedRows || 0;
     } catch (err) {
       ctx.logger.error('清空调度日志失败:', err);
       throw err;
@@ -92,20 +176,35 @@ class JobLogService extends Service {
   }
 
   /**
-   * 新增调度日志
-   * @param {object} jobLog - 调度日志信息
+   * 根据日期删除调度日志
+   * @param {string} beforeDate - 删除此日期之前的日志
    * @return {number} 影响行数
    */
-  async insertJobLog(jobLog) {
+  async deleteJobLogByDate(beforeDate) {
     const { ctx } = this;
     
     try {
+      // 查询要删除的日志ID列表
+      const params = {
+        params: {
+          endTime: beforeDate
+        }
+      };
+      
       const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
-      const result = await mapper.insertJobLog([], jobLog);
+      const list = await mapper.selectJobLogList([], params);
+      
+      if (!list || list.length === 0) {
+        return 0;
+      }
+
+      // 批量删除
+      const jobLogIds = list.map(log => log.jobLogId);
+      const result = await mapper.deleteJobLogByIds([jobLogIds]);
       
       return result.affectedRows;
     } catch (err) {
-      ctx.logger.error('新增调度日志失败:', err);
+      ctx.logger.error('根据日期删除调度日志失败:', err);
       throw err;
     }
   }
@@ -130,12 +229,13 @@ class JobLogService extends Service {
         status,
         jobMessage,
         exceptionInfo: exceptionInfo.substring(0, 2000), // 限制长度
-        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
+        createTime: ctx.helper.formatDate(new Date())
       };
       
       await this.insertJobLog(jobLog);
     } catch (err) {
       ctx.logger.error('记录任务执行日志失败:', err);
+      // 不抛出异常，避免影响主流程
     }
   }
 
@@ -148,12 +248,22 @@ class JobLogService extends Service {
     const { ctx } = this;
     
     try {
-      // 这里简化处理，实际项目中应该使用 Excel 导出库
-      // 例如：exceljs、xlsx 等
-      const headers = ['日志编号', '任务名称', '任务组名', '调用目标', '日志信息', '执行状态', '异常信息', '执行时间'];
+      // 简化实现：返回 CSV 格式
+      // 实际项目中建议使用 exceljs 或 xlsx 库生成真正的 Excel 文件
+      const headers = [
+        '日志编号',
+        '任务名称',
+        '任务组名',
+        '调用目标',
+        '日志信息',
+        '执行状态',
+        '异常信息',
+        '执行时间'
+      ];
       
-      // 构造 CSV 数据（简化实现）
+      // 构造 CSV 数据
       let csv = headers.join(',') + '\n';
+      
       list.forEach(item => {
         const row = [
           item.jobLogId,
@@ -165,16 +275,76 @@ class JobLogService extends Service {
           item.exceptionInfo || '',
           item.createTime
         ];
-        csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+        
+        // 对包含逗号或引号的字段进行转义
+        const escapedRow = row.map(cell => {
+          const cellStr = String(cell || '');
+          if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+            return `"${cellStr.replace(/"/g, '""')}"`;
+          }
+          return cellStr;
+        });
+        
+        csv += escapedRow.join(',') + '\n';
       });
       
-      return Buffer.from('\ufeff' + csv, 'utf8'); // 添加 BOM 以支持中文
+      // 添加 BOM 以支持 Excel 正确识别 UTF-8 编码的中文
+      return Buffer.from('\ufeff' + csv, 'utf8');
     } catch (err) {
       ctx.logger.error('导出调度日志失败:', err);
+      throw err;
+    }
+  }
+
+  /**
+   * 获取任务执行统计信息
+   * @param {object} params - 查询参数
+   * @return {object} 统计信息
+   */
+  async getJobLogStatistics(params = {}) {
+    const { ctx } = this;
+    
+    try {
+      const mapper = ctx.service.db.mysql.ruoyi.sysJobLogMapper;
+      
+      // 查询所有日志
+      const queryParams = {
+        ...params,
+        params: {
+          beginTime: params.beginTime,
+          endTime: params.endTime
+        }
+      };
+      
+      const list = await mapper.selectJobLogList([], queryParams);
+      
+      // 统计成功和失败次数
+      const statistics = {
+        total: list.length,
+        successCount: 0,
+        failureCount: 0,
+        successRate: 0
+      };
+      
+      list.forEach(log => {
+        if (log.status === '0') {
+          statistics.successCount++;
+        } else {
+          statistics.failureCount++;
+        }
+      });
+      
+      // 计算成功率
+      if (statistics.total > 0) {
+        statistics.successRate = (statistics.successCount / statistics.total * 100).toFixed(2) + '%';
+      }
+      
+      return statistics;
+    } catch (err) {
+      ctx.logger.error('获取任务执行统计信息失败:', err);
       throw err;
     }
   }
 }
 
 module.exports = JobLogService;
-
