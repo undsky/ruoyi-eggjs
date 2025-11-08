@@ -418,7 +418,7 @@ class JobService extends Service {
     // 根据类名创建实例
     let taskInstance;
     if (className === 'ryTask') {
-      const RyTask = require('../../schedule/ryTask');
+      const RyTask = require('../ryTask');
       taskInstance = new RyTask(ctx);
     } else {
       throw new Error(`不支持的任务类: ${className}`);
