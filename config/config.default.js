@@ -27,7 +27,7 @@ module.exports = (appInfo) => {
   config.middleware = [ "formatBody"];
 
   config.cors = {
-    allowMethods: "GET,POST",
+    allowMethods: "GET,POST,PUT,DELETE,PATCH",
     // credentials: true,
     // origin: () => '*'
   };
