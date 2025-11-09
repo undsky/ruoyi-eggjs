@@ -209,6 +209,7 @@
 - 🗄️ **MyBatis XML 编写 SQL** - 业务逻辑与 SQL 分离，支持动态 SQL（[文档](https://github.com/undsky/ruoyi-eggjs-mybatis)）
 - 🔌 **多数据库支持** - 支持 MySQL、SQLite 等多种数据库，支持多数据源配置（[文档](https://github.com/undsky/ruoyi-eggjs-mybatis?tab=readme-ov-file#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84)）
 - 🤖 **代码自动生成** - 基于 XML Mapper 自动生成 Service 层代码（[文档](https://github.com/undsky/ruoyi-eggjs-cli)）
+- 🌐 **内网穿透** - 内置 FRP 客户端，快速将本地服务暴露到公网（[文档](https://github.com/undsky/ruoyi-eggjs-cli#frp-内网穿透)）
 - 📝 **文件模版** - 使用 VSCode 插件快速生成代码模板（[文档](https://marketplace.visualstudio.com/items?itemName=qiu8310.dot-template-vscode)）
 - 🎯 **路由注解** - 使用装饰器定义路由，简洁优雅（[文档](https://github.com/fyl080801/egg-decorator-router)）
 - 🔐 **JWT 认证** - 基于 JWT 的用户认证和权限控制
@@ -237,7 +238,7 @@
 | [ruoyi-eggjs-mysql](https://github.com/undsky/ruoyi-eggjs-mysql) | MySQL 数据库操作 | [README](https://github.com/undsky/ruoyi-eggjs-mysql) |
 | [ruoyi-eggjs-cache](https://github.com/undsky/ruoyi-eggjs-cache) | 多层级缓存 | [README](https://github.com/undsky/ruoyi-eggjs-cache) |
 | [ruoyi-eggjs-ratelimiter](https://github.com/undsky/ruoyi-eggjs-ratelimiter) | API 限流 | [README](https://github.com/undsky/ruoyi-eggjs-ratelimiter) |
-| [ruoyi-eggjs-cli](https://github.com/undsky/ruoyi-eggjs-cli) | 代码生成工具 | [README](https://github.com/undsky/ruoyi-eggjs-cli) |
+| [ruoyi-eggjs-cli](https://github.com/undsky/ruoyi-eggjs-cli) | 代码生成工具、FRP 内网穿透 | [README](https://github.com/undsky/ruoyi-eggjs-cli) |
 | [ruoyi-eggjs-sqlite](https://github.com/undsky/ruoyi-eggjs-sqlite) | SQLite 数据库操作 | [README](https://github.com/undsky/ruoyi-eggjs-sqlite) |
 | [ruoyi-eggjs-handlebars](https://github.com/undsky/ruoyi-eggjs-handlebars) | Handlebars 模板引擎 | [README](https://github.com/undsky/ruoyi-eggjs-handlebars) |
 
@@ -573,6 +574,43 @@ async getUserById(userId) {
   }
 }
 ```
+
+### 6. FRP 内网穿透
+
+使用 `ruoyi-eggjs-cli` 的 FRP 功能可以将本地服务快速暴露到公网，方便开发和测试：
+
+```bash
+# 安装 ruoyi-eggjs-cli（如果还未安装）
+npm install -g ruoyi-eggjs-cli
+
+# 使用 FRP 内网穿透（所有参数必填）
+rec frp 127.0.0.1:7001 -saddr frp.example.com -sport 39998 -auth your_token
+
+# 指定本地端口（IP 默认为 127.0.0.1）
+rec frp 7001 -saddr frp.example.com -sport 39998 -auth your_token
+
+# 指定自定义域名（可选）
+rec frp 127.0.0.1:7001 -saddr frp.example.com -sport 39998 -auth your_token -cdomain myapp.example.com
+```
+
+**参数说明：**
+
+| 参数 | 说明 | 是否必填 |
+| --- | --- | --- |
+| `localURL` | 本地服务地址，格式：`IP:PORT` 或 `PORT` | 必填 |
+| `-saddr, --serverAddr` | FRP 服务端地址 | 必填 |
+| `-sport, --serverPort` | FRP 服务端端口 | 必填 |
+| `-auth, --authToken` | 身份验证令牌 | 必填 |
+| `-cdomain, --customDomains` | 自定义域名 | 可选 |
+
+**使用场景：**
+
+- 本地开发时，需要让远程客户端访问本地服务
+- 微信小程序开发，需要 HTTPS 域名进行调试
+- 临时分享本地服务给团队成员测试
+- 内网穿透，访问内网服务
+
+更多详情请参考：[ruoyi-eggjs-cli FRP 功能文档](https://github.com/undsky/ruoyi-eggjs-cli#frp-内网穿透)
 
 ## 📝 开发指南
 
