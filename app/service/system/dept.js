@@ -43,7 +43,7 @@ class DeptService extends Service {
     
     const list = await this.selectDeptList(dept);
     
-    return this.buildDeptTree(list);
+    return this.buildDeptTreeSelect(list);
   }
 
   /**

@@ -55,16 +55,17 @@ module.exports = app => {
 
     /**
      * 获取用户详情
-     * GET /api/system/user/:userId
+     * GET /api/system/user?userId=xxx (userId 非必填)
      * 权限：system:user:query
      */
     @RequiresPermissions('system:user:query')
+    @HttpGet('/')
     @HttpGet('/:userId')
     async getInfo() {
       const { ctx, service } = this;
       
       try {
-        const { userId } = ctx.params;
+        const userId =ctx.params.userId || ctx.query.userId;
         
         if (!userId) {
           // 获取新增用户时需要的数据
@@ -144,9 +145,17 @@ module.exports = app => {
         // 校验部门数据权限
         await service.system.dept.checkDeptDataScope(user.deptId);
         
+        // 校验角色数据权限
+        if (user.roleIds && user.roleIds.length > 0) {
+          const roleIds = Array.isArray(user.roleIds) ? user.roleIds : [user.roleIds];
+          for (const roleId of roleIds) {
+            await service.system.role.checkRoleDataScope(roleId);
+          }
+        }
+        
         // 校验用户名是否唯一
         const isUserNameUnique = await service.system.user.checkUserNameUnique(user);
-        if (!isUserNameUnique) {
+        if (isUserNameUnique) {
           ctx.body = {
             code: 500,
             msg: `新增用户'${user.userName}'失败，登录账号已存在`
@@ -157,7 +166,7 @@ module.exports = app => {
         // 校验手机号是否唯一
         if (user.phonenumber) {
           const isPhoneUnique = await service.system.user.checkPhoneUnique(user);
-          if (!isPhoneUnique) {
+          if (isPhoneUnique) {
             ctx.body = {
               code: 500,
               msg: `新增用户'${user.userName}'失败，手机号码已存在`
@@ -169,7 +178,7 @@ module.exports = app => {
         // 校验邮箱是否唯一
         if (user.email) {
           const isEmailUnique = await service.system.user.checkEmailUnique(user);
-          if (!isEmailUnique) {
+          if (isEmailUnique) {
             ctx.body = {
               code: 500,
               msg: `新增用户'${user.userName}'失败，邮箱账号已存在`
@@ -177,6 +186,9 @@ module.exports = app => {
             return;
           }
         }
+        
+        // 设置创建者
+        user.createBy = ctx.state.user.userName;
         
         // 加密密码
         user.password = await ctx.helper.security.encryptPassword(user.password);
@@ -219,6 +231,14 @@ module.exports = app => {
         // 校验部门数据权限
         await service.system.dept.checkDeptDataScope(user.deptId);
         
+        // 校验角色数据权限
+        if (user.roleIds && user.roleIds.length > 0) {
+          const roleIds = Array.isArray(user.roleIds) ? user.roleIds : [user.roleIds];
+          for (const roleId of roleIds) {
+            await service.system.role.checkRoleDataScope(roleId);
+          }
+        }
+        
         // 校验用户名是否唯一
         const isUserNameUnique = await service.system.user.checkUserNameUnique(user);
         if (!isUserNameUnique) {
@@ -252,6 +272,9 @@ module.exports = app => {
             return;
           }
         }
+        
+        // 设置更新者
+        user.updateBy = ctx.state.user.userName;
         
         // 修改用户
         const rows = await service.system.user.updateUser(user);
@@ -329,6 +352,9 @@ module.exports = app => {
         // 校验数据权限
         await service.system.user.checkUserDataScope(user.userId);
         
+        // 设置更新者
+        user.updateBy = ctx.state.user.userName;
+        
         // 加密密码
         user.password = await ctx.helper.security.encryptPassword(user.password);
         
@@ -364,6 +390,9 @@ module.exports = app => {
         
         // 校验数据权限
         await service.system.user.checkUserDataScope(user.userId);
+        
+        // 设置更新者
+        user.updateBy = ctx.state.user.userName;
         
         // 修改状态
         const rows = await service.system.user.updateUserStatus(user);

@@ -69,8 +69,8 @@ class ConfigService extends Service {
     
     const configs = await ctx.service.db.mysql.ruoyi.sysConfigMapper.selectConfig([], conditions);
     
-    if (configs && configs.length > 0) {
-      configValue = configs[0].configValue;
+    if (configs) {
+      configValue = configs.configValue;
       
       // 存入缓存（不过期）
       await app.cache.default.set(cacheKey, configValue, 0);

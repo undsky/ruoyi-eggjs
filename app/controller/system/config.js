@@ -107,8 +107,8 @@ module.exports = app => {
         
         ctx.body = {
           code: 200,
-          msg: '操作成功',
-          data: configValue
+          msg: configValue,
+          // data: configValue
         };
       } catch (err) {
         ctx.logger.error('根据键名查询参数失败:', err);

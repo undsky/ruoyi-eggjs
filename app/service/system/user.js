@@ -72,7 +72,6 @@ class UserService extends Service {
   async checkUserNameUnique(user) {
     const { ctx } = this;
 
-    const userId = user.userId || -1;
     return await ctx.service.db.mysql.ruoyi.sysUserMapper.checkUserNameUnique([], {
       userName: user.userName,
     });
@@ -86,7 +85,6 @@ class UserService extends Service {
   async checkPhoneUnique(user) {
     const { ctx } = this;
 
-    const userId = user.userId || -1;
     return await ctx.service.db.mysql.ruoyi.sysUserMapper.checkPhoneUnique([], {
       phonenumber: user.phonenumber,
     });
@@ -100,7 +98,6 @@ class UserService extends Service {
   async checkEmailUnique(user) {
     const { ctx } = this;
 
-    const userId = user.userId || -1;
     return await ctx.service.db.mysql.ruoyi.sysUserMapper.checkEmailUnique([], {
         email: user.email,
       });
@@ -305,7 +302,7 @@ class UserService extends Service {
 
     await ctx.service.db.mysql.ruoyi.sysUserRoleMapper.batchUserRole(
       [],
-      userRoles
+      {list:userRoles}
     );
   }
 
@@ -328,7 +325,7 @@ class UserService extends Service {
 
     await ctx.service.db.mysql.ruoyi.sysUserPostMapper.batchUserPost(
       [],
-      userPosts
+      {list:userPosts}
     );
   }
 
