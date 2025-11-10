@@ -147,8 +147,8 @@ class UserService extends Service {
       user
     );
 
-    if (result && result.length > 0) {
-      const userId = result[0].userId;
+    if (result) {
+      const userId = result;
 
       // 插入用户与岗位关联
       if (user.postIds && user.postIds.length > 0) {
@@ -248,21 +248,21 @@ class UserService extends Service {
 
     // 删除用户与角色关联
     await ctx.service.db.mysql.ruoyi.sysUserRoleMapper.deleteUserRole([], {
-      userId: userIds,
+      array: userIds,
     });
 
     // 删除用户与岗位关联
     await ctx.service.db.mysql.ruoyi.sysUserPostMapper.deleteUserPost([], {
-      userId: userIds,
+      array: userIds,
     });
 
     // 删除用户
     const result =
       await ctx.service.db.mysql.ruoyi.sysUserMapper.deleteUserByIds([], {
-        userId: userIds,
+        array: userIds,
       });
 
-    return result && result.length > 0 ? userIds.length : 0;
+    return result;
   }
 
   /**

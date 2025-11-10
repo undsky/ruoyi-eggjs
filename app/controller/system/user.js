@@ -100,8 +100,8 @@ module.exports = app => {
         const postIds = await service.system.post.selectPostListByUserId(parseInt(userId));
         
         // 查询用户的角色ID列表
-        const userRoles = user.roles || [];
-        const roleIds = userRoles.map(r => r.roleId);
+        // const userRoles = user.roles || [];
+        // const roleIds = userRoles.map(r => r.roleId);
         
         // 查询所有角色和岗位
         const roles = await service.system.role.selectRoleAll();
@@ -110,6 +110,8 @@ module.exports = app => {
         // 过滤掉管理员角色（非管理员用户不能分配管理员角色）
         const isAdmin = ctx.helper.isAdmin(parseInt(userId));
         const filteredRoles = isAdmin ? roles : roles.filter(r => !ctx.helper.isAdmin(r.roleId));
+        user.roles = filteredRoles || [];
+        const roleIds = user.roles.map(r => r.roleId);
         
         ctx.body = {
           code: 200,

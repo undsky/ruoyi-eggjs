@@ -21,11 +21,11 @@
 + `/register` - 用户注册
 
 #### 用户管理模块
-+ `/api/system/user/list` - 用户列表（分页）
-+ `/api/system/user/:userId` - 用户详情
-+ `/api/system/user` (POST) - 新增用户
-+ `/api/system/user` (PUT) - 修改用户
-+ `/api/system/user/:userIds` (DELETE) - 删除用户
++ `/api/system/user/list` - 用户列表（分页） ✅（已完成）
++ `/api/system/user/:userId` - 用户详情 ✅（已完成）
++ `/api/system/user` (POST) - 新增用户 ✅（已完成）
++ `/api/system/user` (PUT) - 修改用户 ✅（已完成）
++ `/api/system/user/:userIds` (DELETE) - 删除用户 ✅（已完成）
 + `/api/system/user/resetPwd` - 重置密码
 + `/api/system/user/changeStatus` - 修改状态
 + `/api/system/user/authRole/:userId` - 查询授权角色
